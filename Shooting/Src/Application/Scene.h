@@ -35,7 +35,7 @@ private:
 	KdTexture m_BulletLineTex;
 	KdTexture m_EnemyTex;
 
-	int asdfag;
+	
 
 	Scene() {}
 
