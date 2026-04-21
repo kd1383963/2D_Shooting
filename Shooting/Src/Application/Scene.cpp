@@ -36,7 +36,8 @@ void Scene::TexLoad()
 
 void Scene::Release()
 {
-	
+	m_PlayerTex.Release();
+	m_BulletLineTex.Release();
 }
 
 void Scene::ImGuiUpdate()
