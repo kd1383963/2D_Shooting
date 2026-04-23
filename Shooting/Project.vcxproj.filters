@@ -46,6 +46,15 @@
     <Filter Include="Src\Application\Player">
       <UniqueIdentifier>{db7e00f0-36a5-49fb-bf5d-eeaa6483474a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Application\System">
+      <UniqueIdentifier>{28eb8aac-bf55-457b-b1e7-d57152512231}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\System\Main">
+      <UniqueIdentifier>{53d1efa6-c82e-490f-8c6e-131bc2f3c612}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\System\Utility">
+      <UniqueIdentifier>{287591fb-5e07-4e5f-9b8a-22cf65e5c435}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Pch.h">
@@ -153,6 +162,36 @@
     <ClInclude Include="Src\Application\Player\PlayerBulletHit.h">
       <Filter>Src\Application\Player</Filter>
     </ClInclude>
+    <ClInclude Include="Src\Application\System\Main\GameScene.h">
+      <Filter>Src\Application\System\Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\System\Main\MapScene.h">
+      <Filter>Src\Application\System\Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\System\Main\OptionScene.h">
+      <Filter>Src\Application\System\Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\System\Main\SceneManager.h">
+      <Filter>Src\Application\System\Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\System\Main\ShopScene.h">
+      <Filter>Src\Application\System\Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\System\Main\State.h">
+      <Filter>Src\Application\System\Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\System\Main\TitleScene.h">
+      <Filter>Src\Application\System\Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\System\Utility\KeyManager.h">
+      <Filter>Src\Application\System\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\System\Utility\MouseHit.h">
+      <Filter>Src\Application\System\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Mouse.h">
+      <Filter>Src\Application</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Pch.cpp">
@@ -229,6 +268,36 @@
     </ClCompile>
     <ClCompile Include="Src\Application\Player\PlayerBulletHit.cpp">
       <Filter>Src\Application\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\System\Main\GameScene.cpp">
+      <Filter>Src\Application\System\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\System\Main\MapScene.cpp">
+      <Filter>Src\Application\System\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\System\Main\OptionScene.cpp">
+      <Filter>Src\Application\System\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\System\Main\SceneManager.cpp">
+      <Filter>Src\Application\System\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\System\Main\ShopScene.cpp">
+      <Filter>Src\Application\System\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\System\Main\State.cpp">
+      <Filter>Src\Application\System\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\System\Main\TitleScene.cpp">
+      <Filter>Src\Application\System\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\System\Utility\KeyManager.cpp">
+      <Filter>Src\Application\System\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\System\Utility\MouseHit.cpp">
+      <Filter>Src\Application\System\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Mouse.cpp">
+      <Filter>Src\Application</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

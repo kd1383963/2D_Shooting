@@ -1,43 +1,30 @@
 #include "main.h"
 #include "Scene.h"
-#include "Player/Player.h"
-#include "Enemy/Enemy.h"
+#include "System/Main/SceneManager.h"
 
 void Scene::Draw2D()
 {
-	PLAYER.Draw();
-	ENEMY.Draw();
+	SCENEMANAGER.Draw();
+	
 }
 
 void Scene::Update()
 {
-	PLAYER.Update();
-	ENEMY.Update();
+	SCENEMANAGER.Update();
 }
 
 void Scene::Init()
 {
 	srand(timeGetTime());
-	PLAYER.Init();
-	ENEMY.Init();
-	TexLoad();
-}
+	
+	SCENEMANAGER.ChangeState(new C_TitleScene);
 
-void Scene::TexLoad()
-{
-	m_PlayerTex.Load("Texture/Player/Player.png");
-	m_BulletLineTex.Load("Texture/Player/Line.png");
-	PLAYER.SetTex(&m_PlayerTex,&m_BulletLineTex);
-	m_EnemyTex.Load("Texture/Enemy/enemy.png");
-	ENEMY.SetTex(&m_EnemyTex);
-
+	SCENEMANAGER.Init();
 }
 
 
 void Scene::Release()
 {
-	m_PlayerTex.Release();
-	m_BulletLineTex.Release();
 }
 
 void Scene::ImGuiUpdate()

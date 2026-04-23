@@ -1,4 +1,6 @@
 #include"SceneManager.h"
+#include"../Utility/KeyManager.h"
+#include"State.h"
 
 C_SceneManager::~C_SceneManager()
 {
@@ -10,6 +12,7 @@ void C_SceneManager::ChangeState(C_State* newState)
 	
 	currentState = newState;
 	currentState->Init();
+	currentState->Update();
 }
 
 void C_SceneManager::OptionState(C_State* newState, bool Flg)
@@ -87,7 +90,7 @@ void C_SceneManager::Update()
 
 		if (optionState != nullptr)
 		{
-			C_OptionScene* opt = static_cast<C_OptionScene*>(optionState);
+			//C_OptionScene* opt = static_cast<C_OptionScene*>(optionState);
 			
 		}
 
@@ -108,7 +111,7 @@ void C_SceneManager::Draw()
 		if (optionState != nullptr)
 		{
 			//ダウンキャスト(親クラスを子クラスに変換する)
-			C_OptionScene* opt = static_cast<C_OptionScene*>(optionState);
+			//C_OptionScene* opt = static_cast<C_OptionScene*>(optionState);
 			
 		}
 	}

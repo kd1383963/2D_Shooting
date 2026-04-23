@@ -25,15 +25,12 @@ public:
 	// GUIˆ—
 	void ImGuiUpdate();
 
-	// ‰æ‘œƒ[ƒhˆ—
-	void TexLoad();
+	
 
 
 private:
 
-	KdTexture m_PlayerTex;
-	KdTexture m_BulletLineTex;
-	KdTexture m_EnemyTex;
+	
 
 	
 

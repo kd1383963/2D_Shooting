@@ -1,4 +1,7 @@
 #pragma once
+
+class C_Enemy;
+
 class C_PlayerBullet
 {
 public:
@@ -16,6 +19,9 @@ public:
 
 	bool GetAlive() { return m_Alive;  }
 
+	bool HIT(float x1, float y1, int h1, float x2, float y2, int h2);
+
+
 	Math::Vector2 Getpos(){}
 
 private:
@@ -31,4 +37,6 @@ private:
 	Math::Matrix m_Mat;
 	
 	bool m_Alive;
+
+	C_Enemy* Enemy;
 };
