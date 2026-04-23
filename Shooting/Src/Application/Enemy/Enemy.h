@@ -3,13 +3,17 @@ class C_Enemy
 {
 public:
 
-	
+	C_Enemy() {}
 	~C_Enemy() {}
 
 	void Init();
 	void Update();
 	void Draw();
 	void SetTex(KdTexture* enemytex);
+
+	bool GetAlive() { return m_Alive; }
+	Math::Vector2 GetPos() { return m_Pos; }
+	void SetAlive() { m_Alive = false; }
 
 private:
 
@@ -19,14 +23,8 @@ private:
 	Math::Vector2 m_Pos;
 	Math::Matrix m_EnemyMat;
 
-	C_Enemy() {}
+	bool m_Alive;
 
-public:
-	static C_Enemy& GetInstance()
-	{
-		static C_Enemy instance;
-		return instance;
-	}
+
 };
 
-#define ENEMY C_Enemy::GetInstance()
