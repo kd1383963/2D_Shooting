@@ -19,6 +19,8 @@ public:
 
 	void TexLoad();
 
+	C_Enemy* GetEnemy() { return Enemy; }
+
 private:
 
 	

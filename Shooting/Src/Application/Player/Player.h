@@ -1,5 +1,9 @@
 #pragma once
-#include"PlayerBullet.h"
+//#include"PlayerBullet.h"
+
+class C_GameScene;
+
+class C_PlayerBullet;
 
 class C_Player
 {
@@ -15,7 +19,16 @@ public:
 
 	void SetShotFlg(bool a_flg) { m_ShotFlg = a_flg; }
 
+	C_PlayerBullet* GetBullet() { return *m_Bullet; }
+
+	void Setowner(C_GameScene* owner) { m_owner = owner; }
+
+	void HitBulletEnemy();
+
 private:
+
+	C_GameScene* m_owner;
+
 	const float m_MoveSpeed = 10.0f;
 
 	const float m_Radius = 32;
@@ -34,7 +47,7 @@ private:
 	static const int m_PlayerBulletNum = 10;
 
 	KdTexture m_BulletTex;
-	C_PlayerBullet m_Bullet[m_PlayerBulletNum];
+	C_PlayerBullet* m_Bullet[m_PlayerBulletNum];
 
 	C_Player();
 

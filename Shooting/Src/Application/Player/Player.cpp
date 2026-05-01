@@ -1,4 +1,8 @@
 #include "Player.h"
+#include"PlayerBullet.h"
+#include "../System/Main/Scene/GameScene.h"
+#include "../Enemy/Enemy.h"
+
 
 C_Player::C_Player()
 {
@@ -22,7 +26,7 @@ void C_Player::Draw()
 
 	for (int i = 0; i < m_PlayerBulletNum; i++)
 	{
-		m_Bullet[i].Draw();
+		m_Bullet[i]->Draw();
 	}
 }
 
@@ -42,9 +46,9 @@ void C_Player::Update()
 		{
 			for (int i = 0; i < m_PlayerBulletNum; i++)
 			{
-				if (!m_Bullet[i].GetAlive())
+				if (!m_Bullet[i]->GetAlive())
 				{
-					m_Bullet[i].Shot(m_Pos);
+					m_Bullet[i]->Shot(m_Pos);
 					m_ShotFlg = true;
 					break;
 				}
@@ -61,7 +65,7 @@ void C_Player::Update()
 	{
 		for (int i = 0; i < m_PlayerBulletNum; i++)
 		{
-			if (m_Bullet[i].GetAlive())
+			if (m_Bullet[i]->GetAlive())
 			{
 				break;
 			}
@@ -77,14 +81,15 @@ void C_Player::Update()
 		m_Pos.y = -360 + 32;
 	}
 
-	
+
 
 	m_PlayerMat = Math::Matrix::CreateTranslation(m_Pos.x, m_Pos.y, 0);
 	m_LineMat = Math::Matrix::CreateTranslation(m_Pos.x+640, m_Pos.y, 0);
 	for (int i = 0; i < m_PlayerBulletNum; i++)
 	{
-		m_Bullet[i].Update();
+		m_Bullet[i]->Update();
 	}
+
 }
 
 void C_Player::Init()
@@ -96,8 +101,10 @@ void C_Player::Init()
 	m_LineBlinkingAdd = 0.01f;
 	for (int i = 0; i < m_PlayerBulletNum; i++)
 	{
-		m_Bullet[i].Init();
-		m_Bullet[i].SetTex(&m_BulletTex);
+		m_Bullet[i] = new C_PlayerBullet;
+		m_Bullet[i]->Init();
+		m_Bullet[i]->SetTex(&m_BulletTex);
+		
 	}
 }
 
@@ -106,4 +113,29 @@ void C_Player::SetTex(KdTexture* playertex,KdTexture* bulletlinetex)
 	m_BulletTex.Load("Texture/Player/bullet.png");
 	m_PlayerTex = playertex;
 	m_BulletLineTex = bulletlinetex;
+}
+
+void C_Player::HitBulletEnemy()
+{
+	C_Enemy* Enemy = m_owner->GetEnemy();
+
+
+
+	for (int i = 0; i < Enemy->GetNum(); i++)
+	{
+		if (Enemy->GetAlive(i))
+		{
+			for (int j = 0; j < m_PlayerBulletNum; j++)
+			{
+				if (m_Bullet[j]->GetAlive())
+				{
+					if (m_Bullet[j]->HIT(Enemy->GetPos(i), Enemy->GetRadius()))
+					{
+						Enemy->SetAlive(i);
+						return;
+					}
+				}
+			}
+		}
+	}
 }

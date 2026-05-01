@@ -1,6 +1,6 @@
 #include "main.h"
 #include "Scene.h"
-#include "System/Main/SceneManager.h"
+#include "System/Main/Scene/SceneManager.h"
 
 void Scene::Draw2D()
 {
@@ -10,6 +10,9 @@ void Scene::Draw2D()
 
 void Scene::Update()
 {
+
+	SCENEMANAGER.PreUpdate();
+
 	SCENEMANAGER.Update();
 }
 
@@ -17,9 +20,9 @@ void Scene::Init()
 {
 	srand(timeGetTime());
 	
-	SCENEMANAGER.ChangeState(new C_TitleScene);
+	
 
-	SCENEMANAGER.Init();
+	
 }
 
 

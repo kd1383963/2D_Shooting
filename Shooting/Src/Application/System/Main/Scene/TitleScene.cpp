@@ -21,12 +21,12 @@ void C_TitleScene::Update()
 {
 	if (GetAsyncKeyState(VK_RETURN)&0x8000)
 	{
-		SCENEMANAGER.ChangeState(new C_GameScene);
+		SCENEMANAGER.SetNextScene(SceneManager::SceneType::Game);
 		
 	}
 }
 
 void C_TitleScene::Draw()
 {
-	
+	SHADER.m_spriteShader.DrawString(0,0,"int",{0,0,0,0});
 }

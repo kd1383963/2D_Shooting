@@ -1,7 +1,7 @@
 #include "GameScene.h"
 #include "SceneManager.h"
-#include "../../Player/Player.h"
-#include "../../Enemy/Enemy.h"
+#include "../../../Player/Player.h"
+#include "../../../Enemy/Enemy.h"
 
 C_GameScene::C_GameScene()
 {
@@ -17,12 +17,15 @@ C_GameScene::~C_GameScene()
 void C_GameScene::Init()
 {
 	
+	
 	PLAYER.Init();
 	
 	Enemy = new C_Enemy;
 	Enemy->Init();
 
 	TexLoad();
+
+	PLAYER.Setowner(this);
 }
 
 void C_GameScene::Update()
@@ -30,6 +33,7 @@ void C_GameScene::Update()
 	PLAYER.Update();
 	Enemy->Update();
 	
+	PLAYER.HitBulletEnemy();
 }
 
 void C_GameScene::Draw()

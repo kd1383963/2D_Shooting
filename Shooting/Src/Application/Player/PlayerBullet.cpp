@@ -1,5 +1,5 @@
 #include "PlayerBullet.h"
-#include "../System/Main/SceneManager.h"
+#include "../System/Main/Scene/SceneManager.h"
 
 void C_PlayerBullet::Draw()
 {
@@ -44,12 +44,18 @@ void C_PlayerBullet::SetTex(KdTexture* tex)
 	m_Tex = tex;
 }
 
-bool C_PlayerBullet::HIT(float x1, float y1, int h1, float x2, float y2, int h2)
+bool C_PlayerBullet::HIT(Math::Vector2 pos, int h)
 {
-	float a = x1 - x2;    //íÍï”
-	float b = y1 - y2;    //çÇÇ≥
+	float a = m_Pos.x - pos.x;    //íÍï”
+	float b = m_Pos.y - pos.y;    //çÇÇ≥
 	float c = sqrt(a * a + b * b);
-	if (c < h1 + h2) {
-		return (1);
+	if (c < h + m_Radius) {
+		m_Alive = false;
+		return (true);
+		
+	}
+	else
+	{
+		return(false);
 	}
 }
