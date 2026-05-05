@@ -2,6 +2,7 @@
 #include "SceneManager.h"
 #include "../../../Player/Player.h"
 #include "../../../Enemy/Enemy.h"
+#include "../../Battle/Turn.h"
 
 C_GameScene::C_GameScene()
 {
@@ -26,6 +27,8 @@ void C_GameScene::Init()
 	TexLoad();
 
 	PLAYER.Setowner(this);
+
+	C_Turn::GetInstance().Init();
 }
 
 void C_GameScene::Update()
@@ -34,6 +37,7 @@ void C_GameScene::Update()
 	Enemy->Update();
 	
 	PLAYER.HitBulletEnemy();
+	C_Turn::GetInstance().Update();
 }
 
 void C_GameScene::Draw()

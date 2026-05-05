@@ -177,9 +177,6 @@
     <ClInclude Include="Src\Application\Mouse.h">
       <Filter>Src\Application</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Application\System\Main\TitleScene.h">
-      <Filter>Src\Application\System\Main\Scene</Filter>
-    </ClInclude>
     <ClInclude Include="Src\Application\System\Main\Scene\GameScene.h">
       <Filter>Src\Application\System\Main\Scene</Filter>
     </ClInclude>

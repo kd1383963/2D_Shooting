@@ -174,7 +174,6 @@
     <ClInclude Include="Src\Application\System\Main\Scene\ShopScene.h" />
     <ClInclude Include="Src\Application\System\Main\Scene\State.h" />
     <ClInclude Include="Src\Application\System\Main\Scene\TitleScene.h" />
-    <ClInclude Include="Src\Application\System\Main\TitleScene.h" />
     <ClInclude Include="Src\Application\System\Utility\KeyManager.h" />
     <ClInclude Include="Src\Application\System\Utility\MouseHit.h" />
     <ClInclude Include="Src\System\Audio\KdAudio.h" />

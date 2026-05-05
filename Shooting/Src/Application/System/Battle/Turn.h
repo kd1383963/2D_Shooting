@@ -1,25 +1,41 @@
 #pragma once
 
-class C_Trun
+class C_Turn
 {
 public:
-	C_Trun() {}
-	~C_Trun() {}
-
-	enum Trun
+	
+	enum Turn
 	{
+		Null,
 		Player,
 		Enemy
 	};
 
+	void Init();
+	void Update();
 
-	void ChangeTrun(Trun a_nexttrun) { NextTrun = a_nexttrun; }
-	Trun GetNowTrun() { return NowTrun; }
+	void SetNextTurn(Turn a_nextturn){ NextTurn = a_nextturn; }
+	
+	Turn GetNowTurn() { return NowTurn; }
 
 private:
 
-	Trun NowTrun ;
-	Trun NextTrun ;
+	void ChangeTurn() { NowTurn = NextTurn; }
+
+	Turn NowTurn	= Null;
+	Turn NextTurn	= Null;
+
+	C_Turn() {}
+	~C_Turn() {}
 
 
+public:
+	static C_Turn& GetInstance()
+	{
+		static C_Turn instance;
+		return instance;
+	}
 };
+
+
+

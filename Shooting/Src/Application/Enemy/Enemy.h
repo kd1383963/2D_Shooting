@@ -31,7 +31,7 @@ private:
 
 	bool m_Alive[EnemyNum];
 
-	
+	bool m_MoveFlg[EnemyNum];
 
 
 };
