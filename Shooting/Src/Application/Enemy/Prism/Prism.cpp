@@ -1,13 +1,13 @@
 #include "../Enemy.h"
 #include "../../System/Main/Scene/GameScene.h"
-#include "NormalZombie.h"
+#include "Prism.h"
 
-void C_Normalzombie::Move()
+void C_Prism::Move()
 {
 	m_EnemyStatus.m_Pos.x -= rand() % 100 + 30;
 }
 
-void C_Normalzombie::Init()
+void C_Prism::Init()
 {
 	std::vector<std::shared_ptr<C_EnemyBase>> EnemyChara = m_owner->GetEnemyChara();
 
@@ -29,6 +29,7 @@ void C_Normalzombie::Init()
 	
 	m_EnemyStatus.m_Hp = 100;
 	m_EnemyStatus.m_MaxHp = m_EnemyStatus.m_Hp;
+	m_EnemyStatus.m_BreakHp = m_EnemyStatus.m_Hp ;
 	
 	m_EnemyStatus.m_Alive = true;
 	m_EnemyStatus.m_MoveFlg = false;

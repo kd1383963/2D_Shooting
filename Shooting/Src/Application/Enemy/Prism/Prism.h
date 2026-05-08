@@ -3,12 +3,12 @@
 
 
 
-class C_Normalzombie :public C_EnemyBase
+class C_Prism :public C_EnemyBase
 {
 public:
 
-	C_Normalzombie() {  }
-	~C_Normalzombie() {}
+	C_Prism() {  }
+	~C_Prism() {}
 
 
 	void Move()override;

@@ -72,4 +72,7 @@ void C_GameScene::Release()
 	m_PlayerTex.Release();
 	m_BulletLineTex.Release();
 	m_EnemyTex.Release();
+	m_HpTex.Release();
+	m_HpBackTex.Release();
+	m_HpBreakTex.Release();
 }

@@ -162,7 +162,7 @@ LRESULT KdGameWindow::WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 	case WM_KEYDOWN:
 		switch (wParam) {
 		case VK_ESCAPE:
-			Release();
+			//Release();
 			break;
 		}
 		return 0;

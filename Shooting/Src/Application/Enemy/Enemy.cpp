@@ -1,5 +1,5 @@
 #include "Enemy.h"
-#include "Zombie/NormalZombie.h"
+#include "Prism/Prism.h"
 #include "EnemyBase.h"
 
 void C_Enemy::Draw()
@@ -31,7 +31,7 @@ void C_Enemy::Init()
 {
 	for (int i = 0; i < 20; i++)
 	{
-		m_EnemyChara.push_back(std::make_shared<C_Normalzombie>());
+		m_EnemyChara.push_back(std::make_shared<C_Prism>());
 		m_EnemyChara[i]->Setowner(this);
 		m_EnemyChara[i]->Init();
 		m_EnemyChara[i]->SetTex(m_EnemyTex, m_HpTex, m_HpBreakTex, m_HpBackTex);

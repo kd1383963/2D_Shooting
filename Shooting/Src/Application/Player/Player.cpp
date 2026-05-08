@@ -1,7 +1,7 @@
 #include "Player.h"
 #include"PlayerBullet.h"
 #include "../System/Main/Scene/GameScene.h"
-#include "../Enemy/Zombie/NormalZombie.h"
+#include "../Enemy/Prism/Prism.h"
 #include "../Enemy/Enemy.h"
 #include "../System/Battle/Turn.h"
 #include "../Mouse.h"
@@ -136,7 +136,8 @@ void C_Player::Init()
 	m_LineBlinking = 0.1f;
 	m_LineBlinkingAdd = 0.01f;
 	m_CharaStatus.m_Hp = 100;
-	m_CharaStatus.m_MaxHp = 100;
+	m_CharaStatus.m_MaxHp = m_CharaStatus.m_Hp;
+	m_CharaStatus.m_BreakHp = m_CharaStatus.m_Hp;
 		
 		
 		

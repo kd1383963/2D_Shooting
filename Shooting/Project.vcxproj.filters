@@ -64,8 +64,8 @@
     <Filter Include="Src\Application\Enemy">
       <UniqueIdentifier>{b8727c70-4bc7-41a4-9e13-80dad43f16cb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Src\Application\Enemy\Zombie">
-      <UniqueIdentifier>{1c755db7-0b84-425e-aaba-7cd44948f967}</UniqueIdentifier>
+    <Filter Include="Src\Application\Enemy\Prism">
+      <UniqueIdentifier>{75670b53-f651-492b-bf1a-3114f671f43c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -210,8 +210,8 @@
     <ClInclude Include="Src\Application\Enemy\EnemyBase.h">
       <Filter>Src\Application\Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Application\Enemy\Zombie\NormalZombie.h">
-      <Filter>Src\Application\Enemy\Zombie</Filter>
+    <ClInclude Include="Src\Application\Enemy\Prism\Prism.h">
+      <Filter>Src\Application\Enemy\Prism</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -326,8 +326,8 @@
     <ClCompile Include="Src\Application\Enemy\EnemyBase.cpp">
       <Filter>Src\Application\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Application\Enemy\Zombie\NomalZombie.cpp">
-      <Filter>Src\Application\Enemy\Zombie</Filter>
+    <ClCompile Include="Src\Application\Enemy\Prism\Prism.cpp">
+      <Filter>Src\Application\Enemy\Prism</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
