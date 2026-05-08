@@ -61,6 +61,12 @@
     <Filter Include="Src\Application\System\Battle">
       <UniqueIdentifier>{4bb0d3fd-954b-4ff8-9d42-d67b7e9ef06e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Application\Enemy">
+      <UniqueIdentifier>{b8727c70-4bc7-41a4-9e13-80dad43f16cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Enemy\Zombie">
+      <UniqueIdentifier>{1c755db7-0b84-425e-aaba-7cd44948f967}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Pch.h">
@@ -162,9 +168,6 @@
     <ClInclude Include="Src\Application\Player\PlayerBullet.h">
       <Filter>Src\Application\Player</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Application\Enemy\Enemy.h">
-      <Filter>Src\Application</Filter>
-    </ClInclude>
     <ClInclude Include="Src\Application\Player\PlayerBulletHit.h">
       <Filter>Src\Application\Player</Filter>
     </ClInclude>
@@ -200,6 +203,15 @@
     </ClInclude>
     <ClInclude Include="Src\Application\System\Battle\Turn.h">
       <Filter>Src\Application\System\Battle</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Enemy\Enemy.h">
+      <Filter>Src\Application\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Enemy\EnemyBase.h">
+      <Filter>Src\Application\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Enemy\Zombie\NormalZombie.h">
+      <Filter>Src\Application\Enemy\Zombie</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -272,9 +284,6 @@
     <ClCompile Include="Src\Application\Player\PlayerBullet.cpp">
       <Filter>Src\Application\Player</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Application\Enemy\Enemy.cpp">
-      <Filter>Src\Application</Filter>
-    </ClCompile>
     <ClCompile Include="Src\Application\Player\PlayerBulletHit.cpp">
       <Filter>Src\Application\Player</Filter>
     </ClCompile>
@@ -310,6 +319,15 @@
     </ClCompile>
     <ClCompile Include="Src\Application\System\Battle\Turn.cpp">
       <Filter>Src\Application\System\Battle</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Enemy\Enemy.cpp">
+      <Filter>Src\Application\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Enemy\EnemyBase.cpp">
+      <Filter>Src\Application\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Enemy\Zombie\NomalZombie.cpp">
+      <Filter>Src\Application\Enemy\Zombie</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

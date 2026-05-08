@@ -12,48 +12,58 @@ C_GameScene::C_GameScene()
 C_GameScene::~C_GameScene()
 {
 	Release();
-	delete Enemy;
 }
 
 void C_GameScene::Init()
 {
+	m_Enemy = std::make_shared<C_Enemy>();
 	
-	
-	PLAYER.Init();
-	
-	Enemy = new C_Enemy;
-	Enemy->Init();
-
 	TexLoad();
 
-	PLAYER.Setowner(this);
+	C_Player::GetInstance().Init();
+
+	m_Enemy->Init();
+
+	
+
+	C_Player::GetInstance().Setowner(this);
+
+	
 
 	C_Turn::GetInstance().Init();
 }
 
 void C_GameScene::Update()
 {
-	PLAYER.Update();
-	Enemy->Update();
+	C_Player::GetInstance().Update();
 	
-	PLAYER.HitBulletEnemy();
+	m_Enemy->Update();
+	
+	C_Player::GetInstance().HitBulletEnemy();
 	C_Turn::GetInstance().Update();
 }
 
 void C_GameScene::Draw()
 {
 	
-	PLAYER.Draw();
-	Enemy->Draw();
+	C_Player::GetInstance().Draw();
+	
+	m_Enemy->Draw();
+	
 }
 
 void C_GameScene::TexLoad()
 {
 	m_PlayerTex.Load("Texture/Player/Player.png");
 	m_BulletLineTex.Load("Texture/Player/Line.png");
-	PLAYER.SetTex(&m_PlayerTex, &m_BulletLineTex);
+	m_HpTex.Load("Texture/UI/Hp.png");
+	m_HpBackTex.Load("Texture/UI/Hpback.png");
+	m_HpBreakTex.Load("Texture/UI/-Hp.png");
+	C_Player::GetInstance().SetTex(&m_PlayerTex, &m_BulletLineTex, &m_HpTex, &m_HpBreakTex,&m_HpBackTex);
 	m_EnemyTex.Load("Texture/Enemy/enemy.png");
-	Enemy->SetTex(&m_EnemyTex);
+	
+	m_Enemy->GiftTex(&m_EnemyTex,&m_HpTex, &m_HpBreakTex, &m_HpBackTex);
+	
 
 }
 

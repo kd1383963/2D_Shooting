@@ -2,6 +2,8 @@
 
 #include"State.h"
 
+
+
 class C_Enemy;
 
 class C_GameScene :public C_State
@@ -19,17 +21,20 @@ public:
 
 	void TexLoad();
 
-	C_Enemy* GetEnemy() { return Enemy; }
+	std::shared_ptr<C_Enemy> GetEnemy() { return m_Enemy; }
 
 private:
 
 	
+
 	KdTexture m_PlayerTex;
 	KdTexture m_BulletLineTex;
 	KdTexture m_EnemyTex;
-
+	KdTexture m_HpTex;
+	KdTexture m_HpBackTex;
+	KdTexture m_HpBreakTex;
 	
-	C_Enemy* Enemy;
+	std::shared_ptr<C_Enemy> m_Enemy=nullptr;
 	
 
 	

@@ -1,50 +1,54 @@
 #include "Enemy.h"
-#include "../System/Battle/Turn.h"
+#include "Zombie/NormalZombie.h"
+#include "EnemyBase.h"
 
 void C_Enemy::Draw()
 {
-	for (int i = 0; i < EnemyNum; i++)
-	{
-		if (m_Alive[i])
-		{
-			SHADER.m_spriteShader.SetMatrix(m_EnemyMat[i]);
-			SHADER.m_spriteShader.DrawTex(m_EnemyTex, { 0,0,64,64 }, 1.0f);
-		}
+	for (const auto& e : m_EnemyChara) {
+		e->Draw();
 	}
 }
 
+
 void C_Enemy::Update()
 {
-	for (int i = 0; i < EnemyNum; i++)
-	{
-		if (m_Alive[i])
-		{
-			if (C_Turn::GetInstance().GetNowTurn() == C_Turn::Enemy && !m_MoveFlg[i])
-			{
-				m_Pos[i].x -= 5;
-				m_MoveFlg[i] = true;
-				C_Turn::GetInstance().SetNextTurn(C_Turn::Player);
-			}
-			m_EnemyMat[i] = Math::Matrix::CreateTranslation(m_Pos[i].x, m_Pos[i].y, 0);
-		}
+	for (const auto& e : m_EnemyChara) {
+		e->Update();
 	}
-
-	
-
+	m_EnemyChara.erase(
+		std::remove_if(
+			m_EnemyChara.begin(),
+			m_EnemyChara.end(),
+			[](const std::shared_ptr<C_EnemyBase>& e) {
+				return!(e->GetAlive());  // Å© GetAlive Ç™ false ÇÃìGÇæÇØè¡Ç∑
+			}
+		),
+		m_EnemyChara.end()
+	);
 }
 
 void C_Enemy::Init()
 {
-	for (int i = 0; i < EnemyNum; i++)
+	for (int i = 0; i < 20; i++)
 	{
-		m_Pos[i].x = 400;
-		m_Pos[i].y = rand() % 400 - 200;
-		m_Alive[i] = true;
-		m_MoveFlg[i] = false;
-	}
+		m_EnemyChara.push_back(std::make_shared<C_Normalzombie>());
+		m_EnemyChara[i]->Setowner(this);
+		m_EnemyChara[i]->Init();
+		m_EnemyChara[i]->SetTex(m_EnemyTex, m_HpTex, m_HpBreakTex, m_HpBackTex);
+	}	
+	std::sort(m_EnemyChara.begin(), m_EnemyChara.end(),
+		[](const std::shared_ptr<C_EnemyBase>& a, const std::shared_ptr<C_EnemyBase>& b) {
+			if (a->GetPos().y != b->GetPos().y)
+				return a->GetPos().y > b->GetPos().y;  // y ç~èá
+			return a->GetPos().x < b->GetPos().x;      // x è∏èá
+		}
+	);
 }
 
-void C_Enemy::SetTex(KdTexture* enemytex)
+void C_Enemy::GiftTex(KdTexture* enemytex, KdTexture* hpbartex, KdTexture* hpbarbraektex, KdTexture* hpbarbacktex)
 {
 	m_EnemyTex = enemytex;
+	m_HpTex = hpbartex;
+	m_HpBreakTex = hpbarbraektex;
+	m_HpBackTex = hpbarbacktex;
 }

@@ -11,8 +11,8 @@ bool C_MouseHit::MouseBlockHit(Math::Vector2 pos, float radiusX, float radiusY)
 
 	
 
-	const float x = MOUSE.GetMousePos().x;
-	const float y = MOUSE.GetMousePos().y;
+	const float x = C_Mouse::GetInstance().GetMousePos().x;
+	const float y = C_Mouse::GetInstance().GetMousePos().y;
 
 	if (x< menuRight && x>menuLeft && y< menuTop && y>menuBottom)
 	{
@@ -33,8 +33,8 @@ bool C_MouseHit::MouseCircleHit(Math::Vector2 pos, float radius,bool halfFlg)
 	{
 		pos.y = pos.y + radius / 2;
 	}
-	const float x = MOUSE.GetMousePos().x - pos.x;
-	const float y = MOUSE.GetMousePos().y - pos.y;
+	const float x = C_Mouse::GetInstance().GetMousePos().x - pos.x;
+	const float y = C_Mouse::GetInstance().GetMousePos().y - pos.y;
 	const float z = sqrt(x * x + y * y);
 
 	if (z < radius)

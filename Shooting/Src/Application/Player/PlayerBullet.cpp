@@ -8,17 +8,30 @@ void C_PlayerBullet::Draw()
 	SHADER.m_spriteShader.DrawTex(m_Tex, Math::Rectangle{ 0,0,16,16 }, 1.0f);
 }
 
-void C_PlayerBullet::Shot(Math::Vector2 pos)
+void C_PlayerBullet::Shot(Math::Vector2 pos1, Math::Vector2 pos2)
 {
-	m_Pos = pos;
+	
+	m_Pos = pos1;
 	m_Alive = true;
+	vec = pos1 - pos2;
+	vec.Normalize();
+}
+
+void C_PlayerBullet::MoreShot(Math::Vector2 vec1)
+{
+	m_Alive = true;
+	vec = vec1;
+	vec.Normalize();
 }
 
 void C_PlayerBullet::Update()
 {
 	if (!m_Alive)return;
+	
 
-	m_Pos.x += m_MoveSpeed;
+	
+
+	m_Pos -= vec * m_MoveSpeed;
 
 	//if(SCENEMANAGER.)
 
@@ -58,4 +71,8 @@ bool C_PlayerBullet::HIT(Math::Vector2 pos, int h)
 	{
 		return(false);
 	}
+}
+
+void C_PlayerBullet::HitSkill()
+{
 }

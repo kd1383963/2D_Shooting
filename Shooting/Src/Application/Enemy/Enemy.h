@@ -1,38 +1,36 @@
 #pragma once
 
+class C_GameScene;
 
+class C_EnemyBase;
 
-class C_Enemy
+class C_Enemy 
 {
 public:
 
-	C_Enemy() {}
-	~C_Enemy() {}
+	C_Enemy(){ }
+	~C_Enemy(){}
 
 	void Init();
 	void Update();
 	void Draw();
-	void SetTex(KdTexture* enemytex);
 
-	int  GetNum() { return EnemyNum; }
-	bool GetAlive(int i) { return m_Alive[i]; }
-	Math::Vector2 GetPos(int i) { return m_Pos[i]; }
-	void SetAlive(int i) { m_Alive[i] = false; }
-	int  GetRadius() { return m_Radius; }
+	void GiftTex(KdTexture* enemytex, KdTexture* hpbartex, KdTexture* hpbarbraektex, KdTexture* hpbarbacktex);
+
+	std::vector<std::shared_ptr<C_EnemyBase>> GetEnemyChara() { return m_EnemyChara; }
+	
+	
+
 private:
 
-	const float m_Radius = 32;
+	
 
-	static const int EnemyNum = 5;
+	std::vector<std::shared_ptr<C_EnemyBase>> m_EnemyChara = {};
 
 	KdTexture* m_EnemyTex;
-	Math::Vector2 m_Pos[EnemyNum];
-	Math::Matrix m_EnemyMat[EnemyNum];
 
-	bool m_Alive[EnemyNum];
-
-	bool m_MoveFlg[EnemyNum];
-
-
+	KdTexture* m_HpTex;
+	KdTexture* m_HpBackTex;
+	KdTexture* m_HpBreakTex;
 };
 

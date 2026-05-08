@@ -5,6 +5,30 @@ class C_GameScene;
 
 class C_PlayerBullet;
 
+struct Status
+{
+	bool	m_PnullFlg = false;
+	bool	m_Flg;
+	float 	m_Hp;
+	float 	m_MaxHp;
+	float	m_BreakHp;
+	int		m_Atk;
+	float alpha = 1.0f;
+
+
+	Math::Vector2 Pos;
+	Math::Vector2 HpAddPos = {0,42};
+	Math::Vector2 Anim;
+	bool MoveFlg;
+
+	bool DamageFlg = false;
+	int Damage = 0;
+	bool HealFlg = false;
+	int Heal = 0;
+};
+
+
+
 class C_Player
 {
 public:
@@ -15,11 +39,12 @@ public:
 	void Init();
 	void Update();
 	void Draw();
-	void SetTex(KdTexture* playertex,KdTexture* bulletlinetex);
+	void SetTex(KdTexture* playertex,KdTexture* bulletlinetex,
+		KdTexture* hpbartex, KdTexture* hpbarbraektex, KdTexture* hpbarbacktex);
 
 	void SetShotFlg(bool a_flg) { m_ShotFlg = a_flg; }
 
-	C_PlayerBullet* GetBullet() { return *m_Bullet; }
+	
 
 	void Setowner(C_GameScene* owner) { m_owner = owner; }
 
@@ -35,19 +60,30 @@ private:
 
 	KdTexture* m_PlayerTex;
 	KdTexture* m_BulletLineTex;
-	Math::Vector2 m_Pos;
+	KdTexture* m_HpTex;
+	KdTexture* m_HpBackTex;
+	KdTexture* m_HpBreakTex;
+	
 	Math::Matrix m_PlayerMat;
 	Math::Matrix m_LineMat;
+	Math::Matrix m_HpMat;
+	Math::Matrix m_HpBackMat;
+	Math::Matrix m_HpBreakMat;
 
 	bool m_ShotFlg;
 
 	float m_LineBlinking;
 	float m_LineBlinkingAdd;
 
-	static const int m_PlayerBulletNum = 10;
+	
+
+
+
 
 	KdTexture m_BulletTex;
-	C_PlayerBullet* m_Bullet[m_PlayerBulletNum];
+	std::vector<std::shared_ptr<C_PlayerBullet>> m_Bullet = {};
+
+	Status m_CharaStatus;
 
 	C_Player();
 
@@ -59,5 +95,5 @@ public:
 	}
 };
 
-#define PLAYER C_Player::GetInstance()
+
 

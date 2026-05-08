@@ -33,4 +33,3 @@ public:
 	}
 };
 
-#define MOUSE C_Mouse::GetInstance()

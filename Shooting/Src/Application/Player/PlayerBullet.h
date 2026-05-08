@@ -6,14 +6,16 @@ class C_PlayerBullet
 {
 public:
 
-	C_PlayerBullet() {}
+	C_PlayerBullet() { Init(); }
 	~C_PlayerBullet() {}
 
 	void Init();
 	void Update();
 	void Draw();
 
-	void Shot(Math::Vector2 pos);
+	void Shot(Math::Vector2 pos1, Math::Vector2 pos2);
+
+	void MoreShot(Math::Vector2 vec);
 
 	void SetTex(KdTexture* tex);
 
@@ -21,7 +23,7 @@ public:
 
 	bool HIT(Math::Vector2 pos, int h);
 
-	
+	void HitSkill();
 
 	
 
@@ -36,6 +38,7 @@ private:
 
 	KdTexture* m_Tex;
 	Math::Vector2 m_Pos;
+	Math::Vector2 vec;
 	Math::Matrix m_Mat;
 
 	bool m_Alive;
