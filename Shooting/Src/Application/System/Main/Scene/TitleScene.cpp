@@ -28,5 +28,5 @@ void C_TitleScene::Update()
 
 void C_TitleScene::Draw()
 {
-	SHADER.m_spriteShader.DrawString(0,0,"int",{0,0,0,0});
+	
 }

@@ -21,7 +21,7 @@ void C_Player::Draw()
 		if (!m_ShotFlg)
 		{
 			SHADER.m_spriteShader.SetMatrix(m_LineMat);
-			SHADER.m_spriteShader.DrawTex(m_BulletLineTex, { 0,0,1280,16 }, m_LineBlinking);
+			SHADER.m_spriteShader.DrawTex(m_BulletLineTex, { 0,0,2560,16 }, m_LineBlinking);
 		}
 	}
 	SHADER.m_spriteShader.SetMatrix(m_PlayerMat);
@@ -56,9 +56,24 @@ void C_Player::Draw()
 
 void C_Player::Update()
 {
+	if (m_CharaStatus.m_DamageFlg)
+	{
+		m_CharaStatus.m_BreakHp -= 1;
+	}
+	if (m_CharaStatus.m_Hp == m_CharaStatus.m_BreakHp)
+	{
+		m_CharaStatus.m_DamageFlg = false;
+	}
+
+	if (m_CharaStatus.m_Hp <= 0)
+	{
+		m_CharaStatus.m_Alive = false;
+	}
 	if (C_Turn::GetInstance().GetNowTurn() == C_Turn::Player)
 	{
 		Math::Vector2 MousePos = {(float) C_Mouse::GetInstance().GetMousePos().x,(float) C_Mouse::GetInstance().GetMousePos().y };
+		Math::Vector2 vec = m_CharaStatus.Pos - MousePos;
+		float angle= atan2(vec.y,vec.x);
 		if (!m_ShotFlg)
 		{
 			
@@ -112,8 +127,8 @@ void C_Player::Update()
 		{
 			m_CharaStatus.Pos.y = -360 + 32;
 		}
-
-		m_LineMat = Math::Matrix::CreateTranslation(m_CharaStatus.Pos.x , m_CharaStatus.Pos.y, 0);
+		 
+		m_LineMat = Math::Matrix::CreateRotationZ(angle) * Math::Matrix::CreateTranslation(m_CharaStatus.Pos.x , m_CharaStatus.Pos.y, 0);
 
 	}
 	m_HpMat = Math::Matrix::CreateTranslation(m_CharaStatus.Pos.x - ((int)(66 * (((m_CharaStatus.m_MaxHp - m_CharaStatus.m_Hp) / 2) / m_CharaStatus.m_MaxHp))), m_CharaStatus.Pos.y + m_CharaStatus.HpAddPos.y, 0);
@@ -138,7 +153,7 @@ void C_Player::Init()
 	m_CharaStatus.m_Hp = 100;
 	m_CharaStatus.m_MaxHp = m_CharaStatus.m_Hp;
 	m_CharaStatus.m_BreakHp = m_CharaStatus.m_Hp;
-		
+	m_CharaStatus.m_Atk = 50;
 		
 		
 	
@@ -172,7 +187,7 @@ void C_Player::HitBulletEnemy()
 				{
 					if (m_Bullet[j]->HIT(e->GetPos(), e->GetRadius()))
 					{
-						e->SetAlive();
+						e->HitDamege(m_CharaStatus.m_Atk);
 						
 					
 						return;
@@ -183,4 +198,10 @@ void C_Player::HitBulletEnemy()
 
 
 	}
+}
+
+
+void C_Player::SetHitSkill()
+{
+	PlayerSkill = PlayerSkillBase;
 }

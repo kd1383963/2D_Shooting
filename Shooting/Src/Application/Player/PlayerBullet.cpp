@@ -72,7 +72,3 @@ bool C_PlayerBullet::HIT(Math::Vector2 pos, int h)
 		return(false);
 	}
 }
-
-void C_PlayerBullet::HitSkill()
-{
-}

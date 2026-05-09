@@ -28,11 +28,15 @@ private:
 	
 
 	KdTexture m_PlayerTex;
-	KdTexture m_BulletLineTex;
+	KdTexture m_PlayerBulletLineTex;
 	KdTexture m_EnemyTex;
 	KdTexture m_HpTex;
 	KdTexture m_HpBackTex;
 	KdTexture m_HpBreakTex;
+	KdTexture m_AttackIconTex;
+	KdTexture m_BeamIconTex;
+	KdTexture m_NumberTex;
+	KdTexture m_EnemyBulletLineTex;
 	
 	std::shared_ptr<C_Enemy> m_Enemy=nullptr;
 	

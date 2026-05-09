@@ -1,5 +1,6 @@
 #include "EnemyBase.h"
 #include "../System/Battle/Turn.h"
+#include "../Player/Player.h"
 
 void C_EnemyBase::Draw()
 {
@@ -26,21 +27,96 @@ void C_EnemyBase::Draw()
 	}
 	SHADER.m_spriteShader.SetMatrix(m_HpMat);
 	SHADER.m_spriteShader.DrawTex(m_HpTex, { 0,0,(66 - (int)(66 * (HpBerCnt / m_EnemyStatus.m_MaxHp))),8 }, 1.0f);
+	switch (m_EnemyStatus.m_MoveCmd)
+	{
+	case Attack:
+		SHADER.m_spriteShader.SetMatrix(m_IconMat);
+		SHADER.m_spriteShader.DrawTex(m_AttackIconTex, { 0,0,32,32 }, 1.0f);
+		break;
+	case Beam:
+		SHADER.m_spriteShader.SetMatrix(m_IconMat);
+		SHADER.m_spriteShader.DrawTex(m_BeamIconTex, { 0,0,32,32 }, 1.0f);
+		SHADER.m_spriteShader.SetMatrix(m_LineMat);
+		SHADER.m_spriteShader.DrawTex(m_BulletLineTex, { 0,0,2560,16 }, m_LineBlinking);
+		break;
+	}
+	
+	if (m_EnemyStatus.AttackDamage / 10 != 0)
+	{
+		int i = m_EnemyStatus.AttackDamage;
+		SHADER.m_spriteShader.SetMatrix(m_IconNumber1Mat);
+		SHADER.m_spriteShader.DrawTex(m_NumberTex, { 64 * (i % 10),0,64,64 }, 1.0f);
+		i /= 10;
+		SHADER.m_spriteShader.SetMatrix(m_IconNumber10Mat);
+		SHADER.m_spriteShader.DrawTex(m_NumberTex, { 64 * i,0,64,64 }, 1.0f);
+	}
+	else
+	{
+		SHADER.m_spriteShader.SetMatrix(m_IconNumber1Mat);
+		SHADER.m_spriteShader.DrawTex(m_NumberTex, { 64 * m_EnemyStatus.AttackDamage,0,64,64 }, 1.0f);
+	}
+}
+
+void C_EnemyBase::ShotBeam()
+{
+
+}
+
+void C_EnemyBase::PreInit()
+{
+	m_LineBlinking = 0.1f;
+	m_LineBlinkingAdd = 0.01f;
 }
 
 void C_EnemyBase::Update()
 {
 	if (!m_EnemyStatus.m_Alive)return;
 
+	if (m_EnemyStatus.m_DamageFlg)
+	{
+		m_EnemyStatus.m_BreakHp -= 1;
+	}
+	if (m_EnemyStatus.m_Hp == m_EnemyStatus.m_BreakHp)
+	{
+		m_EnemyStatus.m_DamageFlg = false;
+	}
+
+	if (m_EnemyStatus.m_Hp <= 0)
+	{
+		m_EnemyStatus.m_Alive = false;
+	}
+
 	if (C_Turn::GetInstance().GetNowTurn() == C_Turn::Enemy && !m_EnemyStatus.m_MoveFlg)
 	{
-		//Move();
-		//m_MoveFlg = true;
-		C_Turn::GetInstance().SetNextTurn(C_Turn::Player);
+		Move();
+	}
+	switch (m_EnemyStatus.m_MoveCmd)
+	{
+	case Attack:
+		break;
+	case Beam:
+		m_LineBlinking += m_LineBlinkingAdd;
+		if (m_LineBlinking >= 0.4f || m_LineBlinking <= 0.1f)
+		{
+			m_LineBlinkingAdd *= -1;
+		}
+		Math::Vector2 vec = m_EnemyStatus.m_Pos - C_Player::GetInstance().GetPos();
+		float angle = atan2(vec.y, vec.x);
+		m_LineMat = Math::Matrix::CreateRotationZ(angle) * Math::Matrix::CreateTranslation(m_EnemyStatus.m_Pos.x, m_EnemyStatus.m_Pos.y, 0);
+		break;
 	}
 	m_HpMat = Math::Matrix::CreateTranslation(m_EnemyStatus.m_Pos.x - ((int)(66 * (((m_EnemyStatus.m_MaxHp - m_EnemyStatus.m_Hp) / 2) / m_EnemyStatus.m_MaxHp))), m_EnemyStatus.m_Pos.y + m_EnemyStatus.m_HpAddPos.y, 0);
 	m_HpBackMat = Math::Matrix::CreateTranslation(m_EnemyStatus.m_Pos.x, m_EnemyStatus.m_Pos.y + m_EnemyStatus.m_HpAddPos.y, 0);
 	m_HpBreakMat = Math::Matrix::CreateTranslation(m_EnemyStatus.m_Pos.x - ((int)(66 * (((m_EnemyStatus.m_MaxHp - m_EnemyStatus.m_BreakHp) / 2) / m_EnemyStatus.m_MaxHp))), m_EnemyStatus.m_Pos.y + m_EnemyStatus.m_HpAddPos.y, 0);
+	m_IconMat = Math::Matrix::CreateTranslation(m_EnemyStatus.m_Pos.x+m_EnemyStatus.m_IconAddPos.x, m_EnemyStatus.m_Pos.y + m_EnemyStatus.m_IconAddPos.y, 0);
+	
+
+	m_IconScaleMat = Math::Matrix::CreateScale(0.2f, 0.2f, 1);
+	m_IconTransMat = Math::Matrix::CreateTranslation(m_EnemyStatus.m_Pos.x + m_EnemyStatus.m_IconAddPos.x + m_EnemyStatus.m_IconNumberAddPos.x * 2, m_EnemyStatus.m_Pos.y + m_EnemyStatus.m_IconAddPos.y + m_EnemyStatus.m_IconNumberAddPos.y, 0);
+	m_IconNumber1Mat = m_IconScaleMat * m_IconTransMat;
+	m_IconTransMat = Math::Matrix::CreateTranslation(m_EnemyStatus.m_Pos.x + m_EnemyStatus.m_IconAddPos.x + m_EnemyStatus.m_IconNumberAddPos.x * 1, m_EnemyStatus.m_Pos.y + m_EnemyStatus.m_IconAddPos.y + m_EnemyStatus.m_IconNumberAddPos.y, 0);
+	m_IconNumber10Mat = m_IconScaleMat * m_IconTransMat;
+
 	m_EnemyMat = Math::Matrix::CreateTranslation(m_EnemyStatus.m_Pos.x, m_EnemyStatus.m_Pos.y, 0);
 
 
@@ -50,10 +126,15 @@ void C_EnemyBase::Update()
 
 
 
-void C_EnemyBase::SetTex(KdTexture* enemytex,KdTexture* hpbartex, KdTexture* hpbarbraektex, KdTexture* hpbarbacktex)
+void C_EnemyBase::SetTex(KdTexture* enemytex, KdTexture* hpbartex, KdTexture* hpbarbraektex, KdTexture* hpbarbacktex
+	, KdTexture* attacktex, KdTexture* beamtex, KdTexture* numbertex, KdTexture* bulletlinetex)
 {
 	m_EnemyTex = enemytex;
 	m_HpTex = hpbartex;
 	m_HpBreakTex = hpbarbraektex;
 	m_HpBackTex = hpbarbacktex;
+	m_AttackIconTex = attacktex;
+	m_BeamIconTex = beamtex;
+	m_NumberTex = numbertex;
+	m_BulletLineTex = bulletlinetex;
 }

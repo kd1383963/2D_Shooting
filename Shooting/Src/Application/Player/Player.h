@@ -8,7 +8,7 @@ class C_PlayerBullet;
 struct Status
 {
 	bool	m_PnullFlg = false;
-	bool	m_Flg;
+	bool	m_Alive;
 	float 	m_Hp;
 	float 	m_MaxHp;
 	float	m_BreakHp;
@@ -21,13 +21,17 @@ struct Status
 	Math::Vector2 Anim;
 	bool MoveFlg;
 
-	bool DamageFlg = false;
+	bool m_DamageFlg = false;
 	int Damage = 0;
-	bool HealFlg = false;
+	bool m_HealFlg = false;
 	int Heal = 0;
 };
 
+struct SkillFlg
+{
+	int m_BulletBoundFlg;
 
+};
 
 class C_Player
 {
@@ -44,12 +48,21 @@ public:
 
 	void SetShotFlg(bool a_flg) { m_ShotFlg = a_flg; }
 
-	
+	void HitDamege(int a_Damaege) {
+		m_CharaStatus.m_DamageFlg = true;
+		m_CharaStatus.m_Hp -= a_Damaege;
+	}
 
-	void Setowner(C_GameScene* owner) { m_owner = owner; }
+	Math::Vector2 GetPos() { return m_CharaStatus.Pos; }
 
 	void HitBulletEnemy();
 
+	void SetHitSkill();
+
+
+
+
+	void Setowner(C_GameScene* owner) { m_owner = owner; }
 private:
 
 	C_GameScene* m_owner;
@@ -76,7 +89,8 @@ private:
 	float m_LineBlinkingAdd;
 
 	
-
+	SkillFlg PlayerSkill;
+	SkillFlg PlayerSkillBase;
 
 
 

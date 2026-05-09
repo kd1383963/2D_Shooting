@@ -23,7 +23,7 @@ public:
 
 	bool HIT(Math::Vector2 pos, int h);
 
-	void HitSkill();
+	
 
 	
 
@@ -43,4 +43,5 @@ private:
 
 	bool m_Alive;
 
+	
 };

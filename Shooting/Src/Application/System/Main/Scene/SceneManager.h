@@ -3,6 +3,13 @@
 //前方宣言
 class C_State;
 
+enum FadeType
+{
+	Fade_no,
+	Fade_out,
+	Fade_in
+};
+
 class SceneManager
 {
 public:
@@ -22,11 +29,14 @@ public:
 	void Update();
 	void Draw();
 
+	void UpdateFade();
+
 	// 外部から次のシーンをSetする関数
 	// ※この関数ではシーンは切り替わらない
 	void SetNextScene(SceneType _nextScene)
 	{
 		m_nextSceneType = _nextScene;
+		NowFade = FadeType::Fade_out;
 	}
 
 	// 現在のシーンを取得する関数
@@ -51,6 +61,11 @@ private:
 	SceneType m_CurrentSceneType = SceneType::Title;
 	// 次のシーンを管理するフラグ変数
 	SceneType m_nextSceneType = m_CurrentSceneType;
+
+	float FadeAlpha = 0.0f;
+	KdTexture BrackTex;
+	Math::Matrix m_mat;
+	FadeType NowFade = Fade_no;
 
 	//シングルトンパターン
 	// 実体が一つしかないことを証明するためのパターン

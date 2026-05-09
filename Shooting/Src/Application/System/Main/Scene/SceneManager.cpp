@@ -5,10 +5,9 @@
 void SceneManager::PreUpdate()
 {
 	//シーン切り替え
-	if (m_CurrentSceneType != m_nextSceneType)
+	if (NowFade != FadeType::Fade_no)
 	{
-		ChangeScene(m_nextSceneType);
-		m_CurrentScene->Init();
+		UpdateFade();
 	}
 }
 
@@ -17,16 +16,50 @@ void SceneManager::Update()
 	// ポリモーフィズム
 	// 同じ関数名であっても、呼び出すオブジェクトによって処理内容が変わることも
 	m_CurrentScene->Update();
+	m_mat = Math::Matrix::CreateTranslation(0, 0, 0);
 }
+
+void SceneManager::UpdateFade()
+{
+	if (NowFade == Fade_out)
+	{
+		FadeAlpha += 0.05f;
+
+		if (FadeAlpha >= 1.0f)
+		{
+
+			FadeAlpha += 1.0f;
+			ChangeScene(m_nextSceneType);
+
+			NowFade = FadeType::Fade_in;
+		}
+
+	}
+	else if (NowFade == Fade_in)
+	{
+		FadeAlpha -= 0.05f;
+
+		if (FadeAlpha <= 0.0f)
+		{
+			FadeAlpha = 0.0f;
+			NowFade = FadeType::Fade_no;
+		}
+	}
+}
+
 
 void SceneManager::Draw()
 {
 	m_CurrentScene->Draw();
+
+	SHADER.m_spriteShader.SetMatrix(m_mat);
+	SHADER.m_spriteShader.DrawTex(&BrackTex, Math::Rectangle{ 0,0,1280,720 }, FadeAlpha);
 }
 
 void SceneManager::Init()
 {
 	ChangeScene(m_CurrentSceneType);
+	BrackTex.Load("Texture/UI/Fade.png");
 }
 
 void SceneManager::Release()
@@ -50,4 +83,6 @@ void SceneManager::ChangeScene(SceneType _sceneType)
 	}
 	//②フラグを更新
 	m_CurrentSceneType = _sceneType;
+
+	m_CurrentScene->Init();
 }
