@@ -24,9 +24,13 @@ void C_Player::Draw()
 			SHADER.m_spriteShader.DrawTex(m_BulletLineTex, { 0,0,2560,16 }, m_LineBlinking);
 		}
 	}
-	SHADER.m_spriteShader.SetMatrix(m_PlayerMat);
-	SHADER.m_spriteShader.DrawTex(m_PlayerTex, { 0,0,64,64 }, 1.0f);
-	
+	switch (m_CharaStatus.m_AnimStatus)
+	{
+	case Idle:
+		SHADER.m_spriteShader.SetMatrix(m_PlayerMat);
+		SHADER.m_spriteShader.DrawTex(m_PlayerIdleTex, { 0,CharaHeight * (int)CharaAnimCnt,CharaWidth,CharaHeight }, 1.0f);
+		break;
+	}
 	int HpBerCnt;
 
 	//HPˆ—
@@ -56,6 +60,16 @@ void C_Player::Draw()
 
 void C_Player::Update()
 {
+	switch (m_CharaStatus.m_AnimStatus)
+	{
+	case Idle:
+		CharaAnimCnt += 0.1f;
+		if (CharaAnimCnt > 6.0f)
+		{
+			CharaAnimCnt = 0.0f;
+		}
+		break;
+	}
 	if (m_CharaStatus.m_DamageFlg)
 	{
 		m_CharaStatus.m_BreakHp -= 1;
@@ -88,12 +102,13 @@ void C_Player::Update()
 			if (GetAsyncKeyState(VK_SPACE) & 0x8000)
 			{
 				m_Bullet.push_back(std::make_shared<C_PlayerBullet>());
-				for (int i = 0; i < m_Bullet.size(); i++)
+				for (auto& i : m_Bullet)
 				{
-					if (!m_Bullet[i]->GetAlive())
+					if (!i->GetAlive())
 					{
-						m_Bullet[i]->SetTex(&m_BulletTex);
-						m_Bullet[i]->Shot(m_CharaStatus.Pos, MousePos);
+						i->SetPlayerSkill(PlayerSkillBase);
+						i->SetTex(&m_BulletTex);
+						i->Shot(m_CharaStatus.Pos, MousePos);
 						m_ShotFlg = true;
 						break;
 					}
@@ -108,15 +123,20 @@ void C_Player::Update()
 		}
 		else
 		{
-			for (int i = 0; i < m_Bullet.size(); i++)
+			m_Bullet.erase(
+				std::remove_if(
+					m_Bullet.begin(),
+					m_Bullet.end(),
+					[](const std::shared_ptr<C_PlayerBullet>& e) {
+						return!(e->GetAlive());  // © GetAlive ‚ª false ‚Ì’e‚¾‚¯Á‚·
+					}
+				),
+				m_Bullet.end()
+			);
+			if (m_Bullet.size() == 0)
 			{
-				if (m_Bullet[i]->GetAlive())
-				{
-					break;
-				}
 				m_ShotFlg = false;
 				C_Turn::GetInstance().SetNextTurn(C_Turn::Enemy);
-
 			}
 		}
 		if (m_CharaStatus.Pos.y > 360 - 32)
@@ -134,17 +154,20 @@ void C_Player::Update()
 	m_HpMat = Math::Matrix::CreateTranslation(m_CharaStatus.Pos.x - ((int)(66 * (((m_CharaStatus.m_MaxHp - m_CharaStatus.m_Hp) / 2) / m_CharaStatus.m_MaxHp))), m_CharaStatus.Pos.y + m_CharaStatus.HpAddPos.y, 0);
 	m_HpBackMat = Math::Matrix::CreateTranslation(m_CharaStatus.Pos.x, m_CharaStatus.Pos.y + m_CharaStatus.HpAddPos.y, 0);
 	m_HpBreakMat = Math::Matrix::CreateTranslation(m_CharaStatus.Pos.x - ((int)(66 * (((m_CharaStatus.m_MaxHp - m_CharaStatus.m_BreakHp) / 2) / m_CharaStatus.m_MaxHp))), m_CharaStatus.Pos.y + m_CharaStatus.HpAddPos.y, 0);
-	m_PlayerMat = Math::Matrix::CreateTranslation(m_CharaStatus.Pos.x, m_CharaStatus.Pos.y, 0);
+	m_PlayerScaleMat = Math::Matrix::CreateScale(2, 2, 1);
+	m_PlayerMat = m_PlayerScaleMat * Math::Matrix::CreateTranslation(m_CharaStatus.Pos.x, m_CharaStatus.Pos.y, 0);
 	
-	for (int i = 0; i < m_Bullet.size(); i++)
+	for (auto& i : m_Bullet)
 	{
-		m_Bullet[i]->Update();
+		i->Update();
 	}
 
 }
 
 void C_Player::Init()
 {
+	m_CharaStatus.m_Alive = true;
+	m_CharaStatus.m_AnimStatus = Idle;
 	m_CharaStatus.Pos.x = -500;
 	m_CharaStatus.Pos.y = 0;
 	m_ShotFlg = false;
@@ -153,8 +176,8 @@ void C_Player::Init()
 	m_CharaStatus.m_Hp = 100;
 	m_CharaStatus.m_MaxHp = m_CharaStatus.m_Hp;
 	m_CharaStatus.m_BreakHp = m_CharaStatus.m_Hp;
-	m_CharaStatus.m_Atk = 50;
-		
+	m_CharaStatus.m_Atk = 30;
+	PlayerSkillBase.m_BulletBoundFlg = 5;
 		
 	
 }
@@ -164,7 +187,7 @@ void C_Player::SetTex(KdTexture* playertex,
 	KdTexture* hpbarbraektex, KdTexture* hpbarbacktex)
 {
 	m_BulletTex.Load("Texture/Player/bullet.png");
-	m_PlayerTex = playertex;
+	m_PlayerIdleTex = playertex;
 	m_BulletLineTex = bulletlinetex;
 	m_HpTex = hpbartex;
 	m_HpBreakTex = hpbarbraektex;
@@ -188,6 +211,42 @@ void C_Player::HitBulletEnemy()
 					if (m_Bullet[j]->HIT(e->GetPos(), e->GetRadius()))
 					{
 						e->HitDamege(m_CharaStatus.m_Atk);
+						if (m_Bullet[j]->GetPlayerSkill()->m_BulletBoundFlg > 0)
+						{
+							m_Bullet.push_back(std::make_shared<C_PlayerBullet>());
+							m_Bullet[j]->GetPlayerSkill()->m_BulletBoundFlg--;
+							for (auto& i : m_Bullet)
+							{
+								if (!i->GetAlive())
+								{
+									i->SetPlayerSkill(*m_Bullet[j]->GetPlayerSkill());
+									i->SetTex(&m_BulletTex);
+									float minDistSq = FLT_MAX;
+									std::shared_ptr<C_EnemyBase> nearest = nullptr;
+									for (auto& r : EnemyChara) {
+										if (r->GetAlive()&&e!=r)
+										{
+											Math::Vector2 diff = r->GetPos() - e->GetPos();
+											float distSq = diff.x * diff.x + diff.y * diff.y;
+
+											if (distSq < minDistSq)
+											{
+												minDistSq = distSq;
+												nearest = r;
+											}
+											
+										}
+
+									}
+									if (nearest != nullptr)
+									{
+										i->Shot(e->GetPos(), nearest->GetPos());
+									}
+									break;
+								}
+							}
+						}
+						
 						
 					
 						return;
@@ -201,7 +260,3 @@ void C_Player::HitBulletEnemy()
 }
 
 
-void C_Player::SetHitSkill()
-{
-	PlayerSkill = PlayerSkillBase;
-}

@@ -2,6 +2,10 @@
 
 class C_Enemy;
 
+class C_EnemyBullet;
+
+class C_GameScene;
+
 class C_EnemyBase
 {
 public:
@@ -10,6 +14,8 @@ public:
 		MCNull,
 		Attack,
 		Beam,
+		Beam3,
+		Beam5,
 		Shield,
 		Heel
 	};
@@ -45,7 +51,8 @@ public:
 		int m_Heal = 0;
 
 		int EnemyDrawSort;
-
+		float offset = 0.3f; // ç∂âEÇ…çLÇ∞ÇÈäpìx
+		
 	};
 
 	
@@ -56,9 +63,9 @@ public:
 	void PreInit();
 	void Update();
 	void Draw();
-	void SetTex(KdTexture* enemytex,KdTexture* hpbartex, KdTexture* hpbarbraektex, KdTexture* hpbarbacktex
-				,KdTexture* attacktex, KdTexture* beamtex,KdTexture* numbertex,KdTexture* bulletlinetex);
-
+	void SetTex(KdTexture* enemytex, KdTexture* hpbartex, KdTexture* hpbarbraektex, KdTexture* hpbarbacktex
+		, KdTexture* attacktex, KdTexture* beamtex, KdTexture* numbertex, KdTexture* bulletlinetex
+		, KdTexture* bullettex);
 	virtual void Move()=0;
 
 	bool GetMoveFlg() { return m_EnemyStatus.m_MoveFlg; }
@@ -66,18 +73,36 @@ public:
 
 	bool GetAlive() { return m_EnemyStatus.m_Alive; }
 	Math::Vector2 GetPos() { return m_EnemyStatus.m_Pos; }
-	void SetAlive() { m_EnemyStatus.m_Alive = false; }
+	void SetAlive();
 	int  GetRadius() { return m_EnemyStatus.m_Radius; }
 
 	void HitDamege(int a_Damaege) {
 		m_EnemyStatus.m_DamageFlg = true;
 		m_EnemyStatus.m_Hp -= a_Damaege;
+		if (m_EnemyStatus.m_Hp <= 0)
+		{
+			m_EnemyStatus.m_Alive = false;
+		}
 	}
+
+	void BulletTotalMainer() { m_BulletTotal--; }
 
 	void ShotBeam();
 
+	void ShootWay(int a_way);
+
+	Math::Vector2 Rotate(Math::Vector2& v, float angle);
+
+	void BulletHitPlayer();
+
 	void Setowner(C_Enemy* owner) { m_owner = owner; }
 
+	void SetAttackFlg() {
+		m_EnemyStatus.m_MoveFlg = false;
+		m_EnemyStatus.m_ShotFlg = false;
+	}
+
+	virtual void SetAttackCmd() = 0;
 protected:
 
 	
@@ -97,10 +122,20 @@ protected:
 	KdTexture* m_BeamIconTex;
 	Math::Matrix m_IconMat;
 
+	KdTexture* m_BulletTex;
+	Math::Matrix m_BulletMat;
 	KdTexture* m_BulletLineTex;
-	Math::Matrix m_LineMat;
+	Math::Matrix m_Line1Mat;
+	Math::Matrix m_Line2Mat;
+	Math::Matrix m_Line3Mat;
+	Math::Matrix m_Line4Mat;
+	Math::Matrix m_Line5Mat;
 	float m_LineBlinking;
 	float m_LineBlinkingAdd;
+	Math::Vector2 m_Vec;
+	std::vector<std::shared_ptr<C_EnemyBullet>> m_EnemyBullet;
+
+	int m_BulletTotal = 0;
 
 	KdTexture* m_NumberTex;
 	Math::Matrix m_IconScaleMat;

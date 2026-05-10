@@ -13,6 +13,8 @@ void C_Enemy::Draw()
 
 void C_Enemy::Update()
 {
+	TotalEnemyMove = 0;
+	TotalEnemy = m_EnemyChara.size();
 	for (const auto& e : m_EnemyChara) {
 		e->Update();
 	}
@@ -29,27 +31,36 @@ void C_Enemy::Update()
 	if (C_Turn::GetInstance().GetNowTurn() == C_Turn::Enemy)
 	{
 		for (const auto& e : m_EnemyChara) {
-			if (!e->GetMoveFlg())
+			if (e->GetMoveFlg())
 			{
-				break;
+				TotalEnemyMove++;
 			}
-			for (const auto& e : m_EnemyChara) {
-				e->SetMoveFlg(false);
-			}
-			C_Turn::GetInstance().SetNextTurn(C_Turn::Player);
+			
+			
 		}
+	}
+	if (TotalEnemyMove == TotalEnemy)
+	{
+		for (const auto& e : m_EnemyChara) {
+			e->SetAttackFlg();
+			e->SetAttackCmd();
+		}
+		C_Turn::GetInstance().SetNextTurn(C_Turn::Player);
 	}
 }
 
-void C_Enemy::Init()
+void C_Enemy::Init(int enemynum)
 {
-	for (int i = 0; i < 3 ; i++)
+	for (int i = 0; i < 5 ; i++)
 	{
 		m_EnemyChara.push_back(std::make_shared<C_Prism>());
 		m_EnemyChara[i]->Setowner(this);
 		m_EnemyChara[i]->PreInit();
 		m_EnemyChara[i]->Init();
-		m_EnemyChara[i]->SetTex(m_EnemyTex, m_HpTex, m_HpBreakTex, m_HpBackTex,m_AttackIconTex, m_BeamIconTex,m_NumberTex,m_BulletLineTex);
+		m_EnemyChara[i]->SetTex(m_EnemyTex, m_HpTex, m_HpBreakTex, m_HpBackTex,
+			m_AttackIconTex, m_BeamIconTex,m_NumberTex,m_BulletLineTex
+		,m_BulletTex);
+		TotalEnemy++;
 	}	
 	std::sort(m_EnemyChara.begin(), m_EnemyChara.end(),
 		[](const std::shared_ptr<C_EnemyBase>& a, const std::shared_ptr<C_EnemyBase>& b) {
@@ -61,7 +72,8 @@ void C_Enemy::Init()
 }
 
 void C_Enemy::GiftTex(KdTexture* enemytex, KdTexture* hpbartex, KdTexture* hpbarbraektex, KdTexture* hpbarbacktex
-	, KdTexture* attacktex, KdTexture* beamtex, KdTexture* numbertex, KdTexture* bulletlinetex)
+	, KdTexture* attacktex, KdTexture* beamtex, KdTexture* numbertex, KdTexture* bulletlinetex
+	, KdTexture* bullettex)
 {
 	m_EnemyTex = enemytex;
 	m_HpTex = hpbartex;
@@ -70,5 +82,6 @@ void C_Enemy::GiftTex(KdTexture* enemytex, KdTexture* hpbartex, KdTexture* hpbar
 	m_AttackIconTex = attacktex;
 	m_BeamIconTex = beamtex;
 	m_NumberTex = numbertex;
+	m_BulletTex = bullettex;
 	m_BulletLineTex = bulletlinetex;
 }

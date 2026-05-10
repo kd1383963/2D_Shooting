@@ -1,9 +1,17 @@
 #pragma once
-//#include"PlayerBullet.h"
 
+#include "PlayerSkill.h"
 class C_GameScene;
 
 class C_PlayerBullet;
+
+enum AnimStatus
+{
+	Idle,
+	Move,
+	Atk,
+	Dead,
+};
 
 struct Status
 {
@@ -15,7 +23,7 @@ struct Status
 	int		m_Atk;
 	float alpha = 1.0f;
 
-
+	AnimStatus m_AnimStatus;
 	Math::Vector2 Pos;
 	Math::Vector2 HpAddPos = {0,42};
 	Math::Vector2 Anim;
@@ -27,11 +35,6 @@ struct Status
 	int Heal = 0;
 };
 
-struct SkillFlg
-{
-	int m_BulletBoundFlg;
-
-};
 
 class C_Player
 {
@@ -57,10 +60,13 @@ public:
 
 	void HitBulletEnemy();
 
-	void SetHitSkill();
+	
 
+	
 
-
+	bool GetAlive()  { return m_CharaStatus.m_Alive; }
+	int  GetWidth()  { return CharaWidth; }
+	int  GetHegiht() { return CharaHeight; }
 
 	void Setowner(C_GameScene* owner) { m_owner = owner; }
 private:
@@ -71,12 +77,17 @@ private:
 
 	const float m_Radius = 32;
 
-	KdTexture* m_PlayerTex;
+	int CharaWidth = 32;
+	int CharaHeight = 48;
+
+	float CharaAnimCnt;
+	KdTexture* m_PlayerIdleTex;
 	KdTexture* m_BulletLineTex;
 	KdTexture* m_HpTex;
 	KdTexture* m_HpBackTex;
 	KdTexture* m_HpBreakTex;
 	
+	Math::Matrix m_PlayerScaleMat;
 	Math::Matrix m_PlayerMat;
 	Math::Matrix m_LineMat;
 	Math::Matrix m_HpMat;
@@ -89,7 +100,7 @@ private:
 	float m_LineBlinkingAdd;
 
 	
-	SkillFlg PlayerSkill;
+	
 	SkillFlg PlayerSkillBase;
 
 

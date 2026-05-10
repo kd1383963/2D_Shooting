@@ -1,5 +1,5 @@
 #include "Turn.h"
-
+#include "../../Enemy/Enemy.h"
 
 void C_Turn::Init()
 {

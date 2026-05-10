@@ -159,8 +159,10 @@
     <ClInclude Include="..\Library\tinygltf\stb_image.h" />
     <ClInclude Include="..\Library\tinygltf\stb_image_write.h" />
     <ClInclude Include="..\Library\tinygltf\tiny_gltf.h" />
+    <ClInclude Include="PlayerSkill.h" />
     <ClInclude Include="Src\Application\Enemy\Enemy.h" />
     <ClInclude Include="Src\Application\Enemy\EnemyBase.h" />
+    <ClInclude Include="Src\Application\Enemy\EnemyBullet.h" />
     <ClInclude Include="Src\Application\Enemy\Prism\Prism.h" />
     <ClInclude Include="Src\Application\Mouse.h" />
     <ClInclude Include="Src\Application\Player\Player.h" />
@@ -203,6 +205,7 @@
     <ClCompile Include="..\Library\imgui\imgui_widgets.cpp" />
     <ClCompile Include="Src\Application\Enemy\Enemy.cpp" />
     <ClCompile Include="Src\Application\Enemy\EnemyBase.cpp" />
+    <ClCompile Include="Src\Application\Enemy\EnemyBullet.cpp" />
     <ClCompile Include="Src\Application\Enemy\Prism\Prism.cpp" />
     <ClCompile Include="Src\Application\Mouse.cpp" />
     <ClCompile Include="Src\Application\Player\Player.cpp" />

@@ -22,7 +22,7 @@ void C_GameScene::Init()
 
 	C_Player::GetInstance().Init();
 
-	m_Enemy->Init();
+	m_Enemy->Init(5);
 
 	
 
@@ -57,7 +57,7 @@ void C_GameScene::Draw()
 
 void C_GameScene::TexLoad()
 {
-	m_PlayerTex.Load("Texture/Player/Player.png");
+	m_PlayerTex.Load("Texture/Player/B_witch_idle.bmp");
 	m_PlayerBulletLineTex.Load("Texture/Player/Line.png");
 	m_HpTex.Load("Texture/UI/Hp.png");
 	m_HpBackTex.Load("Texture/UI/Hpback.png");
@@ -68,9 +68,10 @@ void C_GameScene::TexLoad()
 	m_BeamIconTex.Load("Texture/UI/BeamIcon.png");
 	m_NumberTex.Load("Texture/UI/DNumber.png");
 	m_EnemyBulletLineTex.Load("Texture/Enemy/Line.png");
+	m_EnemyBulletTex.Load("Texture/Enemy/EnemyBullet.png");
 
 	m_Enemy->GiftTex(&m_EnemyTex,&m_HpTex, &m_HpBreakTex, &m_HpBackTex,&m_AttackIconTex, 
-		&m_BeamIconTex ,&m_NumberTex,&m_EnemyBulletLineTex);
+		&m_BeamIconTex ,&m_NumberTex,&m_EnemyBulletLineTex,&m_EnemyBulletTex);
 	
 
 }

@@ -213,6 +213,12 @@
     <ClInclude Include="Src\Application\Enemy\Prism\Prism.h">
       <Filter>Src\Application\Enemy\Prism</Filter>
     </ClInclude>
+    <ClInclude Include="Src\Application\Enemy\EnemyBullet.h">
+      <Filter>Src\Application\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerSkill.h">
+      <Filter>Src\Application\Player</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Pch.cpp">
@@ -328,6 +334,9 @@
     </ClCompile>
     <ClCompile Include="Src\Application\Enemy\Prism\Prism.cpp">
       <Filter>Src\Application\Enemy\Prism</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Enemy\EnemyBullet.cpp">
+      <Filter>Src\Application\Enemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -37,6 +37,7 @@ private:
 	KdTexture m_BeamIconTex;
 	KdTexture m_NumberTex;
 	KdTexture m_EnemyBulletLineTex;
+	KdTexture m_EnemyBulletTex;
 	
 	std::shared_ptr<C_Enemy> m_Enemy=nullptr;
 	

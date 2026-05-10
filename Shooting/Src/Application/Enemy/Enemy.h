@@ -11,19 +11,21 @@ public:
 	C_Enemy(){ }
 	~C_Enemy(){}
 
-	void Init();
+	void Init(int enemynum);
 	void Update();
 	void Draw();
 
 	void GiftTex(KdTexture* enemytex, KdTexture* hpbartex, KdTexture* hpbarbraektex, KdTexture* hpbarbacktex
-		, KdTexture* attacktex, KdTexture* beamtex, KdTexture* numbertex, KdTexture* bulletlinetex);
+		, KdTexture* attacktex, KdTexture* beamtex, KdTexture* numbertex, KdTexture* bulletlinetex
+		, KdTexture* bullettex);
 	std::vector<std::shared_ptr<C_EnemyBase>> GetEnemyChara() { return m_EnemyChara; }
 	
-	
+	void TotalEnemyMainer() { TotalEnemy--; }
 
 private:
 
-	
+	int TotalEnemy = 0;
+	int TotalEnemyMove = 0;
 
 	std::vector<std::shared_ptr<C_EnemyBase>> m_EnemyChara = {};
 
@@ -35,6 +37,7 @@ private:
 	KdTexture* m_AttackIconTex;
 	KdTexture* m_BeamIconTex;
 	KdTexture* m_NumberTex;
+	KdTexture* m_BulletTex;
 	KdTexture* m_BulletLineTex;
 };
 

@@ -10,10 +10,16 @@ void C_Prism::Move()
 	case Attack:
 		C_Player::GetInstance().HitDamege(m_EnemyStatus.m_Atk);
 		m_EnemyStatus.m_MoveFlg = true;
+		m_EnemyStatus.m_ShotFlg = true;
 		break;
 	case Beam:
-		m_EnemyStatus.m_ShotFlg = true;
-		ShotBeam();
+		if (!m_EnemyStatus.m_ShotFlg)ShotBeam();
+		break;
+	case Beam3:
+		if (!m_EnemyStatus.m_ShotFlg)ShootWay(3);
+		break;
+	case Beam5:
+		if (!m_EnemyStatus.m_ShotFlg)ShootWay(5);
 		break;
 	}
 }
@@ -43,19 +49,36 @@ void C_Prism::Init()
 	m_EnemyStatus.m_MaxHp = m_EnemyStatus.m_Hp;
 	m_EnemyStatus.m_BreakHp = m_EnemyStatus.m_Hp ;
 	m_EnemyStatus.m_Atk = 10;
-	if (rand() % 2 == 0)
-	{
-		m_EnemyStatus.m_MoveCmd = Attack;
-		m_EnemyStatus.AttackDamage = m_EnemyStatus.m_Atk;
-	}
-	else
-	{
-		m_EnemyStatus.m_MoveCmd = Beam;
-		m_EnemyStatus.AttackDamage = m_EnemyStatus.m_Atk * 2;
-	}
+	SetAttackCmd();
 	m_EnemyStatus.m_Alive = true;
 	m_EnemyStatus.m_MoveFlg = false;
 	m_EnemyStatus.m_HpAddPos = { 0,-42 };
 	m_EnemyStatus.m_IconAddPos = { 0,47 };
 	
+}
+
+void C_Prism::SetAttackCmd()
+{
+	int Rand = rand() % 100;
+	if (Rand < 30)
+	{
+		m_EnemyStatus.m_MoveCmd = Attack;
+		m_EnemyStatus.AttackDamage = m_EnemyStatus.m_Atk;
+	}
+	else if (Rand < 60)
+	{
+		m_Vec = m_EnemyStatus.m_Pos - C_Player::GetInstance().GetPos();
+		m_EnemyStatus.m_MoveCmd = Beam;
+		m_EnemyStatus.AttackDamage = m_EnemyStatus.m_Atk * 2;
+	}
+	else if (Rand < 80)
+	{
+		m_EnemyStatus.m_MoveCmd = Beam3;
+		m_EnemyStatus.AttackDamage = m_EnemyStatus.m_Atk * 2;
+	}
+	else
+	{
+		m_EnemyStatus.m_MoveCmd = Beam5;
+		m_EnemyStatus.AttackDamage = m_EnemyStatus.m_Atk * 2;
+	}
 }

@@ -39,6 +39,12 @@ public:
 		NowFade = FadeType::Fade_out;
 	}
 
+	void DrawEndBegin()
+	{
+		SHADER.m_spriteShader.End();
+		SHADER.m_spriteShader.Begin();
+	}
+
 	// Œ»İ‚ÌƒV[ƒ“‚ğæ“¾‚·‚éŠÖ”
 	SceneType GetCurrentScene() const
 	{

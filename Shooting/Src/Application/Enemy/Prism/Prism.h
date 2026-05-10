@@ -15,6 +15,8 @@ public:
 
 	void Init()override;
 
+	void SetAttackCmd()override;
+
 private:
 
 
