@@ -9,18 +9,19 @@ void C_PlayerBullet::Draw()
 	SHADER.m_spriteShader.DrawTex(m_Tex, Math::Rectangle{ 0,0,18,18 }, 1.0f);
 }
 
-void C_PlayerBullet::Shot(Math::Vector2 pos1, Math::Vector2 pos2)
+void C_PlayerBullet::Shot(Math::Vector2 pos1, Math::Vector2 vec1)
 {
 	ignoreFrames = 10;
 	m_Pos = pos1;
 	m_Alive = true;
-	vec = pos1 - pos2;
+	vec = -vec1 ;
 	vec.Normalize();
 }
 
-void C_PlayerBullet::MoreShot(Math::Vector2 vec1)
+void C_PlayerBullet::MoreShot(Math::Vector2 pos1,Math::Vector2 vec1)
 {
 	ignoreFrames = 10;
+	m_Pos = pos1;
 	m_Alive = true;
 	vec = vec1;
 	vec.Normalize();
@@ -38,11 +39,45 @@ void C_PlayerBullet::Update()
 
 	//if(SCENEMANAGER.)
 
-	if (m_Pos.x > 640 + m_Radius || m_Pos.x < -640 - m_Radius
-		|| m_Pos.y>360 + m_Radius || m_Pos.y < -360 - m_Radius)
+	bool bounced = false;
+
+	// ¶‰E‚Ì•Ç
+	if (m_Pos.x - m_Radius < -640.0f)
 	{
-		m_Alive = false;
-		
+		m_Pos.x = m_Radius - 640.0f;      // ‚ß‚è‚İ•â³
+		vec.x = -vec.x;        // X‘¬“x”½“]
+		bounced = true;
+	}
+	else if (m_Pos.x + m_Radius > 640.0f)
+	{
+		m_Pos.x = 640.0f - m_Radius;
+		vec.x = -vec.x;
+		bounced = true;
+	}
+
+	// ã‰º‚Ì•Ç
+	if (m_Pos.y - m_Radius < -360.0f)
+	{
+		m_Pos.y = m_Radius - 360.0f;
+		vec.y = -vec.y;        // Y‘¬“x”½“]
+		bounced = true;
+	}
+	else if (m_Pos.y + m_Radius > 360.0f)
+	{
+		m_Pos.y = 360.0f - m_Radius;
+		vec.y = -vec.y;
+		bounced = true;
+	}
+
+	// ”½Ë‚µ‚½‚ç‰ñ”‚ğŒ¸‚ç‚·
+	if (bounced)
+	{
+		PlayerSkill.WallbounceLeft--;
+
+		if (PlayerSkill.WallbounceLeft < 0)
+		{
+			m_Alive = false; // ‚±‚êˆÈã”½Ë‚Å‚«‚È‚¢‚Ì‚ÅÁ‚·
+		}
 	}
 
 	m_Mat = Math::Matrix::CreateTranslation(m_Pos.x, m_Pos.y, 1);

@@ -27,9 +27,16 @@ private:
 
 	
 
-	KdTexture m_PlayerTex;
+	KdTexture m_PlayerIdleTex;
+	KdTexture m_PlayerMoveTex;
+	KdTexture m_PlayerAtkTex;
+	KdTexture m_PlayerHurtTex;
+	KdTexture m_PlayerDeadTex;
 	KdTexture m_PlayerBulletLineTex;
-	KdTexture m_EnemyTex;
+	KdTexture m_EnemyIdleTex;
+	KdTexture m_EnemyAtkTex;
+	KdTexture m_EnemyHurtTex;
+	KdTexture m_EnemyDeadTex;
 	KdTexture m_HpTex;
 	KdTexture m_HpBackTex;
 	KdTexture m_HpBreakTex;

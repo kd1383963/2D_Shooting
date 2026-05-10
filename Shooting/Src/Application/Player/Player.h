@@ -10,6 +10,7 @@ enum AnimStatus
 	Idle,
 	Move,
 	Atk,
+	Hurt,
 	Dead,
 };
 
@@ -29,10 +30,14 @@ struct Status
 	Math::Vector2 Anim;
 	bool MoveFlg;
 
+	bool m_AtkFlg = false;
+
 	bool m_DamageFlg = false;
 	int Damage = 0;
 	bool m_HealFlg = false;
 	int Heal = 0;
+
+	float offset = 0.3f; // ç∂âEÇ…çLÇ∞ÇÈäpìx
 };
 
 
@@ -46,7 +51,8 @@ public:
 	void Init();
 	void Update();
 	void Draw();
-	void SetTex(KdTexture* playertex,KdTexture* bulletlinetex,
+	void SetTex(KdTexture* playeridletex, KdTexture* playermovetex, KdTexture* playeratktex, 
+		KdTexture* playerhurttex, KdTexture* playerdeadtex, KdTexture* bulletlinetex,
 		KdTexture* hpbartex, KdTexture* hpbarbraektex, KdTexture* hpbarbacktex);
 
 	void SetShotFlg(bool a_flg) { m_ShotFlg = a_flg; }
@@ -54,6 +60,7 @@ public:
 	void HitDamege(int a_Damaege) {
 		m_CharaStatus.m_DamageFlg = true;
 		m_CharaStatus.m_Hp -= a_Damaege;
+		SetEAnimStatus(Hurt);
 	}
 
 	Math::Vector2 GetPos() { return m_CharaStatus.Pos; }
@@ -61,12 +68,32 @@ public:
 	void HitBulletEnemy();
 
 	
-
+	Math::Vector2 Rotate(Math::Vector2& v, float angle);
 	
 
 	bool GetAlive()  { return m_CharaStatus.m_Alive; }
 	int  GetWidth()  { return CharaWidth; }
 	int  GetHegiht() { return CharaHeight; }
+
+	void SetEAnimStatus(AnimStatus a_status) {
+		m_CharaStatus.m_AnimStatus = a_status;
+		switch (m_CharaStatus.m_AnimStatus)
+		{
+		case Idle:
+		case Move:
+		case Hurt:
+		case Dead:
+			CharaWidth = 32;
+			CharaHeight = 48;
+			break;
+		case Atk:
+			CharaWidth = 32;
+			CharaHeight = 46;
+			break;
+
+		}
+		CharaAnimCnt = 0.0f;
+	}
 
 	void Setowner(C_GameScene* owner) { m_owner = owner; }
 private:
@@ -82,6 +109,10 @@ private:
 
 	float CharaAnimCnt;
 	KdTexture* m_PlayerIdleTex;
+	KdTexture* m_PlayerMoveTex;
+	KdTexture* m_PlayerAtkTex;
+	KdTexture* m_PlayerHurtTex;
+	KdTexture* m_PlayerDeadTex;
 	KdTexture* m_BulletLineTex;
 	KdTexture* m_HpTex;
 	KdTexture* m_HpBackTex;
@@ -89,7 +120,11 @@ private:
 	
 	Math::Matrix m_PlayerScaleMat;
 	Math::Matrix m_PlayerMat;
-	Math::Matrix m_LineMat;
+	Math::Matrix m_Line1Mat;
+	Math::Matrix m_Line2Mat;
+	Math::Matrix m_Line3Mat;
+	Math::Matrix m_Line4Mat;
+	Math::Matrix m_Line5Mat;
 	Math::Matrix m_HpMat;
 	Math::Matrix m_HpBackMat;
 	Math::Matrix m_HpBreakMat;

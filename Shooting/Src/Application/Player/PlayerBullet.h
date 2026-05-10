@@ -14,7 +14,7 @@ public:
 
 	void Shot(Math::Vector2 pos1, Math::Vector2 pos2);
 
-	void MoreShot(Math::Vector2 vec);
+	void MoreShot(Math::Vector2 pos1,Math::Vector2 vec);
 
 	void SetTex(KdTexture* tex);
 

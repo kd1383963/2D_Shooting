@@ -29,6 +29,6 @@ void C_TitleScene::Update()
 void C_TitleScene::Draw()
 {
 	SHADER.m_spriteShader.SetMatrix(Math::Matrix::Identity);
-	SHADER.m_spriteShader.DrawString(0, 0, "‚ ˆŸƒA", { 0,0,0,1.0f });
+	SHADER.m_spriteShader.DrawString(0, 0, "ŠX‚ğç‚êI–‚•¨‘Ş¡‘åìíI", { 0,0,0,1.0f });
 	SCENEMANAGER.DrawEndBegin();
 }

@@ -7,9 +7,24 @@
 
 void C_EnemyBase::Draw()
 {
-	if (!m_EnemyStatus.m_Alive)return;
+	if (m_EnemyStatus.m_DeadFlg)return;
 	SHADER.m_spriteShader.SetMatrix(m_EnemyMat);
-	SHADER.m_spriteShader.DrawTex(m_EnemyTex, { 0,0,64,64 }, 1.0f);
+	switch (m_EnemyStatus.m_EAnimStatus)
+	{
+		case EIdle:
+			SHADER.m_spriteShader.DrawTex(m_EnemyIdleTex, { CharaWidth * (int)CharaAnimCnt,0,CharaWidth,CharaHeight }, 1.0f);
+			break;
+		case EAtk:
+			SHADER.m_spriteShader.DrawTex(m_EnemyAtkTex, { CharaWidth * (int)CharaAnimCnt,0,CharaWidth,CharaHeight }, 1.0f);
+			break;
+		case EHurt:
+			SHADER.m_spriteShader.DrawTex(m_EnemyHurtTex, { CharaWidth * (int)CharaAnimCnt,0,CharaWidth,CharaHeight }, 1.0f);
+			break;
+		case EDead:
+			SHADER.m_spriteShader.DrawTex(m_EnemyDeadTex, { CharaWidth * (int)CharaAnimCnt,0,CharaWidth,CharaHeight }, 1.0f);
+			break;
+	}
+	
 
 	int HpBerCnt;
 
@@ -121,7 +136,7 @@ void C_EnemyBase::ShootWay(int a_way)
 			if (!i->GetAlive())
 			{
 				i->SetTex(m_BulletTex);
-				i->Shot(m_EnemyStatus.m_Pos, Rotate(forward, +m_EnemyStatus.offset));
+				i->Shot(m_EnemyStatus.m_Pos, Rotate(forward, +m_EnemyStatus.offset*2 ));
 				break;
 			}
 		}
@@ -205,7 +220,43 @@ void C_EnemyBase::PreInit()
 
 void C_EnemyBase::Update()
 {
-	if (!m_EnemyStatus.m_Alive)return;
+	if (m_EnemyStatus.m_DeadFlg)return;
+
+	switch (m_EnemyStatus.m_EAnimStatus)
+	{
+	case EIdle:
+		CharaAnimCnt += 0.1f;
+		if (CharaAnimCnt > 4.0f)
+		{
+			CharaAnimCnt = 0.0f;
+		}
+		break;
+	case EAtk:
+		CharaAnimCnt += 0.1f;
+		if (CharaAnimCnt > 8.0f)
+		{
+			CharaAnimCnt = 0.0f;
+			m_EnemyStatus.AtkFlg = true;
+		}
+		break;
+	case EHurt:
+		CharaAnimCnt += 0.1f;
+		if (CharaAnimCnt > 4.0f)
+		{
+			CharaAnimCnt = 0.0f;
+			SetEAnimStatus(EIdle);
+		}
+		break;
+	case EDead:
+		CharaAnimCnt += 0.1f;
+		if (CharaAnimCnt > 7.0f)
+		{
+			CharaAnimCnt = 0.0f;
+			m_EnemyStatus.m_DeadFlg = true;;
+		}
+		break;
+
+	}
 
 	if (m_EnemyStatus.m_DamageFlg)
 	{
@@ -220,7 +271,16 @@ void C_EnemyBase::Update()
 
 	if (C_Turn::GetInstance().GetNowTurn() == C_Turn::Enemy && !m_EnemyStatus.m_ShotFlg)
 	{
-		Move();
+		if (m_EnemyStatus.m_EAnimStatus == EIdle)
+		{
+			SetEAnimStatus(EAtk);
+		}
+		if (m_EnemyStatus.AtkFlg)
+		{
+			Move();
+			SetEAnimStatus(EIdle);
+			
+		}
 	}
 	Math::Vector2 vec(cosf(0), sinf(0));
 	float angle = atan2(vec.y, vec.x);
@@ -253,7 +313,7 @@ void C_EnemyBase::Update()
 		break;
 	}
 
-	if (m_EnemyStatus.m_ShotFlg)
+	if (m_EnemyStatus.m_ShotFlg&& m_EnemyStatus.AtkFlg)
 	{
 		for (auto& i : m_EnemyBullet)
 		{
@@ -274,6 +334,7 @@ void C_EnemyBase::Update()
 		if (m_EnemyBullet.size() == 0)
 		{
 			m_EnemyStatus.m_MoveFlg = true;
+			m_EnemyStatus.AtkFlg = false;
 		}
 	}
 	
@@ -303,11 +364,15 @@ void C_EnemyBase::SetAlive() {
 		
 }
 
-void C_EnemyBase::SetTex(KdTexture* enemytex, KdTexture* hpbartex, KdTexture* hpbarbraektex, KdTexture* hpbarbacktex
+void C_EnemyBase::SetTex(KdTexture* enemyidletex, KdTexture* enemyatktex, KdTexture* enemyhurttex, KdTexture* enemydeadtex,
+	KdTexture* hpbartex, KdTexture* hpbarbraektex, KdTexture* hpbarbacktex
 	, KdTexture* attacktex, KdTexture* beamtex, KdTexture* numbertex, KdTexture* bulletlinetex
 	, KdTexture* bullettex)
 {
-	m_EnemyTex = enemytex;
+	m_EnemyIdleTex = enemyidletex;
+	m_EnemyAtkTex = enemyatktex;
+	m_EnemyHurtTex = enemyhurttex;
+	m_EnemyDeadTex = enemydeadtex;
 	m_HpTex = hpbartex;
 	m_HpBreakTex = hpbarbraektex;
 	m_HpBackTex = hpbarbacktex;

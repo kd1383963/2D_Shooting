@@ -6,6 +6,14 @@ class C_EnemyBullet;
 
 class C_GameScene;
 
+enum EAnimStatus
+{
+	EIdle,
+	EAtk,
+	EHurt,
+	EDead,
+};
+
 class C_EnemyBase
 {
 public:
@@ -42,8 +50,12 @@ public:
 
 		bool m_PosInitOkFlg = true;
 
+		bool AtkFlg = false;
+
 		bool AttackDamageFlg = false;
 		int  AttackDamage = 0;
+
+		bool m_DeadFlg = false;
 
 		bool m_DamageFlg = false;
 		int m_Damage = 0;
@@ -52,7 +64,7 @@ public:
 
 		int EnemyDrawSort;
 		float offset = 0.3f; // ç∂âEÇ…çLÇ∞ÇÈäpìx
-		
+		EAnimStatus m_EAnimStatus;
 	};
 
 	
@@ -63,7 +75,8 @@ public:
 	void PreInit();
 	void Update();
 	void Draw();
-	void SetTex(KdTexture* enemytex, KdTexture* hpbartex, KdTexture* hpbarbraektex, KdTexture* hpbarbacktex
+	void SetTex(KdTexture* enemyidletex, KdTexture* enemyatktex, KdTexture* enemyhurttex, KdTexture* enemydeadtex,
+		KdTexture* hpbartex, KdTexture* hpbarbraektex, KdTexture* hpbarbacktex
 		, KdTexture* attacktex, KdTexture* beamtex, KdTexture* numbertex, KdTexture* bulletlinetex
 		, KdTexture* bullettex);
 	virtual void Move()=0;
@@ -72,6 +85,7 @@ public:
 	void SetMoveFlg(bool a_flg) { m_EnemyStatus.m_MoveFlg = a_flg; }
 
 	bool GetAlive() { return m_EnemyStatus.m_Alive; }
+	bool GetDead() { return m_EnemyStatus.m_DeadFlg; }
 	Math::Vector2 GetPos() { return m_EnemyStatus.m_Pos; }
 	void SetAlive();
 	int  GetRadius() { return m_EnemyStatus.m_Radius; }
@@ -79,11 +93,16 @@ public:
 	void HitDamege(int a_Damaege) {
 		m_EnemyStatus.m_DamageFlg = true;
 		m_EnemyStatus.m_Hp -= a_Damaege;
+		SetEAnimStatus(EHurt);
 		if (m_EnemyStatus.m_Hp <= 0)
 		{
 			m_EnemyStatus.m_Alive = false;
+			SetEAnimStatus(EDead);
 		}
 	}
+
+	void SetEAnimStatus(EAnimStatus a_status) { m_EnemyStatus.m_EAnimStatus = a_status;
+												CharaAnimCnt = 0.0f;}
 
 	void BulletTotalMainer() { m_BulletTotal--; }
 
@@ -105,11 +124,18 @@ public:
 	virtual void SetAttackCmd() = 0;
 protected:
 
+	int CharaWidth = 81;
+	int CharaHeight = 71;
+
+	float CharaAnimCnt;
 	
 	C_Enemy* m_owner;
 
 
-	KdTexture* m_EnemyTex;
+	KdTexture* m_EnemyIdleTex;
+	KdTexture* m_EnemyAtkTex;
+	KdTexture* m_EnemyHurtTex;
+	KdTexture* m_EnemyDeadTex;
 	Math::Matrix m_EnemyMat;
 	KdTexture* m_HpTex;
 	KdTexture* m_HpBackTex;
@@ -146,6 +172,6 @@ protected:
 
 	EnemyStatus m_EnemyStatus;
 
-
+	
 
 };

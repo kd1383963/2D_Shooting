@@ -15,7 +15,8 @@ public:
 	void Update();
 	void Draw();
 
-	void GiftTex(KdTexture* enemytex, KdTexture* hpbartex, KdTexture* hpbarbraektex, KdTexture* hpbarbacktex
+	void GiftTex(KdTexture* enemyidletex, KdTexture* enemyatktex, KdTexture* enemyhurttex, KdTexture* enemydeadtex,
+		KdTexture* hpbartex, KdTexture* hpbarbraektex, KdTexture* hpbarbacktex
 		, KdTexture* attacktex, KdTexture* beamtex, KdTexture* numbertex, KdTexture* bulletlinetex
 		, KdTexture* bullettex);
 	std::vector<std::shared_ptr<C_EnemyBase>> GetEnemyChara() { return m_EnemyChara; }
@@ -29,7 +30,10 @@ private:
 
 	std::vector<std::shared_ptr<C_EnemyBase>> m_EnemyChara = {};
 
-	KdTexture* m_EnemyTex;
+	KdTexture* m_EnemyIdleTex;
+	KdTexture* m_EnemyAtkTex;
+	KdTexture* m_EnemyHurtTex;
+	KdTexture* m_EnemyDeadTex;
 
 	KdTexture* m_HpTex;
 	KdTexture* m_HpBackTex;

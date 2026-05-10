@@ -1,17 +1,17 @@
 #pragma once
 #include"State.h"
-
-
-class C_ShopScene :public C_State
+class C_ResultScene :public C_State
 {
 public:
-	C_ShopScene();
-	~C_ShopScene();
+	C_ResultScene();
+	~C_ResultScene();
 
 	void Init()override;
 	void Update()override;
 	void Draw()override;
 
 private:
-	
+
+
+
 };

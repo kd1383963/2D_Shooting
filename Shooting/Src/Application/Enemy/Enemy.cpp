@@ -23,7 +23,7 @@ void C_Enemy::Update()
 			m_EnemyChara.begin(),
 			m_EnemyChara.end(),
 			[](const std::shared_ptr<C_EnemyBase>& e) {
-				return!(e->GetAlive());  // © GetAlive ‚ª false ‚Ì“G‚¾‚¯Á‚·
+				return(e->GetDead()); 
 			}
 		),
 		m_EnemyChara.end()
@@ -57,9 +57,9 @@ void C_Enemy::Init(int enemynum)
 		m_EnemyChara[i]->Setowner(this);
 		m_EnemyChara[i]->PreInit();
 		m_EnemyChara[i]->Init();
-		m_EnemyChara[i]->SetTex(m_EnemyTex, m_HpTex, m_HpBreakTex, m_HpBackTex,
-			m_AttackIconTex, m_BeamIconTex,m_NumberTex,m_BulletLineTex
-		,m_BulletTex);
+		m_EnemyChara[i]->SetTex(m_EnemyIdleTex,m_EnemyAtkTex, m_EnemyHurtTex, m_EnemyDeadTex, m_HpTex, m_HpBreakTex,
+			m_HpBackTex, m_AttackIconTex,
+			m_BeamIconTex, m_NumberTex, m_BulletLineTex, m_BulletTex);
 		TotalEnemy++;
 	}	
 	std::sort(m_EnemyChara.begin(), m_EnemyChara.end(),
@@ -71,11 +71,15 @@ void C_Enemy::Init(int enemynum)
 	);
 }
 
-void C_Enemy::GiftTex(KdTexture* enemytex, KdTexture* hpbartex, KdTexture* hpbarbraektex, KdTexture* hpbarbacktex
+void C_Enemy::GiftTex(KdTexture* enemyidletex, KdTexture* enemyatktex, KdTexture* enemyhurttex, KdTexture* enemydeadtex,
+	KdTexture* hpbartex, KdTexture* hpbarbraektex, KdTexture* hpbarbacktex
 	, KdTexture* attacktex, KdTexture* beamtex, KdTexture* numbertex, KdTexture* bulletlinetex
 	, KdTexture* bullettex)
 {
-	m_EnemyTex = enemytex;
+	m_EnemyIdleTex = enemyidletex;
+	m_EnemyAtkTex = enemyatktex;
+	m_EnemyHurtTex = enemyhurttex;
+	m_EnemyDeadTex = enemydeadtex;
 	m_HpTex = hpbartex;
 	m_HpBreakTex = hpbarbraektex;
 	m_HpBackTex = hpbarbacktex;

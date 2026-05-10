@@ -21,7 +21,8 @@ public:
 	enum SceneType
 	{
 		Title,
-		Game
+		Game,
+		Result
 	};
 	//Updateの前に実行するUpdate
 	void PreUpdate();
@@ -72,6 +73,7 @@ private:
 	KdTexture BrackTex;
 	Math::Matrix m_mat;
 	FadeType NowFade = Fade_no;
+
 
 	//シングルトンパターン
 	// 実体が一つしかないことを証明するためのパターン

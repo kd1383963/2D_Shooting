@@ -29,6 +29,8 @@ void C_Prism::Init()
 	std::vector<std::shared_ptr<C_EnemyBase>> EnemyChara = m_owner->GetEnemyChara();
 
 	m_EnemyStatus.m_Radius = 32;
+	m_EnemyStatus.m_EAnimStatus = EIdle;
+	CharaAnimCnt = 0;
 
 	do {
 		m_EnemyStatus.m_Pos.x = rand() % (640 - 64);

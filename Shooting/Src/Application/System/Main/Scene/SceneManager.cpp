@@ -1,6 +1,8 @@
 #include "SceneManager.h"
 #include "TitleScene.h"
 #include "GameScene.h"
+#include "ResultScene.h"
+#include "../../../Back/Back.h"
 
 void SceneManager::PreUpdate()
 {
@@ -13,6 +15,7 @@ void SceneManager::PreUpdate()
 
 void SceneManager::Update()
 {
+	C_Back::GetInstance().Update();
 	// ポリモーフィズム
 	// 同じ関数名であっても、呼び出すオブジェクトによって処理内容が変わることも
 	m_CurrentScene->Update();
@@ -50,16 +53,20 @@ void SceneManager::UpdateFade()
 
 void SceneManager::Draw()
 {
+	C_Back::GetInstance().Draw();
 	m_CurrentScene->Draw();
 
 	SHADER.m_spriteShader.SetMatrix(m_mat);
 	SHADER.m_spriteShader.DrawTex(&BrackTex, Math::Rectangle{ 0,0,1280,720 }, FadeAlpha);
+
 }
 
 void SceneManager::Init()
 {
+	C_Back::GetInstance().Init();
 	ChangeScene(m_CurrentSceneType);
 	BrackTex.Load("Texture/UI/Fade.png");
+	
 }
 
 void SceneManager::Release()
@@ -79,6 +86,9 @@ void SceneManager::ChangeScene(SceneType _sceneType)
 	case SceneType::Game:
 		// アップキャスト
 		m_CurrentScene = std::make_shared<C_GameScene>();
+		break;
+	case SceneType::Result:
+		m_CurrentScene = std::make_shared<C_ResultScene>();
 		break;
 	}
 	//②フラグを更新
