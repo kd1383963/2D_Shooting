@@ -159,7 +159,6 @@
     <ClInclude Include="..\Library\tinygltf\stb_image.h" />
     <ClInclude Include="..\Library\tinygltf\stb_image_write.h" />
     <ClInclude Include="..\Library\tinygltf\tiny_gltf.h" />
-    <ClInclude Include="PlayerSkill.h" />
     <ClInclude Include="Src\Application\Back\Back.h" />
     <ClInclude Include="Src\Application\Enemy\Enemy.h" />
     <ClInclude Include="Src\Application\Enemy\EnemyBase.h" />
@@ -168,6 +167,8 @@
     <ClInclude Include="Src\Application\Mouse.h" />
     <ClInclude Include="Src\Application\Player\Player.h" />
     <ClInclude Include="Src\Application\Player\PlayerBullet.h" />
+    <ClInclude Include="Src\Application\Player\PlayerSkill.h" />
+    <ClInclude Include="Src\Application\Player\PlayerUpGrade.h" />
     <ClInclude Include="Src\Application\Scene.h" />
     <ClInclude Include="Src\Application\main.h" />
     <ClInclude Include="Src\Application\System\Battle\Turn.h" />
@@ -209,6 +210,7 @@
     <ClCompile Include="Src\Application\Mouse.cpp" />
     <ClCompile Include="Src\Application\Player\Player.cpp" />
     <ClCompile Include="Src\Application\Player\PlayerBullet.cpp" />
+    <ClCompile Include="Src\Application\Player\PlayerUpGrade.cpp" />
     <ClCompile Include="Src\Application\Scene.cpp" />
     <ClCompile Include="Src\Application\main.cpp" />
     <ClCompile Include="Src\Application\System\Battle\Turn.cpp" />

@@ -252,7 +252,8 @@ void C_EnemyBase::Update()
 		if (CharaAnimCnt > 7.0f)
 		{
 			CharaAnimCnt = 0.0f;
-			m_EnemyStatus.m_DeadFlg = true;;
+			m_EnemyStatus.m_DeadFlg = true;
+			C_Player::GetInstance().TotalScorePlus();
 		}
 		break;
 

@@ -1,13 +1,12 @@
 #pragma once
 
-#include "PlayerSkill.h"
+#include "PlayerSkill.h" //enum‚ðBullet‚Æ‹¤—L‚ª‚µ‚½‚¢‚½‚ß‚Éinclude
 class C_GameScene;
 
 class C_PlayerBullet;
 
 enum AnimStatus
 {
-	Idle,
 	Move,
 	Atk,
 	Hurt,
@@ -60,7 +59,7 @@ public:
 	void HitDamege(int a_Damaege) {
 		m_CharaStatus.m_DamageFlg = true;
 		m_CharaStatus.m_Hp -= a_Damaege;
-		SetEAnimStatus(Hurt);
+		SetAnimStatus(Hurt);
 	}
 
 	Math::Vector2 GetPos() { return m_CharaStatus.Pos; }
@@ -70,16 +69,29 @@ public:
 	
 	Math::Vector2 Rotate(Math::Vector2& v, float angle);
 	
+	void TotalScorePlus() { TotalScore++; }
+
+	int GetTotalScore() { return TotalScore; }
+
+	void HpUp() { m_CharaStatus.m_MaxHp += 20; }
+	void AtkUp() { m_CharaStatus.m_Atk += 10; }
+	void AddBulletShot() { PlayerSkillBase.m_DoubleShot++; }
+	void AddWallbounce() { PlayerSkillBase.m_WallbounceLeft++; }
+	void AddEnemyBounce() { PlayerSkillBase.m_BulletEnemyBoundFlg++; }
+	void SetShot3way() { PlayerSkillBase.Shot3way = true; }
+	void SetShot5way() { PlayerSkillBase.Shot5way = true; }
+
+	bool GetShot3way() { return PlayerSkillBase.Shot3way; }
+	bool GetShot5way() { return PlayerSkillBase.Shot5way; }
 
 	bool GetAlive()  { return m_CharaStatus.m_Alive; }
 	int  GetWidth()  { return CharaWidth; }
 	int  GetHegiht() { return CharaHeight; }
 
-	void SetEAnimStatus(AnimStatus a_status) {
+	void SetAnimStatus(AnimStatus a_status) {
 		m_CharaStatus.m_AnimStatus = a_status;
 		switch (m_CharaStatus.m_AnimStatus)
 		{
-		case Idle:
 		case Move:
 		case Hurt:
 		case Dead:
@@ -99,6 +111,8 @@ public:
 private:
 
 	C_GameScene* m_owner;
+
+	int TotalScore = 0;
 
 	const float m_MoveSpeed = 10.0f;
 

@@ -207,14 +207,17 @@
     <ClInclude Include="Src\Application\Enemy\EnemyBullet.h">
       <Filter>Src\Application\Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerSkill.h">
-      <Filter>Src\Application\Player</Filter>
-    </ClInclude>
     <ClInclude Include="Src\Application\Back\Back.h">
       <Filter>Src\Application\Back</Filter>
     </ClInclude>
     <ClInclude Include="Src\Application\System\Main\Scene\ResultScene.h">
       <Filter>Src\Application\System\Main\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Player\PlayerSkill.h">
+      <Filter>Src\Application\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Player\PlayerUpGrade.h">
+      <Filter>Src\Application\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -328,6 +331,9 @@
     </ClCompile>
     <ClCompile Include="Src\Application\System\Main\Scene\ResultScene.cpp">
       <Filter>Src\Application\System\Main\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Player\PlayerUpGrade.cpp">
+      <Filter>Src\Application\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -72,9 +72,9 @@ void C_PlayerBullet::Update()
 	// ”½Ë‚µ‚½‚ç‰ñ”‚ğŒ¸‚ç‚·
 	if (bounced)
 	{
-		PlayerSkill.WallbounceLeft--;
+		PlayerSkill.m_WallbounceLeft--;
 
-		if (PlayerSkill.WallbounceLeft < 0)
+		if (PlayerSkill.m_WallbounceLeft < 0)
 		{
 			m_Alive = false; // ‚±‚êˆÈã”½Ë‚Å‚«‚È‚¢‚Ì‚ÅÁ‚·
 		}

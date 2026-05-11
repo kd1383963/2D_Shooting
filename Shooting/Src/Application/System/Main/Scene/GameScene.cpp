@@ -3,6 +3,7 @@
 #include "../../../Player/Player.h"
 #include "../../../Enemy/Enemy.h"
 #include "../../Battle/Turn.h"
+#include "../../../Player/PlayerUpGrade.h"
 
 C_GameScene::C_GameScene()
 {
@@ -18,18 +19,22 @@ void C_GameScene::Init()
 {
 	m_Enemy = std::make_shared<C_Enemy>();
 	
+	m_PlayerUpGrade = std::make_shared<C_PlayerUpGrade>();
+
 	TexLoad();
 
 	C_Player::GetInstance().Init();
 
-	m_Enemy->Init(5);
+	BattleWave++;
+
+	m_Enemy->Init(2);
 
 	
 
 	C_Player::GetInstance().Setowner(this);
 
 	
-
+	m_PlayerUpGrade->Setowner(this);
 	C_Turn::GetInstance().Init();
 }
 
@@ -44,6 +49,20 @@ void C_GameScene::Update()
 	C_Player::GetInstance().Update();
 	
 	C_Turn::GetInstance().Update();
+
+	if (C_Turn::GetInstance().GetNowTurn() == C_Turn::UpGrade)
+	{
+		if (!m_PlayerUpGradeFlg)
+		{
+			m_PlayerUpGrade->Init();
+			m_PlayerUpGradeFlg = true;
+		}
+		if (m_PlayerUpGrade->Update())
+		{
+			m_Enemy->Init(5);
+			m_PlayerUpGradeFlg = false;
+		}
+	}
 }
 
 void C_GameScene::Draw()
@@ -52,7 +71,10 @@ void C_GameScene::Draw()
 	C_Player::GetInstance().Draw();
 	
 	m_Enemy->Draw();
-	
+	if (C_Turn::GetInstance().GetNowTurn() == C_Turn::UpGrade)
+	{
+		m_PlayerUpGrade->Draw();
+	}
 }
 
 void C_GameScene::TexLoad()
@@ -68,6 +90,7 @@ void C_GameScene::TexLoad()
 	m_HpBreakTex.Load("Texture/UI/-Hp.png");
 	C_Player::GetInstance().SetTex(&m_PlayerIdleTex, &m_PlayerMoveTex, &m_PlayerAtkTex,
 		&m_PlayerHurtTex, &m_PlayerDeadTex,&m_PlayerBulletLineTex, &m_HpTex, &m_HpBreakTex,&m_HpBackTex);
+
 	m_EnemyIdleTex.Load("Texture/Enemy/IDLE.png");
 	m_EnemyAtkTex.Load("Texture/Enemy/ATTACK.png");
 	m_EnemyHurtTex.Load("Texture/Enemy/HURT.png");
@@ -78,9 +101,21 @@ void C_GameScene::TexLoad()
 	m_EnemyBulletLineTex.Load("Texture/Enemy/Line.png");
 	m_EnemyBulletTex.Load("Texture/Enemy/EnemyBullet.png");
 
-	m_Enemy->GiftTex(&m_EnemyIdleTex,&m_EnemyAtkTex ,&m_EnemyHurtTex,&m_EnemyDeadTex,&m_HpTex, &m_HpBreakTex, &m_HpBackTex,&m_AttackIconTex,
-		&m_BeamIconTex ,&m_NumberTex,&m_EnemyBulletLineTex,&m_EnemyBulletTex);
+	m_Enemy->GiftTex(&m_EnemyIdleTex, &m_EnemyAtkTex, &m_EnemyHurtTex, &m_EnemyDeadTex, &m_HpTex, &m_HpBreakTex, &m_HpBackTex, &m_AttackIconTex,
+		&m_BeamIconTex, &m_NumberTex, &m_EnemyBulletLineTex, &m_EnemyBulletTex);
 	
+	m_BrackBackTex.Load("Texture/UI/Fade.png");
+	m_UpGradeHpTex.Load("Texture/UI/HpUp.png");
+	m_UpGradeAtkTex.Load("Texture/UI/AtkUp.png");
+	m_UpGradeBulletWallBoundTex.Load("Texture/UI/BulletWallBound.png");
+	m_UpGradeDoubleBulletTex.Load("Texture/UI/DoubleBullet.png");
+	m_UpGradeBulletEnemyBoundTex.Load("Texture/UI/EnemyBound.png");
+	m_UpGradeBulletSplitTex.Load("Texture/UI/BulletSplit.png");
+	m_TurnAddTex.Load("Texture/UI/TurnAdd.png");
+	
+	m_PlayerUpGrade->SetTex(&m_UpGradeHpTex,&m_UpGradeAtkTex,&m_UpGradeBulletWallBoundTex,
+		&m_UpGradeDoubleBulletTex,&m_UpGradeBulletEnemyBoundTex,&m_TurnAddTex,
+		&m_UpGradeBulletSplitTex ,&m_BrackBackTex);
 
 }
 
@@ -103,4 +138,12 @@ void C_GameScene::Release()
 	m_BeamIconTex.Release();
 	m_NumberTex.Release();
 	m_EnemyBulletLineTex.Release();
+	m_BrackBackTex.Release();
+	m_UpGradeHpTex.Release();
+	m_UpGradeAtkTex.Release();
+	m_UpGradeBulletWallBoundTex.Release();
+	m_UpGradeDoubleBulletTex.Release();
+	m_UpGradeBulletEnemyBoundTex.Release();
+	m_UpGradeBulletSplitTex.Release();
+	m_TurnAddTex.Release();
 }

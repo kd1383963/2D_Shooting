@@ -11,7 +11,14 @@ public:
 	void Draw()override;
 
 private:
+	float m_Alufa = 0.0f;
+	float m_AlufaAdd = 0.02f;
 
-	
+	Math::Vector2 m_TitlePos = { 0,170 };
+	Math::Matrix m_TitleMat;
+	KdTexture m_TitleTex;
 
+	Math::Vector2 m_StartCmdPos = { 0,-300 };
+	Math::Matrix m_StartCmdMat;
+	KdTexture m_StartCmdTex;
 };

@@ -20,6 +20,8 @@ public:
 
 	bool GetAlive() { return m_Alive; }
 
+	void SetAlive(bool a_flg) { m_Alive = a_flg; }
+
 	bool HIT(Math::Vector2 pos, int h);
 
 	SkillFlg* GetPlayerSkill() { return &PlayerSkill; }

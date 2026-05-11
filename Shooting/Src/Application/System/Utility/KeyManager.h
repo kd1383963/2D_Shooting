@@ -5,19 +5,20 @@ class C_KeyManager
 
 public:
 
-	bool GetEscKey()
+
+	bool GetSpaceKey()
 	{
-		if (GetAsyncKeyState(VK_ESCAPE) & 0x8000)
+		if (GetAsyncKeyState(VK_SPACE) & 0x8000)
 		{
-			if (!EscKeyFlg)
+			if (!SpaceKeyFlg)
 			{
-				EscKeyFlg = true;
+				SpaceKeyFlg = true;
 				return true;
 			}
 		}
 		else
 		{
-			EscKeyFlg = false;
+			SpaceKeyFlg = false;
 		}
 		return false;
 	}
@@ -141,14 +142,14 @@ private:
 
 	C_KeyManager() 
 	{
-		EscKeyFlg = false;
+		SpaceKeyFlg = false;
 		LClickFlg = false;
 		RClickFlg = false;
 	}
 
 	//キーごとに必要
 
-	bool EscKeyFlg;
+	bool SpaceKeyFlg;
 	bool UpKeyFlg;
 	bool DownKeyFlg;
 	bool LeftKeyFlg;

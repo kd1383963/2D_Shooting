@@ -2,6 +2,7 @@
 #include"PlayerBullet.h"
 #include "../System/Main/Scene/GameScene.h"
 #include"../System/Main/Scene/SceneManager.h"
+#include"../System/Utility/KeyManager.h"
 #include "../Enemy/Prism/Prism.h"
 #include "../Enemy/Enemy.h"
 #include "../System/Battle/Turn.h"
@@ -19,33 +20,31 @@ void C_Player::Draw()
 {
 	if (C_Turn::GetInstance().GetNowTurn() == C_Turn::Player)
 	{
-		if (!m_ShotFlg)
+		if (m_CharaStatus.m_AnimStatus != Dead)
 		{
-			if (PlayerSkillBase.Shot5way)
+			if (!m_ShotFlg)
 			{
-				SHADER.m_spriteShader.SetMatrix(m_Line1Mat);
-				SHADER.m_spriteShader.DrawTex(m_BulletLineTex, { 0,0,2560,16 }, m_LineBlinking);
-				SHADER.m_spriteShader.SetMatrix(m_Line5Mat);
-				SHADER.m_spriteShader.DrawTex(m_BulletLineTex, { 0,0,2560,16 }, m_LineBlinking);
-			}
-			if (PlayerSkillBase.Shot3way)
-			{
-				SHADER.m_spriteShader.SetMatrix(m_Line2Mat);
-				SHADER.m_spriteShader.DrawTex(m_BulletLineTex, { 0,0,2560,16 }, m_LineBlinking);
-				SHADER.m_spriteShader.SetMatrix(m_Line4Mat);
-				SHADER.m_spriteShader.DrawTex(m_BulletLineTex, { 0,0,2560,16 }, m_LineBlinking);
-			}
+				if (PlayerSkillBase.Shot5way)
+				{
+					SHADER.m_spriteShader.SetMatrix(m_Line1Mat);
+					SHADER.m_spriteShader.DrawTex(m_BulletLineTex, { 0,0,2560,16 }, m_LineBlinking);
+					SHADER.m_spriteShader.SetMatrix(m_Line5Mat);
+					SHADER.m_spriteShader.DrawTex(m_BulletLineTex, { 0,0,2560,16 }, m_LineBlinking);
+				}
+				if (PlayerSkillBase.Shot3way)
+				{
+					SHADER.m_spriteShader.SetMatrix(m_Line2Mat);
+					SHADER.m_spriteShader.DrawTex(m_BulletLineTex, { 0,0,2560,16 }, m_LineBlinking);
+					SHADER.m_spriteShader.SetMatrix(m_Line4Mat);
+					SHADER.m_spriteShader.DrawTex(m_BulletLineTex, { 0,0,2560,16 }, m_LineBlinking);
+				}
 				SHADER.m_spriteShader.SetMatrix(m_Line3Mat);
 				SHADER.m_spriteShader.DrawTex(m_BulletLineTex, { 0,0,2560,16 }, m_LineBlinking);
+			}
 		}
 	}
 	switch (m_CharaStatus.m_AnimStatus)
 	{
-	case Idle:
-		SHADER.m_spriteShader.SetMatrix(m_PlayerMat);
-		SHADER.m_spriteShader.DrawTex(m_PlayerIdleTex, { 0,CharaHeight * (int)CharaAnimCnt,CharaWidth,CharaHeight }, 1.0f);
-
-		break;
 	case Move:
 		SHADER.m_spriteShader.SetMatrix(m_PlayerMat);
 		SHADER.m_spriteShader.DrawTex(m_PlayerMoveTex, { 0,CharaHeight * (int)CharaAnimCnt,CharaWidth,CharaHeight }, 1.0f);
@@ -98,13 +97,6 @@ void C_Player::Update()
 {
 	switch (m_CharaStatus.m_AnimStatus)
 	{
-	case Idle:
-		CharaAnimCnt += 0.1f;
-		if (CharaAnimCnt > 6.0f)
-		{
-			CharaAnimCnt = 0.0f;
-		}
-		break;
 	case Move:
 		CharaAnimCnt += 0.1f;
 		if (CharaAnimCnt > 8.0f)
@@ -118,7 +110,7 @@ void C_Player::Update()
 		{
 			CharaAnimCnt = 0.0f;
 			m_CharaStatus.m_AtkFlg = true;
-			SetEAnimStatus(Idle);
+			SetAnimStatus(Move);
 		}
 		break;
 	case Hurt:
@@ -126,7 +118,7 @@ void C_Player::Update()
 		if (CharaAnimCnt > 3.0f)
 		{
 			CharaAnimCnt = 0.0f;
-			SetEAnimStatus(Idle);
+			SetAnimStatus(Move);
 		}
 		break;
 	case Dead:
@@ -151,45 +143,37 @@ void C_Player::Update()
 	{
 		if (m_CharaStatus.m_AnimStatus != Dead)
 		{
-			SetEAnimStatus(Dead);
+			SetAnimStatus(Dead);
 		}
 		m_CharaStatus.m_Alive = false;
 	}
-	if (C_Turn::GetInstance().GetNowTurn() == C_Turn::Player)
+	Math::Vector2 MousePos = { (float)C_Mouse::GetInstance().GetMousePos().x,(float)C_Mouse::GetInstance().GetMousePos().y };
+	Math::Vector2 vec = MousePos - m_CharaStatus.Pos;
+	vec.Normalize();
+	float angle = atan2(vec.y, vec.x);
+	switch (C_Turn::GetInstance().GetNowTurn())
 	{
-		Math::Vector2 MousePos = {(float) C_Mouse::GetInstance().GetMousePos().x,(float) C_Mouse::GetInstance().GetMousePos().y };
-		Math::Vector2 vec =  MousePos - m_CharaStatus.Pos;
-		vec.Normalize();
-		float angle = atan2(vec.y, vec.x);
-		if (!m_ShotFlg)
+	case C_Turn::Player:
+		if (m_CharaStatus.m_AnimStatus != Dead)
 		{
-			if (m_CharaStatus.m_AnimStatus != Idle&& m_CharaStatus.m_AnimStatus != Atk && m_CharaStatus.m_AnimStatus != Dead)
+			if (!m_ShotFlg)
 			{
-				SetEAnimStatus(Idle);
-			}
-			if (GetAsyncKeyState('W') & 0x8000)
-			{
-				m_CharaStatus.Pos.y += m_MoveSpeed;
-				if (m_CharaStatus.m_AnimStatus != Move)
+				if (GetAsyncKeyState('W') & 0x8000)
 				{
-					SetEAnimStatus(Move);
+					m_CharaStatus.Pos.y += m_MoveSpeed;
 				}
-			}
-			if (GetAsyncKeyState('S') & 0x8000)
-			{
-				m_CharaStatus.Pos.y -= m_MoveSpeed;
-				if (m_CharaStatus.m_AnimStatus != Move)
+				if (GetAsyncKeyState('S') & 0x8000)
 				{
-					SetEAnimStatus(Move);
+					m_CharaStatus.Pos.y -= m_MoveSpeed;
 				}
-			}
-			if (GetAsyncKeyState(VK_SPACE) & 0x8000)
-			{
-				if (m_CharaStatus.m_AnimStatus != Atk)
+
+				if (C_KeyManager::GetInstance().GetSpaceKey())
 				{
-					SetEAnimStatus(Atk);
+					if (m_CharaStatus.m_AnimStatus != Atk)
+					{
+						SetAnimStatus(Atk);
+					}
 				}
-			}
 				if (m_CharaStatus.m_AtkFlg)
 				{
 					if (PlayerSkillBase.Shot5way)
@@ -261,16 +245,59 @@ void C_Player::Update()
 					}
 
 				}
-			
-			m_LineBlinking += m_LineBlinkingAdd;
-			if (m_LineBlinking >= 0.4f || m_LineBlinking <= 0.1f)
-			{
-				m_LineBlinkingAdd *= -1;
-			}
 
+				m_LineBlinking += m_LineBlinkingAdd;
+				if (m_LineBlinking >= 0.4f || m_LineBlinking <= 0.1f)
+				{
+					m_LineBlinkingAdd *= -1;
+				}
+
+			}
+			else
+			{
+				m_Bullet.erase(
+					std::remove_if(
+						m_Bullet.begin(),
+						m_Bullet.end(),
+						[](const std::shared_ptr<C_PlayerBullet>& e) {
+							return!(e->GetAlive());  // © GetAlive ‚ª false ‚Ì’e‚¾‚¯Á‚·
+						}
+					),
+					m_Bullet.end()
+				);
+				if (m_Bullet.size() == 0)
+				{
+					m_ShotFlg = false;
+					C_Turn::GetInstance().SetNextTurn(C_Turn::Enemy);
+				}
+			}
+			if (m_CharaStatus.Pos.y > 360 - 32)
+			{
+				m_CharaStatus.Pos.y = 360 - 32;
+			}
+			if (m_CharaStatus.Pos.y < -360 + 32)
+			{
+				m_CharaStatus.Pos.y = -360 + 32;
+			}
+			if (PlayerSkillBase.Shot5way)
+			{
+				m_Line1Mat = Math::Matrix::CreateRotationZ(angle + m_CharaStatus.offset * 2) * Math::Matrix::CreateTranslation(m_CharaStatus.Pos.x, m_CharaStatus.Pos.y, 0);
+				m_Line5Mat = Math::Matrix::CreateRotationZ(angle - m_CharaStatus.offset * 2) * Math::Matrix::CreateTranslation(m_CharaStatus.Pos.x, m_CharaStatus.Pos.y, 0);
+			}
+			if (PlayerSkillBase.Shot3way)
+			{
+				m_Line2Mat = Math::Matrix::CreateRotationZ(angle + m_CharaStatus.offset) * Math::Matrix::CreateTranslation(m_CharaStatus.Pos.x, m_CharaStatus.Pos.y, 0);
+				m_Line4Mat = Math::Matrix::CreateRotationZ(angle - m_CharaStatus.offset) * Math::Matrix::CreateTranslation(m_CharaStatus.Pos.x, m_CharaStatus.Pos.y, 0);
+			}
+			m_Line3Mat = Math::Matrix::CreateRotationZ(angle) * Math::Matrix::CreateTranslation(m_CharaStatus.Pos.x, m_CharaStatus.Pos.y, 0);
 		}
-		else
-		{
+		break;
+		case C_Turn::UpGrade:
+
+			for (auto& i : m_Bullet)
+			{
+				i->SetAlive(false);
+			}
 			m_Bullet.erase(
 				std::remove_if(
 					m_Bullet.begin(),
@@ -281,33 +308,10 @@ void C_Player::Update()
 				),
 				m_Bullet.end()
 			);
-			if (m_Bullet.size() == 0)
-			{
-				m_ShotFlg = false;
-				C_Turn::GetInstance().SetNextTurn(C_Turn::Enemy);
-			}
-		}
-		if (m_CharaStatus.Pos.y > 360 - 32)
-		{
-			m_CharaStatus.Pos.y = 360 - 32;
-		}
-		if (m_CharaStatus.Pos.y < -360 + 32)
-		{
-			m_CharaStatus.Pos.y = -360 + 32;
-		}
-		if (PlayerSkillBase.Shot5way)
-		{
-			m_Line1Mat = Math::Matrix::CreateRotationZ(angle + m_CharaStatus.offset * 2) * Math::Matrix::CreateTranslation(m_CharaStatus.Pos.x, m_CharaStatus.Pos.y, 0);
-			m_Line5Mat = Math::Matrix::CreateRotationZ(angle - m_CharaStatus.offset * 2) * Math::Matrix::CreateTranslation(m_CharaStatus.Pos.x, m_CharaStatus.Pos.y, 0);
-		}
-		if (PlayerSkillBase.Shot3way)
-		{
-			m_Line2Mat = Math::Matrix::CreateRotationZ(angle + m_CharaStatus.offset) * Math::Matrix::CreateTranslation(m_CharaStatus.Pos.x, m_CharaStatus.Pos.y, 0);
-			m_Line4Mat = Math::Matrix::CreateRotationZ(angle - m_CharaStatus.offset) * Math::Matrix::CreateTranslation(m_CharaStatus.Pos.x, m_CharaStatus.Pos.y, 0);
-		}
-		m_Line3Mat = Math::Matrix::CreateRotationZ(angle) * Math::Matrix::CreateTranslation(m_CharaStatus.Pos.x , m_CharaStatus.Pos.y, 0);
-
+			m_ShotFlg = false;
+			break;
 	}
+	
 	m_HpMat = Math::Matrix::CreateTranslation(m_CharaStatus.Pos.x - ((int)(66 * (((m_CharaStatus.m_MaxHp - m_CharaStatus.m_Hp) / 2) / m_CharaStatus.m_MaxHp))), m_CharaStatus.Pos.y + m_CharaStatus.HpAddPos.y, 0);
 	m_HpBackMat = Math::Matrix::CreateTranslation(m_CharaStatus.Pos.x, m_CharaStatus.Pos.y + m_CharaStatus.HpAddPos.y, 0);
 	m_HpBreakMat = Math::Matrix::CreateTranslation(m_CharaStatus.Pos.x - ((int)(66 * (((m_CharaStatus.m_MaxHp - m_CharaStatus.m_BreakHp) / 2) / m_CharaStatus.m_MaxHp))), m_CharaStatus.Pos.y + m_CharaStatus.HpAddPos.y, 0);
@@ -318,13 +322,18 @@ void C_Player::Update()
 	{
 		i->Update();
 	}
+	if (GetAsyncKeyState('H') & 0x8000)
+	{
+		SetAnimStatus(Dead);
+	}
 
 }
 
 void C_Player::Init()
 {
+	TotalScore = 0;
 	m_CharaStatus.m_Alive = true;
-	m_CharaStatus.m_AnimStatus = Idle;
+	m_CharaStatus.m_AnimStatus = Move;
 	m_CharaStatus.Pos.x = -500;
 	m_CharaStatus.Pos.y = 0;
 	m_ShotFlg = false;
@@ -334,9 +343,9 @@ void C_Player::Init()
 	m_CharaStatus.m_MaxHp = m_CharaStatus.m_Hp;
 	m_CharaStatus.m_BreakHp = m_CharaStatus.m_Hp;
 	m_CharaStatus.m_Atk = 30;
-	PlayerSkillBase.m_BulletBoundFlg = 5;
-	PlayerSkillBase.WallbounceLeft = 3;
-	//PlayerSkillBase.Shot3way = true;
+	PlayerSkillBase.m_BulletEnemyBoundFlg = 5;
+	PlayerSkillBase.m_WallbounceLeft = 3;
+	PlayerSkillBase.Shot3way = true;
 	//PlayerSkillBase.Shot5way = true;
 		
 	
@@ -386,10 +395,10 @@ void C_Player::HitBulletEnemy()
 					if (m_Bullet[j]->HIT(e->GetPos(), e->GetRadius()))
 					{
 						e->HitDamege(m_CharaStatus.m_Atk);
-						if (m_Bullet[j]->GetPlayerSkill()->m_BulletBoundFlg > 0)
+						if (m_Bullet[j]->GetPlayerSkill()->m_BulletEnemyBoundFlg > 0)
 						{
 							m_Bullet.push_back(std::make_shared<C_PlayerBullet>());
-							m_Bullet[j]->GetPlayerSkill()->m_BulletBoundFlg--;
+							m_Bullet[j]->GetPlayerSkill()->m_BulletEnemyBoundFlg--;
 							for (auto& i : m_Bullet)
 							{
 								if (!i->GetAlive())

@@ -19,7 +19,16 @@ public:
 	void Update();
 	void Draw();
 
-	
+	void SetBackStatus() {
+		if (m_BackStatus == Evening)
+		{
+			m_BackStatus = Night;
+		}
+		else
+		{
+			m_BackStatus = LateNight;
+		}
+	}
 
 private:
 

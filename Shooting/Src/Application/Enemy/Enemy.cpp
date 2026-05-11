@@ -47,6 +47,10 @@ void C_Enemy::Update()
 		}
 		C_Turn::GetInstance().SetNextTurn(C_Turn::Player);
 	}
+	if(m_EnemyChara.size()==0)
+	{
+		C_Turn::GetInstance().SetNextTurn(C_Turn::UpGrade);
+	}
 }
 
 void C_Enemy::Init(int enemynum)
