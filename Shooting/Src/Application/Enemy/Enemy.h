@@ -11,7 +11,7 @@ public:
 	C_Enemy(){ }
 	~C_Enemy(){}
 
-	void Init(int enemynum);
+	void Init(int enemynum, int wave);
 	void Update();
 	void Draw();
 

@@ -71,7 +71,7 @@ public:
 	C_EnemyBase() {}
 	~C_EnemyBase() {}
 
-	virtual void Init()=0;
+	virtual void Init(int wave)=0;
 	void PreInit();
 	void Update();
 	void Draw();

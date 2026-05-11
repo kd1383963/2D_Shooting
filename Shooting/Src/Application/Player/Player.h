@@ -25,7 +25,7 @@ struct Status
 
 	AnimStatus m_AnimStatus;
 	Math::Vector2 Pos;
-	Math::Vector2 HpAddPos = {0,42};
+	Math::Vector2 HpAddPos = {0,-42};
 	Math::Vector2 Anim;
 	bool MoveFlg;
 

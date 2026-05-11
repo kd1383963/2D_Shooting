@@ -365,11 +365,15 @@ void C_Player::Update()
 	{
 		i->Update();
 	}
-	if (GetAsyncKeyState('H') & 0x8000)
+	if (GetAsyncKeyState('J') & 0x8000)
 	{
 		SetAnimStatus(Dead);
 	}
-
+	if (GetAsyncKeyState('H') & 0x8000)
+	{
+		m_CharaStatus.m_Hp = m_CharaStatus.m_MaxHp;
+	}
+	
 }
 
 void C_Player::Init()

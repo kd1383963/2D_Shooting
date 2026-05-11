@@ -40,6 +40,12 @@ void C_Enemy::Update()
 			
 		}
 	}
+	if (GetAsyncKeyState('L') & 0x8000)
+	{
+		for (const auto& e : m_EnemyChara) {
+			e->SetEAnimStatus(EDead);
+		}
+	}
 	if (TotalEnemyMove == TotalEnemy)
 	{
 		for (const auto& e : m_EnemyChara) {
@@ -53,16 +59,17 @@ void C_Enemy::Update()
 	{
 		C_Turn::GetInstance().SetNextTurn(C_Turn::UpGrade);
 	}
+
 }
 
-void C_Enemy::Init(int enemynum)
+void C_Enemy::Init(int enemynum,int wave)
 {
 	for (int i = 0; i < enemynum; i++)
 	{
 		m_EnemyChara.push_back(std::make_shared<C_Prism>());
 		m_EnemyChara[i]->Setowner(this);
 		m_EnemyChara[i]->PreInit();
-		m_EnemyChara[i]->Init();
+		m_EnemyChara[i]->Init(wave);
 		m_EnemyChara[i]->SetTex(m_EnemyIdleTex,m_EnemyAtkTex, m_EnemyHurtTex, m_EnemyDeadTex, m_HpTex, m_HpBreakTex,
 			m_HpBackTex, m_AttackIconTex,
 			m_BeamIconTex, m_NumberTex, m_BulletLineTex, m_BulletTex);

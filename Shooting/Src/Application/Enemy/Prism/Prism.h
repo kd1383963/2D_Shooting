@@ -13,7 +13,7 @@ public:
 
 	void Move()override;
 
-	void Init()override;
+	void Init(int wave)override;
 
 	void SetAttackCmd()override;
 
