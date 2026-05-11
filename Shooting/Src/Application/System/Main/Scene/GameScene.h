@@ -8,7 +8,12 @@ enum GameStage
 	Hard,
 	VeryHard
 };
-
+enum GameFadeType
+{
+	GFade_no,
+	GFade_out,
+	GFade_in
+};
 class C_PlayerUpGrade;
 
 class C_Enemy;
@@ -70,6 +75,12 @@ private:
 	KdTexture m_UpGradeBulletEnemyBoundTex;
 	KdTexture m_UpGradeBulletSplitTex;
 	KdTexture m_TurnAddTex;
+
+	
+	GameFadeType m_FadeType = GFade_no;
+	float FadeAlpha = 0.0f;
+	KdTexture BrackTex;
+	Math::Matrix m_BrackMat;
 
 	std::shared_ptr<C_Enemy> m_Enemy=nullptr;
 	

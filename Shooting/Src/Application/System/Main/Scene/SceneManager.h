@@ -71,9 +71,11 @@ private:
 
 	float FadeAlpha = 0.0f;
 	KdTexture BrackTex;
-	Math::Matrix m_mat;
+	Math::Matrix m_BrackMat;
 	FadeType NowFade = Fade_no;
 
+	KdTexture m_CursorTex;
+	Math::Matrix m_CursorMat;
 
 	//シングルトンパターン
 	// 実体が一つしかないことを証明するためのパターン

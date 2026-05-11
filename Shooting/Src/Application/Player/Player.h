@@ -88,6 +88,8 @@ public:
 	int  GetWidth()  { return CharaWidth; }
 	int  GetHegiht() { return CharaHeight; }
 
+	void SetCanMove(bool a_flg) { m_CanMoveFlg = a_flg; }
+
 	void SetAnimStatus(AnimStatus a_status) {
 		m_CharaStatus.m_AnimStatus = a_status;
 		switch (m_CharaStatus.m_AnimStatus)
@@ -112,7 +114,12 @@ private:
 
 	C_GameScene* m_owner;
 
-	int TotalScore = 0;
+	Math::Vector2 m_ShotVec;
+	float		  m_ShotAngle;
+
+	bool m_CanMoveFlg;
+
+	int TotalScore;
 
 	const float m_MoveSpeed = 10.0f;
 
@@ -148,7 +155,8 @@ private:
 	float m_LineBlinking;
 	float m_LineBlinkingAdd;
 
-	
+	int ShotWait;
+	int MultiShotCnt;
 	
 	SkillFlg PlayerSkillBase;
 

@@ -85,6 +85,7 @@ bool C_PlayerUpGrade::Update()
 					break;
 				}
 				C_Turn::GetInstance().SetNextTurn(C_Turn::Player);
+				C_Player::GetInstance().SetCanMove(true);
 				return true;
 			}
 

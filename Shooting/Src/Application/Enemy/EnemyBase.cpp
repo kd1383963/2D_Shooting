@@ -52,20 +52,29 @@ void C_EnemyBase::Draw()
 		SHADER.m_spriteShader.DrawTex(m_AttackIconTex, { 0,0,32,32 }, 1.0f);
 		break;
 	case Beam5:
-		SHADER.m_spriteShader.SetMatrix(m_Line1Mat);
-		SHADER.m_spriteShader.DrawTex(m_BulletLineTex, { 0,0,2560,16 }, m_LineBlinking);
-		SHADER.m_spriteShader.SetMatrix(m_Line5Mat);
-		SHADER.m_spriteShader.DrawTex(m_BulletLineTex, { 0,0,2560,16 }, m_LineBlinking);
+		if (!m_EnemyStatus.m_ShotFlg)
+		{
+			SHADER.m_spriteShader.SetMatrix(m_Line1Mat);
+			SHADER.m_spriteShader.DrawTex(m_BulletLineTex, { 0,0,2560,16 }, m_LineBlinking);
+			SHADER.m_spriteShader.SetMatrix(m_Line5Mat);
+			SHADER.m_spriteShader.DrawTex(m_BulletLineTex, { 0,0,2560,16 }, m_LineBlinking);
+		}
 	case Beam3:
-		SHADER.m_spriteShader.SetMatrix(m_Line2Mat);
-		SHADER.m_spriteShader.DrawTex(m_BulletLineTex, { 0,0,2560,16 }, m_LineBlinking);
-		SHADER.m_spriteShader.SetMatrix(m_Line4Mat);
-		SHADER.m_spriteShader.DrawTex(m_BulletLineTex, { 0,0,2560,16 }, m_LineBlinking);
+		if (!m_EnemyStatus.m_ShotFlg)
+		{
+			SHADER.m_spriteShader.SetMatrix(m_Line2Mat);
+			SHADER.m_spriteShader.DrawTex(m_BulletLineTex, { 0,0,2560,16 }, m_LineBlinking);
+			SHADER.m_spriteShader.SetMatrix(m_Line4Mat);
+			SHADER.m_spriteShader.DrawTex(m_BulletLineTex, { 0,0,2560,16 }, m_LineBlinking);
+		}
 	case Beam:
 		SHADER.m_spriteShader.SetMatrix(m_IconMat);
 		SHADER.m_spriteShader.DrawTex(m_BeamIconTex, { 0,0,32,32 }, 1.0f);
-		SHADER.m_spriteShader.SetMatrix(m_Line3Mat);
-		SHADER.m_spriteShader.DrawTex(m_BulletLineTex, { 0,0,2560,16 }, m_LineBlinking);
+		if (!m_EnemyStatus.m_ShotFlg)
+		{
+			SHADER.m_spriteShader.SetMatrix(m_Line3Mat);
+			SHADER.m_spriteShader.DrawTex(m_BulletLineTex, { 0,0,2560,16 }, m_LineBlinking);
+		}
 		break;
 	}
 	

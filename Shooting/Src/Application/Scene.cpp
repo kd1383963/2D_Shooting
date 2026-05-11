@@ -20,7 +20,7 @@ void Scene::Init()
 {
 	srand(timeGetTime());
 	
-	//ShowCursor(FALSE);
+	ShowCursor(FALSE);
 
 	
 }

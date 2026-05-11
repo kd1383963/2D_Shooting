@@ -1,4 +1,5 @@
 #include "Enemy.h"
+#include "../Player/Player.h"
 #include "Prism/Prism.h"
 #include "EnemyBase.h"
 #include "../System/Battle/Turn.h"
@@ -46,6 +47,7 @@ void C_Enemy::Update()
 			e->SetAttackCmd();
 		}
 		C_Turn::GetInstance().SetNextTurn(C_Turn::Player);
+		C_Player::GetInstance().SetCanMove(true);
 	}
 	if(m_EnemyChara.size()==0)
 	{
@@ -55,7 +57,7 @@ void C_Enemy::Update()
 
 void C_Enemy::Init(int enemynum)
 {
-	for (int i = 0; i < 5 ; i++)
+	for (int i = 0; i < enemynum; i++)
 	{
 		m_EnemyChara.push_back(std::make_shared<C_Prism>());
 		m_EnemyChara[i]->Setowner(this);

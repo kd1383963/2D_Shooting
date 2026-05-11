@@ -158,13 +158,16 @@ void C_Player::Update()
 		{
 			if (!m_ShotFlg)
 			{
-				if (GetAsyncKeyState('W') & 0x8000)
+				if (m_CanMoveFlg)
 				{
-					m_CharaStatus.Pos.y += m_MoveSpeed;
-				}
-				if (GetAsyncKeyState('S') & 0x8000)
-				{
-					m_CharaStatus.Pos.y -= m_MoveSpeed;
+					if (GetAsyncKeyState('W') & 0x8000)
+					{
+						m_CharaStatus.Pos.y += m_MoveSpeed;
+					}
+					if (GetAsyncKeyState('S') & 0x8000)
+					{
+						m_CharaStatus.Pos.y -= m_MoveSpeed;
+					}
 				}
 
 				if (C_KeyManager::GetInstance().GetSpaceKey())
@@ -172,9 +175,12 @@ void C_Player::Update()
 					if (m_CharaStatus.m_AnimStatus != Atk)
 					{
 						SetAnimStatus(Atk);
+						m_ShotVec = vec;
+						m_ShotAngle = angle;
+						m_CanMoveFlg = false;
 					}
 				}
-				if (m_CharaStatus.m_AtkFlg)
+				if (m_CharaStatus.m_AtkFlg && ShotWait == 0)
 				{
 					if (PlayerSkillBase.Shot5way)
 					{
@@ -185,7 +191,7 @@ void C_Player::Update()
 							{
 								i->SetPlayerSkill(PlayerSkillBase);
 								i->SetTex(&m_BulletTex);
-								i->Shot(m_CharaStatus.Pos, Rotate(vec, +m_CharaStatus.offset * 2));
+								i->Shot(m_CharaStatus.Pos, Rotate(m_ShotVec, +m_CharaStatus.offset * 2));
 
 								break;
 							}
@@ -197,7 +203,7 @@ void C_Player::Update()
 							{
 								i->SetPlayerSkill(PlayerSkillBase);
 								i->SetTex(&m_BulletTex);
-								i->Shot(m_CharaStatus.Pos, Rotate(vec, -m_CharaStatus.offset * 2));
+								i->Shot(m_CharaStatus.Pos, Rotate(m_ShotVec, -m_CharaStatus.offset * 2));
 
 								break;
 							}
@@ -212,7 +218,7 @@ void C_Player::Update()
 							{
 								i->SetPlayerSkill(PlayerSkillBase);
 								i->SetTex(&m_BulletTex);
-								i->Shot(m_CharaStatus.Pos, Rotate(vec, +m_CharaStatus.offset));
+								i->Shot(m_CharaStatus.Pos, Rotate(m_ShotVec, +m_CharaStatus.offset));
 
 								break;
 							}
@@ -224,7 +230,7 @@ void C_Player::Update()
 							{
 								i->SetPlayerSkill(PlayerSkillBase);
 								i->SetTex(&m_BulletTex);
-								i->Shot(m_CharaStatus.Pos, Rotate(vec, -m_CharaStatus.offset));
+								i->Shot(m_CharaStatus.Pos, Rotate(m_ShotVec, -m_CharaStatus.offset));
 
 								break;
 							}
@@ -237,13 +243,23 @@ void C_Player::Update()
 						{
 							i->SetPlayerSkill(PlayerSkillBase);
 							i->SetTex(&m_BulletTex);
-							i->Shot(m_CharaStatus.Pos, vec);
-							m_CharaStatus.m_AtkFlg = false;
-							m_ShotFlg = true;
+							i->Shot(m_CharaStatus.Pos, m_ShotVec);
+
 							break;
 						}
 					}
-
+					if (MultiShotCnt == PlayerSkillBase.m_DoubleShot)
+					{
+						m_CharaStatus.m_AtkFlg = false;
+						m_ShotFlg = true;
+						MultiShotCnt = 0;
+						ShotWait = 0;
+					}
+					else
+					{
+						MultiShotCnt++;
+						ShotWait = 20;
+					}
 				}
 
 				m_LineBlinking += m_LineBlinkingAdd;
@@ -279,17 +295,37 @@ void C_Player::Update()
 			{
 				m_CharaStatus.Pos.y = -360 + 32;
 			}
-			if (PlayerSkillBase.Shot5way)
+			switch (m_CharaStatus.m_AnimStatus)
 			{
-				m_Line1Mat = Math::Matrix::CreateRotationZ(angle + m_CharaStatus.offset * 2) * Math::Matrix::CreateTranslation(m_CharaStatus.Pos.x, m_CharaStatus.Pos.y, 0);
-				m_Line5Mat = Math::Matrix::CreateRotationZ(angle - m_CharaStatus.offset * 2) * Math::Matrix::CreateTranslation(m_CharaStatus.Pos.x, m_CharaStatus.Pos.y, 0);
+			case Move:
+				
+				
+				if (PlayerSkillBase.Shot5way)
+				{
+					m_Line1Mat = Math::Matrix::CreateRotationZ(angle + m_CharaStatus.offset * 2) * Math::Matrix::CreateTranslation(m_CharaStatus.Pos.x, m_CharaStatus.Pos.y, 0);
+					m_Line5Mat = Math::Matrix::CreateRotationZ(angle - m_CharaStatus.offset * 2) * Math::Matrix::CreateTranslation(m_CharaStatus.Pos.x, m_CharaStatus.Pos.y, 0);
+				}
+				if (PlayerSkillBase.Shot3way)
+				{
+					m_Line2Mat = Math::Matrix::CreateRotationZ(angle + m_CharaStatus.offset) * Math::Matrix::CreateTranslation(m_CharaStatus.Pos.x, m_CharaStatus.Pos.y, 0);
+					m_Line4Mat = Math::Matrix::CreateRotationZ(angle - m_CharaStatus.offset) * Math::Matrix::CreateTranslation(m_CharaStatus.Pos.x, m_CharaStatus.Pos.y, 0);
+				}
+				m_Line3Mat = Math::Matrix::CreateRotationZ(angle) * Math::Matrix::CreateTranslation(m_CharaStatus.Pos.x, m_CharaStatus.Pos.y, 0);
+				break;
+			case Atk:
+				if (PlayerSkillBase.Shot5way)
+				{
+					m_Line1Mat = Math::Matrix::CreateRotationZ(m_ShotAngle + m_CharaStatus.offset * 2) * Math::Matrix::CreateTranslation(m_CharaStatus.Pos.x, m_CharaStatus.Pos.y, 0);
+					m_Line5Mat = Math::Matrix::CreateRotationZ(m_ShotAngle - m_CharaStatus.offset * 2) * Math::Matrix::CreateTranslation(m_CharaStatus.Pos.x, m_CharaStatus.Pos.y, 0);
+				}
+				if (PlayerSkillBase.Shot3way)
+				{
+					m_Line2Mat = Math::Matrix::CreateRotationZ(m_ShotAngle + m_CharaStatus.offset) * Math::Matrix::CreateTranslation(m_CharaStatus.Pos.x, m_CharaStatus.Pos.y, 0);
+					m_Line4Mat = Math::Matrix::CreateRotationZ(m_ShotAngle - m_CharaStatus.offset) * Math::Matrix::CreateTranslation(m_CharaStatus.Pos.x, m_CharaStatus.Pos.y, 0);
+				}
+				m_Line3Mat = Math::Matrix::CreateRotationZ(m_ShotAngle) * Math::Matrix::CreateTranslation(m_CharaStatus.Pos.x, m_CharaStatus.Pos.y, 0);
+				break;
 			}
-			if (PlayerSkillBase.Shot3way)
-			{
-				m_Line2Mat = Math::Matrix::CreateRotationZ(angle + m_CharaStatus.offset) * Math::Matrix::CreateTranslation(m_CharaStatus.Pos.x, m_CharaStatus.Pos.y, 0);
-				m_Line4Mat = Math::Matrix::CreateRotationZ(angle - m_CharaStatus.offset) * Math::Matrix::CreateTranslation(m_CharaStatus.Pos.x, m_CharaStatus.Pos.y, 0);
-			}
-			m_Line3Mat = Math::Matrix::CreateRotationZ(angle) * Math::Matrix::CreateTranslation(m_CharaStatus.Pos.x, m_CharaStatus.Pos.y, 0);
 		}
 		break;
 		case C_Turn::UpGrade:
@@ -309,9 +345,16 @@ void C_Player::Update()
 				m_Bullet.end()
 			);
 			m_ShotFlg = false;
+			MultiShotCnt = 0;
+			ShotWait = 0;
 			break;
 	}
 	
+	if (ShotWait > 0)
+	{
+		ShotWait--;
+	}
+
 	m_HpMat = Math::Matrix::CreateTranslation(m_CharaStatus.Pos.x - ((int)(66 * (((m_CharaStatus.m_MaxHp - m_CharaStatus.m_Hp) / 2) / m_CharaStatus.m_MaxHp))), m_CharaStatus.Pos.y + m_CharaStatus.HpAddPos.y, 0);
 	m_HpBackMat = Math::Matrix::CreateTranslation(m_CharaStatus.Pos.x, m_CharaStatus.Pos.y + m_CharaStatus.HpAddPos.y, 0);
 	m_HpBreakMat = Math::Matrix::CreateTranslation(m_CharaStatus.Pos.x - ((int)(66 * (((m_CharaStatus.m_MaxHp - m_CharaStatus.m_BreakHp) / 2) / m_CharaStatus.m_MaxHp))), m_CharaStatus.Pos.y + m_CharaStatus.HpAddPos.y, 0);
@@ -345,9 +388,12 @@ void C_Player::Init()
 	m_CharaStatus.m_Atk = 30;
 	PlayerSkillBase.m_BulletEnemyBoundFlg = 5;
 	PlayerSkillBase.m_WallbounceLeft = 3;
+	PlayerSkillBase.m_DoubleShot = 0;
 	PlayerSkillBase.Shot3way = true;
 	//PlayerSkillBase.Shot5way = true;
-		
+	ShotWait = 0;
+	MultiShotCnt = 0;
+	m_CanMoveFlg = true;
 	
 }
 

@@ -59,7 +59,9 @@ void C_GameScene::Update()
 		}
 		if (m_PlayerUpGrade->Update())
 		{
+
 			m_Enemy->Init(5);
+			BattleWave++;
 			m_PlayerUpGradeFlg = false;
 		}
 	}
