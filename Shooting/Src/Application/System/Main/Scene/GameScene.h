@@ -55,6 +55,7 @@ private:
 	KdTexture m_EnemyAtkTex;
 	KdTexture m_EnemyHurtTex;
 	KdTexture m_EnemyDeadTex;
+	KdTexture m_AtkExpTex;
 
 	KdTexture m_HpTex;
 	KdTexture m_HpBackTex;

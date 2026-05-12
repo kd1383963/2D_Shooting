@@ -71,14 +71,14 @@ public:
 	C_EnemyBase() {}
 	~C_EnemyBase() {}
 
-	virtual void Init(int wave)=0;
+	virtual void Init(int wave, int num)=0;
 	void PreInit();
 	void Update();
 	void Draw();
 	void SetTex(KdTexture* enemyidletex, KdTexture* enemyatktex, KdTexture* enemyhurttex, KdTexture* enemydeadtex,
 		KdTexture* hpbartex, KdTexture* hpbarbraektex, KdTexture* hpbarbacktex
 		, KdTexture* attacktex, KdTexture* beamtex, KdTexture* numbertex, KdTexture* bulletlinetex
-		, KdTexture* bullettex);
+		, KdTexture* bullettex,KdTexture* atkexptex);
 	virtual void Move()=0;
 
 	bool GetMoveFlg() { return m_EnemyStatus.m_MoveFlg; }
@@ -147,6 +147,12 @@ protected:
 	KdTexture* m_AttackIconTex;
 	KdTexture* m_BeamIconTex;
 	Math::Matrix m_IconMat;
+
+	KdTexture* m_AtkExpTex;
+	Math::Matrix m_AtkExpMat;
+	float  m_AtkExpAnimCnt;
+	int	 m_AtkExpAnimDia = 128;
+	bool m_AtkExpFlg = false;
 
 	KdTexture* m_BulletTex;
 	Math::Matrix m_BulletMat;

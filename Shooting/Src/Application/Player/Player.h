@@ -73,7 +73,10 @@ public:
 
 	int GetTotalScore() { return TotalScore; }
 
-	void HpUp() { m_CharaStatus.m_MaxHp += 20; }
+	void HpUp() {
+		m_CharaStatus.m_Hp += 20;
+		m_CharaStatus.m_MaxHp += 20;
+	}
 	void AtkUp() { m_CharaStatus.m_Atk += 10; }
 	void AddBulletShot() { PlayerSkillBase.m_DoubleShot++; }
 	void AddWallbounce() { PlayerSkillBase.m_WallbounceLeft++; }

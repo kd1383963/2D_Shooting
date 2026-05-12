@@ -50,6 +50,11 @@ void C_EnemyBase::Draw()
 	case Attack:
 		SHADER.m_spriteShader.SetMatrix(m_IconMat);
 		SHADER.m_spriteShader.DrawTex(m_AttackIconTex, { 0,0,32,32 }, 1.0f);
+		if (m_AtkExpFlg)
+		{
+			SHADER.m_spriteShader.SetMatrix(m_AtkExpMat);
+			SHADER.m_spriteShader.DrawTex(m_AtkExpTex, { 128 * (int)m_AtkExpAnimCnt,0,128,128 }, 1.0f);
+		}
 		break;
 	case Beam5:
 		if (!m_EnemyStatus.m_ShotFlg)
@@ -237,6 +242,7 @@ void C_EnemyBase::PreInit()
 {
 	m_LineBlinking = 0.1f;
 	m_LineBlinkingAdd = 0.01f;
+	m_AtkExpAnimCnt = 0.0f;
 }
 
 void C_EnemyBase::Update()
@@ -257,7 +263,16 @@ void C_EnemyBase::Update()
 		if (CharaAnimCnt > 8.0f)
 		{
 			CharaAnimCnt = 0.0f;
-			m_EnemyStatus.AtkFlg = true;
+			if (m_EnemyStatus.m_MoveCmd == Attack)
+			{
+				m_AtkExpFlg = true;
+				SetEAnimStatus(EIdle);
+				
+			}
+			else
+			{
+				m_EnemyStatus.AtkFlg = true;
+			}
 		}
 		break;
 	case EHurt:
@@ -288,7 +303,15 @@ void C_EnemyBase::Update()
 	{
 		m_EnemyStatus.m_DamageFlg = false;
 	}
-
+	if (m_AtkExpFlg)
+	{
+		m_AtkExpAnimCnt += 0.5f;
+		if (m_AtkExpAnimCnt > 11.0f)
+		{
+			m_AtkExpFlg = false;
+			m_EnemyStatus.AtkFlg = true;
+		}
+	}
 	
 
 	if (C_Turn::GetInstance().GetNowTurn() == C_Turn::Enemy && !m_EnemyStatus.m_ShotFlg)
@@ -309,6 +332,7 @@ void C_EnemyBase::Update()
 	switch (m_EnemyStatus.m_MoveCmd)
 	{
 	case Attack:
+		m_AtkExpMat = Math::Matrix::CreateTranslation(C_Player::GetInstance().GetPos().x, C_Player::GetInstance().GetPos().y, 0);
 		break;
 	case Beam5:
 		m_Line1Mat = Math::Matrix::CreateRotationZ(angle + m_EnemyStatus.offset * 2) * Math::Matrix::CreateTranslation(m_EnemyStatus.m_Pos.x, m_EnemyStatus.m_Pos.y, 0);
@@ -391,7 +415,7 @@ void C_EnemyBase::SetAlive() {
 void C_EnemyBase::SetTex(KdTexture* enemyidletex, KdTexture* enemyatktex, KdTexture* enemyhurttex, KdTexture* enemydeadtex,
 	KdTexture* hpbartex, KdTexture* hpbarbraektex, KdTexture* hpbarbacktex
 	, KdTexture* attacktex, KdTexture* beamtex, KdTexture* numbertex, KdTexture* bulletlinetex
-	, KdTexture* bullettex)
+	, KdTexture* bullettex, KdTexture* atkexptex)
 {
 	m_EnemyIdleTex = enemyidletex;
 	m_EnemyAtkTex = enemyatktex;
@@ -405,4 +429,5 @@ void C_EnemyBase::SetTex(KdTexture* enemyidletex, KdTexture* enemyatktex, KdText
 	m_NumberTex = numbertex;
 	m_BulletTex = bullettex;
 	m_BulletLineTex = bulletlinetex;
+	m_AtkExpTex = atkexptex;
 }

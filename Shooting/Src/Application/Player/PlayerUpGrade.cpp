@@ -11,6 +11,9 @@ void C_PlayerUpGrade::Draw()
 	SHADER.m_spriteShader.DrawTex(m_BrackBackTex, { 0,0,1280,720 }, 0.5f);
 	for (int i = 0; i < UpGradeStatuNum; i++)
 	{
+		SHADER.m_spriteShader.SetMatrix(Math::Matrix::Identity);
+		SHADER.m_spriteShader.DrawString(-300, 230, "自身を強化するスキルを選択してください。", { 1,1,1,1 });
+		SCENEMANAGER.DrawEndBegin();
 		SHADER.m_spriteShader.SetMatrix(m_UpGradeStatu[i].m_Mat);
 		switch (m_UpGradeStatu[i].m__SkillStatus)
 		{

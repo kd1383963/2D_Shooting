@@ -102,9 +102,10 @@ void C_GameScene::TexLoad()
 	m_NumberTex.Load("Texture/UI/DNumber.png");
 	m_EnemyBulletLineTex.Load("Texture/Enemy/Line.png");
 	m_EnemyBulletTex.Load("Texture/Enemy/EnemyBullet.png");
+	m_AtkExpTex.Load("Texture/Enemy/Exp.png");
 
 	m_Enemy->GiftTex(&m_EnemyIdleTex, &m_EnemyAtkTex, &m_EnemyHurtTex, &m_EnemyDeadTex, &m_HpTex, &m_HpBreakTex, &m_HpBackTex, &m_AttackIconTex,
-		&m_BeamIconTex, &m_NumberTex, &m_EnemyBulletLineTex, &m_EnemyBulletTex);
+		&m_BeamIconTex, &m_NumberTex, &m_EnemyBulletLineTex, &m_EnemyBulletTex,&m_AtkExpTex);
 	
 	m_BrackBackTex.Load("Texture/UI/Fade.png");
 	m_UpGradeHpTex.Load("Texture/UI/HpUp.png");

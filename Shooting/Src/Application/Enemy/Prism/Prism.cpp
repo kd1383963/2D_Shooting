@@ -24,7 +24,7 @@ void C_Prism::Move()
 	}
 }
 
-void C_Prism::Init(int wave)
+void C_Prism::Init(int wave,int num)
 {
 	std::vector<std::shared_ptr<C_EnemyBase>> EnemyChara = m_owner->GetEnemyChara();
 
@@ -46,17 +46,48 @@ void C_Prism::Init(int wave)
 			}
 		}
 	}while(!m_EnemyStatus.m_PosInitOkFlg);
-	
-	m_EnemyStatus.m_Hp = 100 + 50 * (wave / 3);
-	m_EnemyStatus.m_MaxHp = m_EnemyStatus.m_Hp;
-	m_EnemyStatus.m_BreakHp = m_EnemyStatus.m_Hp ;
-	m_EnemyStatus.m_Atk = 10 + 10 * (wave / 2);
-	SetAttackCmd();
-	m_EnemyStatus.m_Alive = true;
-	m_EnemyStatus.m_MoveFlg = false;
-	m_EnemyStatus.m_HpAddPos = { 0,-42 };
-	m_EnemyStatus.m_IconAddPos = { 0,47 };
-	
+	if (wave == 1)
+	{
+		if (num == 1)
+		{
+			m_EnemyStatus.m_Hp = 40;
+			m_EnemyStatus.m_MaxHp = m_EnemyStatus.m_Hp;
+			m_EnemyStatus.m_BreakHp = m_EnemyStatus.m_Hp;
+			m_EnemyStatus.m_Atk = 5 + 10 * (wave / 2);
+			m_EnemyStatus.m_MoveCmd = Attack;
+			m_EnemyStatus.AttackDamage = m_EnemyStatus.m_Atk;
+			m_EnemyStatus.m_Alive = true;
+			m_EnemyStatus.m_MoveFlg = false;
+			m_EnemyStatus.m_HpAddPos = { 0,-42 };
+			m_EnemyStatus.m_IconAddPos = { 0,47 };
+		}
+		else
+		{
+			m_EnemyStatus.m_Hp = 40;
+			m_EnemyStatus.m_MaxHp = m_EnemyStatus.m_Hp;
+			m_EnemyStatus.m_BreakHp = m_EnemyStatus.m_Hp;
+			m_EnemyStatus.m_Atk = 5 + 10 * (wave / 2);
+			m_EnemyStatus.m_MoveCmd = Beam;
+			m_Vec = m_EnemyStatus.m_Pos - C_Player::GetInstance().GetPos();
+			m_EnemyStatus.AttackDamage = m_EnemyStatus.m_Atk * 2;
+			m_EnemyStatus.m_Alive = true;
+			m_EnemyStatus.m_MoveFlg = false;
+			m_EnemyStatus.m_HpAddPos = { 0,-42 };
+			m_EnemyStatus.m_IconAddPos = { 0,47 };
+		}
+	}
+	else
+	{
+		m_EnemyStatus.m_Hp = 80 + 50 * (wave / 3);
+		m_EnemyStatus.m_MaxHp = m_EnemyStatus.m_Hp;
+		m_EnemyStatus.m_BreakHp = m_EnemyStatus.m_Hp;
+		m_EnemyStatus.m_Atk = 10 + 10 * (wave / 2);
+		SetAttackCmd();
+		m_EnemyStatus.m_Alive = true;
+		m_EnemyStatus.m_MoveFlg = false;
+		m_EnemyStatus.m_HpAddPos = { 0,-42 };
+		m_EnemyStatus.m_IconAddPos = { 0,47 };
+	}
 }
 
 void C_Prism::SetAttackCmd()

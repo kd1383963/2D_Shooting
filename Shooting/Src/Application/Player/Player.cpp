@@ -390,10 +390,10 @@ void C_Player::Init()
 	m_CharaStatus.m_MaxHp = m_CharaStatus.m_Hp;
 	m_CharaStatus.m_BreakHp = m_CharaStatus.m_Hp;
 	m_CharaStatus.m_Atk = 30;
-	PlayerSkillBase.m_BulletEnemyBoundFlg = 5;
-	PlayerSkillBase.m_WallbounceLeft = 3;
+	PlayerSkillBase.m_BulletEnemyBoundFlg = 1;
+	PlayerSkillBase.m_WallbounceLeft = 0;
 	PlayerSkillBase.m_DoubleShot = 0;
-	PlayerSkillBase.Shot3way = true;
+	//PlayerSkillBase.Shot3way = true;
 	//PlayerSkillBase.Shot5way = true;
 	ShotWait = 0;
 	MultiShotCnt = 0;
