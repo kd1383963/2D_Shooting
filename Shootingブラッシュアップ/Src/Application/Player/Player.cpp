@@ -298,7 +298,7 @@ void C_Player::Update()
 			switch (m_CharaStatus.m_AnimStatus)
 			{
 			case Move:
-				
+			case Hurt:
 				
 				if (PlayerSkillBase.Shot5way)
 				{
@@ -355,6 +355,15 @@ void C_Player::Update()
 		ShotWait--;
 	}
 
+	if (m_CharaStatus.Pos.y < -300.0f)
+	{
+		m_CharaStatus.HpAddPos.y = 42;
+	}
+	else
+	{
+		m_CharaStatus.HpAddPos.y = -42;
+	}
+
 	m_HpMat = Math::Matrix::CreateTranslation(m_CharaStatus.Pos.x - ((int)(66 * (((m_CharaStatus.m_MaxHp - m_CharaStatus.m_Hp) / 2) / m_CharaStatus.m_MaxHp))), m_CharaStatus.Pos.y + m_CharaStatus.HpAddPos.y, 0);
 	m_HpBackMat = Math::Matrix::CreateTranslation(m_CharaStatus.Pos.x, m_CharaStatus.Pos.y + m_CharaStatus.HpAddPos.y, 0);
 	m_HpBreakMat = Math::Matrix::CreateTranslation(m_CharaStatus.Pos.x - ((int)(66 * (((m_CharaStatus.m_MaxHp - m_CharaStatus.m_BreakHp) / 2) / m_CharaStatus.m_MaxHp))), m_CharaStatus.Pos.y + m_CharaStatus.HpAddPos.y, 0);
@@ -390,20 +399,23 @@ void C_Player::Init()
 	m_CharaStatus.m_MaxHp = m_CharaStatus.m_Hp;
 	m_CharaStatus.m_BreakHp = m_CharaStatus.m_Hp;
 	m_CharaStatus.m_Atk = 30;
-	PlayerSkillBase.m_BulletEnemyBoundFlg = 5;
-	PlayerSkillBase.m_WallbounceLeft = 3;
+	PlayerSkillBase.m_BulletEnemyBoundFlg = 1;
+	PlayerSkillBase.m_WallbounceLeft = 1;
 	PlayerSkillBase.m_DoubleShot = 0;
-	PlayerSkillBase.Shot3way = true;
+	//PlayerSkillBase.Shot3way = true;
 	//PlayerSkillBase.Shot5way = true;
 	ShotWait = 0;
 	MultiShotCnt = 0;
 	m_CanMoveFlg = true;
-	
+	CanMovePosXMin = -180;
+	CanMovePosXMax = 180;
+	NowMovePosX = 0;
 }
 
 void C_Player::SetTex(KdTexture* playeridletex, KdTexture* playermovetex, KdTexture* playeratktex,
 	KdTexture* playerhurttex, KdTexture* playerdeadtex, KdTexture* bulletlinetex,
-	KdTexture* hpbartex, KdTexture* hpbarbraektex, KdTexture* hpbarbacktex)
+	KdTexture* hpbartex, KdTexture* hpbarbraektex, KdTexture* hpbarbacktex,
+	KdTexture* ugwallboundtex, KdTexture* ugdoubleshottex, KdTexture* ugenemyboundtex, KdTexture* ugsplittex)
 {
 	m_BulletTex.Load("Texture/Player/PlayerBullet.png");
 	m_PlayerIdleTex = playeridletex;
@@ -415,6 +427,10 @@ void C_Player::SetTex(KdTexture* playeridletex, KdTexture* playermovetex, KdText
 	m_HpTex = hpbartex;
 	m_HpBreakTex = hpbarbraektex;
 	m_HpBackTex = hpbarbacktex;
+	m_UpGradeBulletWallBoundTex = ugwallboundtex;
+	m_UpGradeDoubleBulletTex = ugdoubleshottex;
+	m_UpGradeBulletEnemyBoundTex = ugenemyboundtex;
+	m_UpGradeBulletSplitTex = ugsplittex;
 }
 
 Math::Vector2 C_Player::Rotate(Math::Vector2& v, float angle)

@@ -52,7 +52,8 @@ public:
 	void Draw();
 	void SetTex(KdTexture* playeridletex, KdTexture* playermovetex, KdTexture* playeratktex, 
 		KdTexture* playerhurttex, KdTexture* playerdeadtex, KdTexture* bulletlinetex,
-		KdTexture* hpbartex, KdTexture* hpbarbraektex, KdTexture* hpbarbacktex);
+		KdTexture* hpbartex, KdTexture* hpbarbraektex, KdTexture* hpbarbacktex,
+		KdTexture* ugwallboundtex, KdTexture* ugdoubleshottex, KdTexture* ugenemyboundtex, KdTexture* ugsplittex);
 
 	void SetShotFlg(bool a_flg) { m_ShotFlg = a_flg; }
 
@@ -73,7 +74,10 @@ public:
 
 	int GetTotalScore() { return TotalScore; }
 
-	void HpUp() { m_CharaStatus.m_MaxHp += 20; }
+	void HpUp() {
+		m_CharaStatus.m_Hp += 20;
+		m_CharaStatus.m_MaxHp += 20;
+	}
 	void AtkUp() { m_CharaStatus.m_Atk += 10; }
 	void AddBulletShot() { PlayerSkillBase.m_DoubleShot++; }
 	void AddWallbounce() { PlayerSkillBase.m_WallbounceLeft++; }
@@ -139,6 +143,16 @@ private:
 	KdTexture* m_HpBackTex;
 	KdTexture* m_HpBreakTex;
 	
+	KdTexture*   m_UpGradeBulletWallBoundTex;
+	KdTexture*   m_UpGradeDoubleBulletTex;
+	KdTexture*   m_UpGradeBulletEnemyBoundTex;
+	KdTexture*   m_UpGradeBulletSplitTex;
+
+	Math::Matrix m_UpGradeBulletWallBoundMat;
+	Math::Matrix m_UpGradeDoubleBulletMat;
+	Math::Matrix m_UpGradeBulletEnemyBoundMat;
+	Math::Matrix m_UpGradeBulletSplitMat;
+
 	Math::Matrix m_PlayerScaleMat;
 	Math::Matrix m_PlayerMat;
 	Math::Matrix m_Line1Mat;
@@ -149,6 +163,12 @@ private:
 	Math::Matrix m_HpMat;
 	Math::Matrix m_HpBackMat;
 	Math::Matrix m_HpBreakMat;
+
+	float CanMovePosXMax;
+	float CanMovePosXMin;
+	float NowMovePosX;
+	Math::Matrix CanMoveMat;
+	KdTexture* m_CanMoveTex;
 
 	bool m_ShotFlg;
 
