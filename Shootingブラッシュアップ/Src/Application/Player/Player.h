@@ -85,6 +85,13 @@ public:
 	void AddEnemyBounce() { PlayerSkillBase.m_BulletEnemyBoundFlg++; }
 	void SetShot3way() { PlayerSkillBase.Shot3way = true; }
 	void SetShot5way() { PlayerSkillBase.Shot5way = true; }
+	void HealHp() {
+		m_CharaStatus.m_Hp += m_CharaStatus.m_MaxHp / 2;
+		if (m_CharaStatus.m_Hp > m_CharaStatus.m_MaxHp)
+		{
+			m_CharaStatus.m_Hp = m_CharaStatus.m_MaxHp;
+		}
+	}
 
 	bool GetShot3way() { return PlayerSkillBase.Shot3way; }
 	bool GetShot5way() { return PlayerSkillBase.Shot5way; }

@@ -4,6 +4,7 @@ enum SkillStatus
 {
 	TurnAdd,
 	UpHp,
+	HealHp,
 	UpAtk,
 	UpBulletWallBound,
 	DoubleBullet,
@@ -30,7 +31,7 @@ public:
 	bool Update();
 	void Draw();
 
-	void SetTex(KdTexture* uphptex, KdTexture* upatktex, KdTexture* upbwallboundtex,
+	void SetTex(KdTexture* uphptex, KdTexture* healhptex, KdTexture* upatktex, KdTexture* upbwallboundtex,
 		KdTexture* updoubletex, KdTexture* enemyboundtex, KdTexture* turnaddtex,
 		KdTexture* upgradebulletsplittex,KdTexture* brackback);
 
@@ -44,6 +45,7 @@ private:
 	KdTexture* m_BrackBackTex;
 	
 	KdTexture* m_UpGradeHpTex;
+	KdTexture* m_HealHpTex;
 	KdTexture* m_UpGradeAtkTex;
 	KdTexture* m_UpGradeBulletWallBoundTex;
 	KdTexture* m_UpGradeDoubleBulletTex;

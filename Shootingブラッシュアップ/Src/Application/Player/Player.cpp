@@ -169,6 +169,7 @@ void C_Player::Update()
 
 	if (m_CharaStatus.m_Hp <= 0)
 	{
+		m_CharaStatus.m_Hp = 0;
 		if (m_CharaStatus.m_AnimStatus != Dead)
 		{
 			SetAnimStatus(Dead);

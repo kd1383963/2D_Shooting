@@ -59,10 +59,30 @@ void C_GameScene::Update()
 		}
 		if (m_PlayerUpGrade->Update())
 		{
-
-			m_Enemy->Init(5,BattleWave);
-			BattleWave++;
-			m_PlayerUpGradeFlg = false;
+			if (BattleWave < 4)
+			{
+				m_Enemy->Init(5, BattleWave);
+				BattleWave++;
+				m_PlayerUpGradeFlg = false;
+			}
+			else if (BattleWave < 7)
+			{
+				m_Enemy->Init(8, BattleWave);
+				BattleWave++;
+				m_PlayerUpGradeFlg = false;
+			}
+			else if (BattleWave < 11)
+			{
+				m_Enemy->Init(14, BattleWave);
+				BattleWave++;
+				m_PlayerUpGradeFlg = false;
+			}
+			else 
+			{
+				m_Enemy->Init(18, BattleWave);
+				BattleWave++;
+				m_PlayerUpGradeFlg = false;
+			}
 		}
 	}
 }
@@ -89,9 +109,11 @@ void C_GameScene::TexLoad()
 	m_UpGradeBulletEnemyBoundTex.Load("Texture/UI/EnemyBound.png");
 	m_UpGradeBulletSplitTex.Load("Texture/UI/BulletSplit.png");
 	m_TurnAddTex.Load("Texture/UI/TurnAdd.png");
+	m_HealHpTex.Load("Texture/UI/Heal.png");
 	m_NumberTex.Load("Texture/UI/DNumber.png");
 
-	m_PlayerUpGrade->SetTex(&m_UpGradeHpTex, &m_UpGradeAtkTex, &m_UpGradeBulletWallBoundTex,
+
+	m_PlayerUpGrade->SetTex(&m_UpGradeHpTex,&m_HealHpTex,&m_UpGradeAtkTex, &m_UpGradeBulletWallBoundTex,
 		&m_UpGradeDoubleBulletTex, &m_UpGradeBulletEnemyBoundTex, &m_TurnAddTex,
 		&m_UpGradeBulletSplitTex, &m_BrackBackTex);
 

@@ -77,6 +77,7 @@ private:
 	KdTexture m_UpGradeBulletEnemyBoundTex;
 	KdTexture m_UpGradeBulletSplitTex;
 	KdTexture m_TurnAddTex;
+	KdTexture m_HealHpTex;
 
 	
 	GameFadeType m_FadeType = GFade_no;
