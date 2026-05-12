@@ -45,6 +45,39 @@ void C_EnemyBase::Draw()
 	}
 	SHADER.m_spriteShader.SetMatrix(m_HpMat);
 	SHADER.m_spriteShader.DrawTex(m_HpTex, { 0,0,(66 - (int)(66 * (HpBerCnt / m_EnemyStatus.m_MaxHp))),8 }, 1.0f);
+
+	int Max = m_EnemyStatus.m_MaxHp;
+	SHADER.m_spriteShader.SetMatrix(m_HpMax1Mat);
+	SHADER.m_spriteShader.DrawTex(m_HpNumTex, { NumberWidth * (Max % 10),0,64,64 }, 1.0f);
+	Max = Max / 10;
+	SHADER.m_spriteShader.SetMatrix(m_HpMax10Mat);
+	SHADER.m_spriteShader.DrawTex(m_HpNumTex, { NumberWidth * (Max % 10),0,64,64 }, 1.0f);
+	if (m_MaxHp100Flg)
+	{
+		Max = Max / 10;
+		SHADER.m_spriteShader.SetMatrix(m_HpMax100Mat);
+		SHADER.m_spriteShader.DrawTex(m_HpNumTex, { NumberWidth * (Max % 10),0,64,64 }, 1.0f);
+	}
+	SHADER.m_spriteShader.SetMatrix(m_HpBerMat);
+	SHADER.m_spriteShader.DrawTex(m_HpBerTex, { 0,0,64,64 }, 1.0f);
+
+	int Now = m_EnemyStatus.m_Hp;
+	SHADER.m_spriteShader.SetMatrix(m_NowHp1Mat);
+	SHADER.m_spriteShader.DrawTex(m_HpNumTex, { NumberWidth * (Now % 10),0,64,64 }, 1.0f);
+	if (m_NowHp10Flg)
+	{
+		Now = Now / 10;
+		SHADER.m_spriteShader.SetMatrix(m_NowHp10Mat);
+		SHADER.m_spriteShader.DrawTex(m_HpNumTex, { NumberWidth * (Now % 10),0,64,64 }, 1.0f);
+	}
+	if (m_NowHp100Flg)
+	{
+		Now = Now / 10;
+		SHADER.m_spriteShader.SetMatrix(m_NowHp100Mat);
+		SHADER.m_spriteShader.DrawTex(m_HpNumTex, { NumberWidth * Now,0,64,64 }, 1.0f);
+	}
+
+
 	switch (m_EnemyStatus.m_MoveCmd)
 	{
 	case Attack:
@@ -383,13 +416,42 @@ void C_EnemyBase::Update()
 			m_EnemyStatus.AtkFlg = false;
 		}
 	}
-	
+	m_NowHp100Flg = false;
+	m_NowHp10Flg = false;
+	if (m_EnemyStatus.m_Hp / 100 >= 1)
+	{
+		m_NowHp100Flg = true;
+		m_NowHp10Flg = true;
+	}
+	else if (m_EnemyStatus.m_Hp / 10 >= 1)
+	{
+		m_NowHp10Flg = true;
+	}
 
 	m_HpMat = Math::Matrix::CreateTranslation(m_EnemyStatus.m_Pos.x - ((int)(66 * (((m_EnemyStatus.m_MaxHp - m_EnemyStatus.m_Hp) / 2) / m_EnemyStatus.m_MaxHp))), m_EnemyStatus.m_Pos.y + m_EnemyStatus.m_HpAddPos.y, 0);
 	m_HpBackMat = Math::Matrix::CreateTranslation(m_EnemyStatus.m_Pos.x, m_EnemyStatus.m_Pos.y + m_EnemyStatus.m_HpAddPos.y, 0);
 	m_HpBreakMat = Math::Matrix::CreateTranslation(m_EnemyStatus.m_Pos.x - ((int)(66 * (((m_EnemyStatus.m_MaxHp - m_EnemyStatus.m_BreakHp) / 2) / m_EnemyStatus.m_MaxHp))), m_EnemyStatus.m_Pos.y + m_EnemyStatus.m_HpAddPos.y, 0);
 	m_IconMat = Math::Matrix::CreateTranslation(m_EnemyStatus.m_Pos.x+m_EnemyStatus.m_IconAddPos.x, m_EnemyStatus.m_Pos.y + m_EnemyStatus.m_IconAddPos.y, 0);
-	
+	if (m_NowHp100Flg && m_NowHp10Flg)
+	{
+		m_NowHp100Mat = Math::Matrix::CreateScale(m_HpNumScale, m_HpNumScale, 0) * Math::Matrix::CreateTranslation(m_EnemyStatus.m_Pos.x + AddHpNumPos.x * 3, m_EnemyStatus.m_Pos.y + m_EnemyStatus.m_HpAddPos.y + AddHpNumPos.y, 0);
+		m_NowHp10Mat = Math::Matrix::CreateScale(m_HpNumScale, m_HpNumScale, 0) * Math::Matrix::CreateTranslation(m_EnemyStatus.m_Pos.x + AddHpNumPos.x * 2, m_EnemyStatus.m_Pos.y + m_EnemyStatus.m_HpAddPos.y + AddHpNumPos.y, 0);
+		m_NowHp1Mat = Math::Matrix::CreateScale(m_HpNumScale, m_HpNumScale, 0) * Math::Matrix::CreateTranslation(m_EnemyStatus.m_Pos.x + AddHpNumPos.x, m_EnemyStatus.m_Pos.y + m_EnemyStatus.m_HpAddPos.y + AddHpNumPos.y, 0);
+	}
+	else if (m_NowHp10Flg)
+	{
+		m_NowHp10Mat = Math::Matrix::CreateScale(m_HpNumScale, m_HpNumScale, 0) * Math::Matrix::CreateTranslation(m_EnemyStatus.m_Pos.x + AddHpNumPos.x * 2, m_EnemyStatus.m_Pos.y + m_EnemyStatus.m_HpAddPos.y + AddHpNumPos.y, 0);
+		m_NowHp1Mat = Math::Matrix::CreateScale(m_HpNumScale, m_HpNumScale, 0) * Math::Matrix::CreateTranslation(m_EnemyStatus.m_Pos.x + AddHpNumPos.x, m_EnemyStatus.m_Pos.y + m_EnemyStatus.m_HpAddPos.y + AddHpNumPos.y, 0);
+	}
+	else
+	{
+		m_NowHp1Mat = Math::Matrix::CreateScale(m_HpNumScale, m_HpNumScale, 0) * Math::Matrix::CreateTranslation(m_EnemyStatus.m_Pos.x + AddHpNumPos.x, m_EnemyStatus.m_Pos.y + m_EnemyStatus.m_HpAddPos.y + AddHpNumPos.y, 0);
+	}
+	m_HpMax100Mat = Math::Matrix::CreateScale(m_HpNumScale, m_HpNumScale, 0) * Math::Matrix::CreateTranslation(m_EnemyStatus.m_Pos.x - AddHpNumPos.x, m_EnemyStatus.m_Pos.y + m_EnemyStatus.m_HpAddPos.y + AddHpNumPos.y, 0);
+	m_HpMax10Mat = Math::Matrix::CreateScale(m_HpNumScale, m_HpNumScale, 0) * Math::Matrix::CreateTranslation(m_EnemyStatus.m_Pos.x - AddHpNumPos.x * 2, m_EnemyStatus.m_Pos.y + m_EnemyStatus.m_HpAddPos.y + AddHpNumPos.y, 0);
+	m_HpMax1Mat = Math::Matrix::CreateScale(m_HpNumScale, m_HpNumScale, 0) * Math::Matrix::CreateTranslation(m_EnemyStatus.m_Pos.x - AddHpNumPos.x * 3, m_EnemyStatus.m_Pos.y + m_EnemyStatus.m_HpAddPos.y + AddHpNumPos.y, 0);
+	m_HpBerMat = Math::Matrix::CreateScale(m_HpNumScale, m_HpNumScale, 0) * Math::Matrix::CreateTranslation(m_EnemyStatus.m_Pos.x, m_EnemyStatus.m_Pos.y + m_EnemyStatus.m_HpAddPos.y + AddHpNumPos.y, 0);
+
 
 	m_IconScaleMat = Math::Matrix::CreateScale(0.2f, 0.2f, 1);
 	m_IconTransMat = Math::Matrix::CreateTranslation(m_EnemyStatus.m_Pos.x + m_EnemyStatus.m_IconAddPos.x + m_EnemyStatus.m_IconNumberAddPos.x * 3, m_EnemyStatus.m_Pos.y + m_EnemyStatus.m_IconAddPos.y + m_EnemyStatus.m_IconNumberAddPos.y, 0);
@@ -415,7 +477,7 @@ void C_EnemyBase::SetAlive() {
 void C_EnemyBase::SetTex(KdTexture* enemyidletex, KdTexture* enemyatktex, KdTexture* enemyhurttex, KdTexture* enemydeadtex,
 	KdTexture* hpbartex, KdTexture* hpbarbraektex, KdTexture* hpbarbacktex
 	, KdTexture* attacktex, KdTexture* beamtex, KdTexture* numbertex, KdTexture* bulletlinetex
-	, KdTexture* bullettex, KdTexture* atkexptex)
+	, KdTexture* bullettex, KdTexture* atkexptex, KdTexture* hpbertex)
 {
 	m_EnemyIdleTex = enemyidletex;
 	m_EnemyAtkTex = enemyatktex;
@@ -430,4 +492,6 @@ void C_EnemyBase::SetTex(KdTexture* enemyidletex, KdTexture* enemyatktex, KdText
 	m_BulletTex = bullettex;
 	m_BulletLineTex = bulletlinetex;
 	m_AtkExpTex = atkexptex;
+	m_HpBerTex = hpbertex;
+	m_HpNumTex = numbertex;
 }

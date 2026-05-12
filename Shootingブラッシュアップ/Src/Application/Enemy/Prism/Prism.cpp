@@ -31,7 +31,9 @@ void C_Prism::Init(int wave,int num)
 	m_EnemyStatus.m_Radius = 32;
 	m_EnemyStatus.m_EAnimStatus = EIdle;
 	CharaAnimCnt = 0;
-
+	m_MaxHp100Flg = false;
+	m_NowHp100Flg = false;
+	m_NowHp10Flg = false;
 	do {
 		m_EnemyStatus.m_Pos.x = rand() % (640 - 64);
 		m_EnemyStatus.m_Pos.y = rand() % (720 - 80 * 2) - (320 - 64);
@@ -88,6 +90,12 @@ void C_Prism::Init(int wave,int num)
 		m_EnemyStatus.m_HpAddPos = { 0,-42 };
 		m_EnemyStatus.m_IconAddPos = { 0,47 };
 	}
+	if (m_EnemyStatus.m_MaxHp>=100)
+	{
+		m_MaxHp100Flg = true;
+	}
+	
+
 }
 
 void C_Prism::SetAttackCmd()

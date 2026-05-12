@@ -78,7 +78,7 @@ public:
 	void SetTex(KdTexture* enemyidletex, KdTexture* enemyatktex, KdTexture* enemyhurttex, KdTexture* enemydeadtex,
 		KdTexture* hpbartex, KdTexture* hpbarbraektex, KdTexture* hpbarbacktex
 		, KdTexture* attacktex, KdTexture* beamtex, KdTexture* numbertex, KdTexture* bulletlinetex
-		, KdTexture* bullettex,KdTexture* atkexptex);
+		, KdTexture* bullettex,KdTexture* atkexptex,KdTexture* m_hpbertex);
 	virtual void Move()=0;
 
 	bool GetMoveFlg() { return m_EnemyStatus.m_MoveFlg; }
@@ -131,6 +131,7 @@ protected:
 	
 	C_Enemy* m_owner;
 
+	static const int NumberWidth = 64;
 
 	KdTexture* m_EnemyIdleTex;
 	KdTexture* m_EnemyAtkTex;
@@ -176,6 +177,22 @@ protected:
 	Math::Matrix m_IconNumber10Mat;
 	Math::Matrix m_IconNumber100Mat;
 	
+	KdTexture* m_HpNumTex;
+	KdTexture* m_HpBerTex;
+
+	Math::Vector2 AddHpNumPos = { -10, -16 };
+
+	bool m_NowHp100Flg;
+	bool m_NowHp10Flg;
+	bool m_MaxHp100Flg;
+	float m_HpNumScale = 0.2f;
+	Math::Matrix m_HpMax1Mat;
+	Math::Matrix m_HpMax10Mat;
+	Math::Matrix m_HpMax100Mat;
+	Math::Matrix m_HpBerMat;
+	Math::Matrix m_NowHp1Mat;
+	Math::Matrix m_NowHp10Mat;
+	Math::Matrix m_NowHp100Mat;
 
 	EnemyStatus m_EnemyStatus;
 

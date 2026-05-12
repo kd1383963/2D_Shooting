@@ -60,6 +60,7 @@ private:
 	KdTexture m_HpTex;
 	KdTexture m_HpBackTex;
 	KdTexture m_HpBreakTex;
+	KdTexture m_HpNumBerTex;
 
 	KdTexture m_AttackIconTex;
 	KdTexture m_BeamIconTex;

@@ -18,7 +18,7 @@ public:
 	void GiftTex(KdTexture* enemyidletex, KdTexture* enemyatktex, KdTexture* enemyhurttex, KdTexture* enemydeadtex,
 		KdTexture* hpbartex, KdTexture* hpbarbraektex, KdTexture* hpbarbacktex
 		, KdTexture* attacktex, KdTexture* beamtex, KdTexture* numbertex, KdTexture* bulletlinetex
-		, KdTexture* bullettex, KdTexture* atkexptex);
+		, KdTexture* bullettex, KdTexture* atkexptex,KdTexture* m_hpbertex);
 	std::vector<std::shared_ptr<C_EnemyBase>> GetEnemyChara() { return m_EnemyChara; }
 	
 	void TotalEnemyMainer() { TotalEnemy--; }
@@ -44,5 +44,7 @@ private:
 	KdTexture* m_BulletTex;
 	KdTexture* m_BulletLineTex;
 	KdTexture* m_AtkExpTex;
+	KdTexture* m_HpBerTex;
+
 };
 

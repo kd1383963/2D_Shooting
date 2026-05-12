@@ -53,7 +53,8 @@ public:
 	void SetTex(KdTexture* playeridletex, KdTexture* playermovetex, KdTexture* playeratktex, 
 		KdTexture* playerhurttex, KdTexture* playerdeadtex, KdTexture* bulletlinetex,
 		KdTexture* hpbartex, KdTexture* hpbarbraektex, KdTexture* hpbarbacktex,
-		KdTexture* ugwallboundtex, KdTexture* ugdoubleshottex, KdTexture* ugenemyboundtex, KdTexture* ugsplittex);
+		KdTexture* ugwallboundtex, KdTexture* ugdoubleshottex, KdTexture* ugenemyboundtex, KdTexture* ugsplittex,
+		KdTexture* hpnumtex, KdTexture*hpbernum);
 
 	void SetShotFlg(bool a_flg) { m_ShotFlg = a_flg; }
 
@@ -125,6 +126,8 @@ private:
 
 	int TotalScore;
 
+	static const int NumberWidth = 64;
+
 	const float m_MoveSpeed = 10.0f;
 
 	const float m_Radius = 32;
@@ -142,6 +145,8 @@ private:
 	KdTexture* m_HpTex;
 	KdTexture* m_HpBackTex;
 	KdTexture* m_HpBreakTex;
+	KdTexture* m_HpNumTex;
+	KdTexture* m_HpBerTex;
 	
 	KdTexture*   m_UpGradeBulletWallBoundTex;
 	KdTexture*   m_UpGradeDoubleBulletTex;
@@ -163,6 +168,21 @@ private:
 	Math::Matrix m_HpMat;
 	Math::Matrix m_HpBackMat;
 	Math::Matrix m_HpBreakMat;
+
+	Math::Vector2 AddHpNumPos = { -10, -16 };
+
+	bool m_NowHp100Flg;
+	bool m_NowHp10Flg;
+	float m_HpNumScale = 0.2f;
+	Math::Matrix m_HpMax1Mat;
+	Math::Matrix m_HpMax10Mat;
+	Math::Matrix m_HpMax100Mat;
+	Math::Matrix m_HpBerMat;
+	Math::Matrix m_NowHp1Mat;
+	Math::Matrix m_NowHp10Mat;
+	Math::Matrix m_NowHp100Mat;
+	
+	
 
 	float CanMovePosXMax;
 	float CanMovePosXMin;

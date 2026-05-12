@@ -72,7 +72,7 @@ void C_Enemy::Init(int enemynum,int wave)
 		m_EnemyChara[i]->Init(wave,i);
 		m_EnemyChara[i]->SetTex(m_EnemyIdleTex,m_EnemyAtkTex, m_EnemyHurtTex, m_EnemyDeadTex, m_HpTex, m_HpBreakTex,
 			m_HpBackTex, m_AttackIconTex,
-			m_BeamIconTex, m_NumberTex, m_BulletLineTex, m_BulletTex,m_AtkExpTex);
+			m_BeamIconTex, m_NumberTex, m_BulletLineTex, m_BulletTex,m_AtkExpTex,m_HpBerTex);
 		TotalEnemy++;
 	}	
 	std::sort(m_EnemyChara.begin(), m_EnemyChara.end(),
@@ -87,7 +87,7 @@ void C_Enemy::Init(int enemynum,int wave)
 void C_Enemy::GiftTex(KdTexture* enemyidletex, KdTexture* enemyatktex, KdTexture* enemyhurttex, KdTexture* enemydeadtex,
 	KdTexture* hpbartex, KdTexture* hpbarbraektex, KdTexture* hpbarbacktex
 	, KdTexture* attacktex, KdTexture* beamtex, KdTexture* numbertex, KdTexture* bulletlinetex
-	, KdTexture* bullettex, KdTexture* atkexptex)
+	, KdTexture* bullettex, KdTexture* atkexptex, KdTexture* hpbertex)
 {
 	m_EnemyIdleTex = enemyidletex;
 	m_EnemyAtkTex = enemyatktex;
@@ -102,4 +102,5 @@ void C_Enemy::GiftTex(KdTexture* enemyidletex, KdTexture* enemyatktex, KdTexture
 	m_BulletTex = bullettex;
 	m_BulletLineTex = bulletlinetex;
 	m_AtkExpTex = atkexptex;
+	m_HpBerTex = hpbertex;
 }
