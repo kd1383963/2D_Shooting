@@ -1,6 +1,7 @@
 #include "PlayerUpGrade.h"
 #include "../System/Battle/Turn.h"
 #include "../System/Main/Scene/GameScene.h"
+#include "../System/Main/Scene/SceneManager.h"
 #include "../System/Utility/MouseHit.h"
 #include "../System/Utility/KeyManager.h"
 #include "Player.h"
@@ -15,27 +16,70 @@ void C_PlayerUpGrade::Draw()
 		{
 		case BulletEnemyBound:
 			SHADER.m_spriteShader.DrawTex(m_UpGradeBulletEnemyBoundTex, { 0,0,32,32 }, 1.0f);
+			if (MOUSEHIT.MouseBlockHit(m_UpGradeStatu[i].m_Pos * m_Scale, m_Radius / 2 * m_Scale, m_Radius / 2 * m_Scale))
+			{
+				SHADER.m_spriteShader.SetMatrix(Math::Matrix::Identity);
+				SHADER.m_spriteShader.DrawString(-210, -150, "íeÇ™ìGìØémÇ≈íµÇÀÇÈâÒêî + 1 ", { 1,1,1,1 });
+			}
 			break;
 		case UpBulletWallBound:
 			SHADER.m_spriteShader.DrawTex(m_UpGradeBulletWallBoundTex, { 0,0,32,32 }, 1.0f);
+			if (MOUSEHIT.MouseBlockHit(m_UpGradeStatu[i].m_Pos * m_Scale, m_Radius / 2 * m_Scale, m_Radius / 2 * m_Scale))
+			{
+				SHADER.m_spriteShader.SetMatrix(Math::Matrix::Identity);
+				SHADER.m_spriteShader.DrawString(-190, -150, "íeÇ™ï«Ç≈íµÇÀÇÈâÒêî + 1 ", { 1,1,1,1 });
+			}
 			break;
 		case DoubleBullet:
 			SHADER.m_spriteShader.DrawTex(m_UpGradeDoubleBulletTex, { 0,0,32,32 }, 1.0f);
+			if (MOUSEHIT.MouseBlockHit(m_UpGradeStatu[i].m_Pos * m_Scale, m_Radius / 2 * m_Scale, m_Radius / 2 * m_Scale))
+			{
+				SHADER.m_spriteShader.SetMatrix(Math::Matrix::Identity);
+				SHADER.m_spriteShader.DrawString(-230, -150, "àÍìxÇ…íeÇî≠éÀÇ∑ÇÈâÒêî + 1 ", { 1,1,1,1 });
+			}
 			break;
 		case UpHp:
 			SHADER.m_spriteShader.DrawTex(m_UpGradeHpTex, { 0,0,32,32 }, 1.0f);
+			if (MOUSEHIT.MouseBlockHit(m_UpGradeStatu[i].m_Pos * m_Scale, m_Radius / 2 * m_Scale, m_Radius / 2 * m_Scale))
+			{
+				SHADER.m_spriteShader.SetMatrix(Math::Matrix::Identity);
+				SHADER.m_spriteShader.DrawString(-110, -150, "ç≈ëÂëÃóÕ + 20", { 1,1,1,1 });
+			}
 			break;
 		case UpAtk:
 			SHADER.m_spriteShader.DrawTex(m_UpGradeAtkTex, { 0,0,32,32 }, 1.0f);
+			if (MOUSEHIT.MouseBlockHit(m_UpGradeStatu[i].m_Pos * m_Scale, m_Radius / 2 * m_Scale, m_Radius / 2 * m_Scale))
+			{
+				SHADER.m_spriteShader.SetMatrix(Math::Matrix::Identity);
+				SHADER.m_spriteShader.DrawString(-90, -150, "çUåÇóÕ + 5", { 1,1,1,1 });
+			}
 			break;
 		case BulletSplit:
 			SHADER.m_spriteShader.DrawTex(m_UpGradeBulletSplitTex, { 0,0,32,32 }, 1.0f);
+			if (MOUSEHIT.MouseBlockHit(m_UpGradeStatu[i].m_Pos * m_Scale, m_Radius / 2 * m_Scale, m_Radius / 2 * m_Scale))
+			{
+				if (!C_Player::GetInstance().GetShot3way())
+				{
+					SHADER.m_spriteShader.SetMatrix(Math::Matrix::Identity);
+					SHADER.m_spriteShader.DrawString(-280, -150, "àÍìxÇ…íeÇî≠éÀÇ∑ÇÈå¬êî( 1 -> 3 ) ", { 1,1,1,1 });
+				}
+				else
+				{
+					SHADER.m_spriteShader.SetMatrix(Math::Matrix::Identity);
+					SHADER.m_spriteShader.DrawString(-280, -150, "àÍìxÇ…íeÇî≠éÀÇ∑ÇÈå¬êî( 3 -> 5 ) ", { 1,1,1,1 });
+				}
+			}
 			break;
 		case TurnAdd:
 			SHADER.m_spriteShader.DrawTex(m_TurnAddTex, { 0,0,32,32 }, 1.0f);
+			if (MOUSEHIT.MouseBlockHit(m_UpGradeStatu[i].m_Pos * m_Scale, m_Radius / 2 * m_Scale, m_Radius / 2 * m_Scale))
+			{
+				SHADER.m_spriteShader.SetMatrix(Math::Matrix::Identity);
+				SHADER.m_spriteShader.DrawString(-310, -150, "ñÇóÕï‚ãã(É^Å[Éìí«â¡3É^Å[Éì)", { 1,1,1,1 });
+			}
 			break;
 		}
-		
+		SCENEMANAGER.DrawEndBegin();
 	}
 }
 

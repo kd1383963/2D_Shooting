@@ -33,6 +33,9 @@ private:
 	Math::Matrix m_ScoreMat;
 	KdTexture m_ScoreTex;
 
+	int ScoreEndFlg;
+	int ScoreEndWait;
+
 	Math::Vector2 m_ScoreNum1Pos = { 300,180 };
 	Math::Matrix m_ScoreNum1Mat;
 	KdTexture m_ScoreNumTex;
@@ -47,6 +50,9 @@ private:
 	Math::Matrix m_RankMat;
 	KdTexture m_RankTex;
 
+	float m_RankAlfScale;
+	float m_RankAlfAlufa;
+	bool m_RankAlfEnd;
 	Math::Vector2 m_RankAlfPos = { 300,-50 };
 	Math::Matrix m_RankAlfMat;
 	KdTexture m_RankAlfTex;

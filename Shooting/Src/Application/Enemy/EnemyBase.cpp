@@ -78,14 +78,26 @@ void C_EnemyBase::Draw()
 		break;
 	}
 	
-	if (m_EnemyStatus.AttackDamage / 10 != 0)
+	if (m_EnemyStatus.AttackDamage / 100 != 0)
 	{
 		int i = m_EnemyStatus.AttackDamage;
 		SHADER.m_spriteShader.SetMatrix(m_IconNumber1Mat);
 		SHADER.m_spriteShader.DrawTex(m_NumberTex, { 64 * (i % 10),0,64,64 }, 1.0f);
 		i /= 10;
 		SHADER.m_spriteShader.SetMatrix(m_IconNumber10Mat);
+		SHADER.m_spriteShader.DrawTex(m_NumberTex, { 64 * (i % 10),0,64,64 }, 1.0f);
+		i /= 10;
+		SHADER.m_spriteShader.SetMatrix(m_IconNumber100Mat);
 		SHADER.m_spriteShader.DrawTex(m_NumberTex, { 64 * i,0,64,64 }, 1.0f);
+	}
+	else if (m_EnemyStatus.AttackDamage / 10 != 0)
+	{
+		int i = m_EnemyStatus.AttackDamage;
+		SHADER.m_spriteShader.SetMatrix(m_IconNumber1Mat);
+		SHADER.m_spriteShader.DrawTex(m_NumberTex, { 64 * (i % 10),0,64,64 }, 1.0f);
+		i /= 10;
+		SHADER.m_spriteShader.SetMatrix(m_IconNumber10Mat);
+		SHADER.m_spriteShader.DrawTex(m_NumberTex, { 64 * (i % 10),0,64,64 }, 1.0f);
 	}
 	else
 	{
@@ -356,10 +368,12 @@ void C_EnemyBase::Update()
 	
 
 	m_IconScaleMat = Math::Matrix::CreateScale(0.2f, 0.2f, 1);
-	m_IconTransMat = Math::Matrix::CreateTranslation(m_EnemyStatus.m_Pos.x + m_EnemyStatus.m_IconAddPos.x + m_EnemyStatus.m_IconNumberAddPos.x * 2, m_EnemyStatus.m_Pos.y + m_EnemyStatus.m_IconAddPos.y + m_EnemyStatus.m_IconNumberAddPos.y, 0);
+	m_IconTransMat = Math::Matrix::CreateTranslation(m_EnemyStatus.m_Pos.x + m_EnemyStatus.m_IconAddPos.x + m_EnemyStatus.m_IconNumberAddPos.x * 3, m_EnemyStatus.m_Pos.y + m_EnemyStatus.m_IconAddPos.y + m_EnemyStatus.m_IconNumberAddPos.y, 0);
 	m_IconNumber1Mat = m_IconScaleMat * m_IconTransMat;
-	m_IconTransMat = Math::Matrix::CreateTranslation(m_EnemyStatus.m_Pos.x + m_EnemyStatus.m_IconAddPos.x + m_EnemyStatus.m_IconNumberAddPos.x * 1, m_EnemyStatus.m_Pos.y + m_EnemyStatus.m_IconAddPos.y + m_EnemyStatus.m_IconNumberAddPos.y, 0);
+	m_IconTransMat = Math::Matrix::CreateTranslation(m_EnemyStatus.m_Pos.x + m_EnemyStatus.m_IconAddPos.x + m_EnemyStatus.m_IconNumberAddPos.x * 2, m_EnemyStatus.m_Pos.y + m_EnemyStatus.m_IconAddPos.y + m_EnemyStatus.m_IconNumberAddPos.y, 0);
 	m_IconNumber10Mat = m_IconScaleMat * m_IconTransMat;
+	m_IconTransMat = Math::Matrix::CreateTranslation(m_EnemyStatus.m_Pos.x + m_EnemyStatus.m_IconAddPos.x + m_EnemyStatus.m_IconNumberAddPos.x * 1, m_EnemyStatus.m_Pos.y + m_EnemyStatus.m_IconAddPos.y + m_EnemyStatus.m_IconNumberAddPos.y, 0);
+	m_IconNumber100Mat = m_IconScaleMat * m_IconTransMat;
 
 	m_EnemyMat = Math::Matrix::CreateTranslation(m_EnemyStatus.m_Pos.x, m_EnemyStatus.m_Pos.y, 0);
 

@@ -35,6 +35,12 @@ void C_ResultScene::Init()
 	{
 		m_ScoreNum10Flg = true;
 	}
+
+	m_RankAlfScale = 3.0f;
+	m_RankAlfAlufa = -1.0f;
+	ScoreEndWait = 0;
+	ScoreEndFlg = false;
+	m_RankAlfEnd = false;
 }
 
 void C_ResultScene::Update()
@@ -45,16 +51,38 @@ void C_ResultScene::Update()
 		m_AlufaAdd *= -1;
 	}
 
-	if (C_KeyManager::GetInstance().GetSpaceKey())
+	if (ScoreEndFlg)
 	{
-		SCENEMANAGER.SetNextScene(SceneManager::SceneType::Title);
+		m_RankAlfScale -= 0.1f;
+		m_RankAlfAlufa += 0.1f;
+		if (m_RankAlfScale <= 1.0f)
+		{
+			m_RankAlfScale = 1.0f;
+		}
+		if (m_RankAlfAlufa > 1.0f)
+		{
+			m_RankAlfAlufa = 1.0f;
 
+			m_RankAlfEnd = true;
+		}
+	}
+	if (m_RankAlfEnd)
+	{
+		if (C_KeyManager::GetInstance().GetSpaceKey())
+		{
+			SCENEMANAGER.SetNextScene(SceneManager::SceneType::Title);
+
+		}
+	}
+	else
+	{
+		m_Alufa = 0.0f;
 	}
 	m_ReturnCmdMat = Math::Matrix::CreateScale(0.5f, 0.5f, 0) * Math::Matrix::CreateTranslation(m_ReturnCmdPos.x, m_ReturnCmdPos.y, 0);
 	m_ScoreMat = Math::Matrix::CreateScale(0.5f, 0.5f, 0) * Math::Matrix::CreateTranslation(m_ScorePos.x, m_ScorePos.y, 0);
 	m_RankMat = Math::Matrix::CreateScale(0.5f, 0.5f, 0) * Math::Matrix::CreateTranslation(m_RankPos.x, m_RankPos.y, 0);
-	m_RankAlfMat = Math::Matrix::CreateTranslation(m_RankAlfPos.x, m_RankAlfPos.y, 0);
-	m_ThankMat = Math::Matrix::CreateTranslation(m_ThankPos.x, m_ThankPos.y, 0);
+	m_RankAlfMat = Math::Matrix::CreateScale(m_RankAlfScale, m_RankAlfScale, 0) * Math::Matrix::CreateTranslation(m_RankAlfPos.x, m_RankAlfPos.y, 0);
+	m_ThankMat = Math::Matrix::CreateScale(0.5f, 0.5f, 0) * Math::Matrix::CreateTranslation(m_ThankPos.x, m_ThankPos.y, 0);
 
 
 	if (m_ScoreNum100Flg && m_ScoreNum10Flg)
@@ -89,45 +117,71 @@ void C_ResultScene::Draw()
 	if (EndTotalScore >= 120)
 	{
 		SHADER.m_spriteShader.SetMatrix(m_RankAlfMat);
-		SHADER.m_spriteShader.DrawTex(&m_RankAlfTex, { 176 * 0,0,176,80 }, 1.0f);
+		SHADER.m_spriteShader.DrawTex(&m_RankAlfTex, { 176 * 0,0,176,80 }, m_RankAlfAlufa);
 	}
 	else if (EndTotalScore >= 90)
 	{
 		SHADER.m_spriteShader.SetMatrix(m_RankAlfMat);
-		SHADER.m_spriteShader.DrawTex(&m_RankAlfTex, { 176 * 1,0,176,80 }, 1.0f);
+		SHADER.m_spriteShader.DrawTex(&m_RankAlfTex, { 176 * 1,0,176,80 }, m_RankAlfAlufa);
 	}
 	else if (EndTotalScore >= 60)
 	{
 		SHADER.m_spriteShader.SetMatrix(m_RankAlfMat);
-		SHADER.m_spriteShader.DrawTex(&m_RankAlfTex, { 176 * 2,0,176,80 }, 1.0f);
+		SHADER.m_spriteShader.DrawTex(&m_RankAlfTex, { 176 * 2,0,176,80 }, m_RankAlfAlufa);
 	}
 	else if(EndTotalScore >= 35)
 	{
 		SHADER.m_spriteShader.SetMatrix(m_RankAlfMat);
-		SHADER.m_spriteShader.DrawTex(&m_RankAlfTex, { 176 * 3,0,176,80 }, 1.0f);
+		SHADER.m_spriteShader.DrawTex(&m_RankAlfTex, { 176 * 3,0,176,80 }, m_RankAlfAlufa);
 	}
 	else 
 	{
 		SHADER.m_spriteShader.SetMatrix(m_RankAlfMat);
-		SHADER.m_spriteShader.DrawTex(&m_RankAlfTex, { 176 * 4,0,176,80 }, 1.0f);
+		SHADER.m_spriteShader.DrawTex(&m_RankAlfTex, { 176 * 4,0,176,80 }, m_RankAlfAlufa);
 	}
 	SHADER.m_spriteShader.SetMatrix(m_ThankMat);
-	SHADER.m_spriteShader.DrawTex(&m_ThankTex, { 0,0,610,64 }, 1.0f);
+	SHADER.m_spriteShader.DrawTex(&m_ThankTex, { 0,0,1408,132 }, 1.0f);
 
-	int i = EndTotalScore;
-	SHADER.m_spriteShader.SetMatrix(m_ScoreNum1Mat);
-	SHADER.m_spriteShader.DrawTex(&m_ScoreNumTex, { NumberWidth * (i % 10),0,64,64 }, 1.0f);
-	if (m_ScoreNum10Flg)
+	if (ScoreEndFlg)
 	{
-		i = i / 10;
-		SHADER.m_spriteShader.SetMatrix(m_ScoreNum10Mat);
+		int i = EndTotalScore;
+		SHADER.m_spriteShader.SetMatrix(m_ScoreNum1Mat);
 		SHADER.m_spriteShader.DrawTex(&m_ScoreNumTex, { NumberWidth * (i % 10),0,64,64 }, 1.0f);
+		if (m_ScoreNum10Flg)
+		{
+			i = i / 10;
+			SHADER.m_spriteShader.SetMatrix(m_ScoreNum10Mat);
+			SHADER.m_spriteShader.DrawTex(&m_ScoreNumTex, { NumberWidth * (i % 10),0,64,64 }, 1.0f);
+		}
+		if (m_ScoreNum100Flg)
+		{
+			i = i / 10;
+			SHADER.m_spriteShader.SetMatrix(m_ScoreNum100Mat);
+			SHADER.m_spriteShader.DrawTex(&m_ScoreNumTex, { NumberWidth * i,0,64,64 }, 1.0f);
+		}
 	}
-	if (m_ScoreNum100Flg)
+	else
 	{
-		i = i / 10;
-		SHADER.m_spriteShader.SetMatrix(m_ScoreNum100Mat);
-		SHADER.m_spriteShader.DrawTex(&m_ScoreNumTex, { NumberWidth * i,0,64,64 }, 1.0f);
+		int i = rand() % 1000;
+		SHADER.m_spriteShader.SetMatrix(m_ScoreNum1Mat);
+		SHADER.m_spriteShader.DrawTex(&m_ScoreNumTex, { NumberWidth * (i % 10),0,64,64 }, 1.0f);
+		if (m_ScoreNum10Flg)
+		{
+			i = i / 10;
+			SHADER.m_spriteShader.SetMatrix(m_ScoreNum10Mat);
+			SHADER.m_spriteShader.DrawTex(&m_ScoreNumTex, { NumberWidth * (i % 10),0,64,64 }, 1.0f);
+		}
+		if (m_ScoreNum100Flg)
+		{
+			i = i / 10;
+			SHADER.m_spriteShader.SetMatrix(m_ScoreNum100Mat);
+			SHADER.m_spriteShader.DrawTex(&m_ScoreNumTex, { NumberWidth * i,0,64,64 }, 1.0f);
+		}
+		ScoreEndWait++;
+		if (ScoreEndWait > 60)
+		{
+			ScoreEndFlg = true;
+		}
 	}
 }
 

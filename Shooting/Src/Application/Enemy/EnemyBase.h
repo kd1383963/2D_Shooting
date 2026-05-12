@@ -168,6 +168,7 @@ protected:
 	Math::Matrix m_IconTransMat;
 	Math::Matrix m_IconNumber1Mat;
 	Math::Matrix m_IconNumber10Mat;
+	Math::Matrix m_IconNumber100Mat;
 	
 
 	EnemyStatus m_EnemyStatus;
