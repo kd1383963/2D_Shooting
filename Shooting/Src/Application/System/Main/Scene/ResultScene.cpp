@@ -114,22 +114,22 @@ void C_ResultScene::Draw()
 	SHADER.m_spriteShader.SetMatrix(m_RankMat);
 	SHADER.m_spriteShader.DrawTex(&m_RankTex, { 0,0,784,244 }, 1.0f);
 
-	if (EndTotalScore >= 120)
+	if (EndTotalScore >= 60)
 	{
 		SHADER.m_spriteShader.SetMatrix(m_RankAlfMat);
 		SHADER.m_spriteShader.DrawTex(&m_RankAlfTex, { 176 * 0,0,176,80 }, m_RankAlfAlufa);
 	}
-	else if (EndTotalScore >= 90)
+	else if (EndTotalScore >= 40)
 	{
 		SHADER.m_spriteShader.SetMatrix(m_RankAlfMat);
 		SHADER.m_spriteShader.DrawTex(&m_RankAlfTex, { 176 * 1,0,176,80 }, m_RankAlfAlufa);
 	}
-	else if (EndTotalScore >= 60)
+	else if (EndTotalScore >= 30)
 	{
 		SHADER.m_spriteShader.SetMatrix(m_RankAlfMat);
 		SHADER.m_spriteShader.DrawTex(&m_RankAlfTex, { 176 * 2,0,176,80 }, m_RankAlfAlufa);
 	}
-	else if(EndTotalScore >= 35)
+	else if(EndTotalScore >= 10)
 	{
 		SHADER.m_spriteShader.SetMatrix(m_RankAlfMat);
 		SHADER.m_spriteShader.DrawTex(&m_RankAlfTex, { 176 * 3,0,176,80 }, m_RankAlfAlufa);

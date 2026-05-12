@@ -78,10 +78,10 @@ void C_Prism::Init(int wave,int num)
 	}
 	else
 	{
-		m_EnemyStatus.m_Hp = 80 + 50 * (wave / 3);
+		m_EnemyStatus.m_Hp = 60 + 30 * (wave / 3);
 		m_EnemyStatus.m_MaxHp = m_EnemyStatus.m_Hp;
 		m_EnemyStatus.m_BreakHp = m_EnemyStatus.m_Hp;
-		m_EnemyStatus.m_Atk = 10 + 10 * (wave / 2);
+		m_EnemyStatus.m_Atk = 10 + 3 * (wave / 2);
 		SetAttackCmd();
 		m_EnemyStatus.m_Alive = true;
 		m_EnemyStatus.m_MoveFlg = false;

@@ -122,6 +122,9 @@ private:
 
 	bool m_CanMoveFlg;
 
+	float m_CanMoveMin;
+	float m_CanMoveMax;
+
 	int TotalScore;
 
 	const float m_MoveSpeed = 10.0f;

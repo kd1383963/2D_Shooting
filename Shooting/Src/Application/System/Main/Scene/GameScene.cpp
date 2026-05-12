@@ -59,8 +59,22 @@ void C_GameScene::Update()
 		}
 		if (m_PlayerUpGrade->Update())
 		{
-
-			m_Enemy->Init(5,BattleWave);
+			if (BattleWave < 3)
+			{
+				m_Enemy->Init(5, BattleWave);
+			}
+			else if (BattleWave < 6)
+			{
+				m_Enemy->Init(9, BattleWave);
+			}
+			else if (BattleWave < 9)
+			{
+				m_Enemy->Init(13, BattleWave);
+			}
+			else
+			{
+				m_Enemy->Init(18, BattleWave);
+			}
 			BattleWave++;
 			m_PlayerUpGradeFlg = false;
 		}
