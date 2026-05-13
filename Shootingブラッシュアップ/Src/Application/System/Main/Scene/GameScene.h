@@ -44,7 +44,7 @@ private:
 	int BattleWave = 0;
 	GameStage BattleStage = Normal;
 
-	KdTexture m_PlayerIdleTex;
+	
 	KdTexture m_PlayerMoveTex;
 	KdTexture m_PlayerAtkTex;
 	KdTexture m_PlayerHurtTex;
@@ -69,6 +69,8 @@ private:
 	KdTexture m_EnemyBulletLineTex;
 	KdTexture m_EnemyBulletTex;
 	
+	KdTexture m_CrossTex;
+
 	KdTexture m_BrackBackTex;
 	KdTexture m_UpGradeHpTex;
 	KdTexture m_UpGradeAtkTex;

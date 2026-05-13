@@ -86,6 +86,34 @@ void C_Player::Draw()
 	SHADER.m_spriteShader.SetMatrix(m_HpMat);
 	SHADER.m_spriteShader.DrawTex(m_HpTex, { 0,0,(66 - (int)(66 * (HpBerCnt / m_CharaStatus.m_MaxHp))),8 }, 1.0f);
 	
+	int Max = m_CharaStatus.m_MaxHp;
+	SHADER.m_spriteShader.SetMatrix(m_HpMax1Mat);
+	SHADER.m_spriteShader.DrawTex(m_HpNumTex, { NumberWidth * (Max % 10),0,64,64 }, 1.0f);
+	Max = Max / 10;
+	SHADER.m_spriteShader.SetMatrix(m_HpMax10Mat);
+	SHADER.m_spriteShader.DrawTex(m_HpNumTex, { NumberWidth * (Max % 10),0,64,64 }, 1.0f);
+	Max = Max / 10;
+	SHADER.m_spriteShader.SetMatrix(m_HpMax100Mat);
+	SHADER.m_spriteShader.DrawTex(m_HpNumTex, { NumberWidth * (Max % 10),0,64,64 }, 1.0f);
+
+	SHADER.m_spriteShader.SetMatrix(m_HpBerMat);
+	SHADER.m_spriteShader.DrawTex(m_HpBerTex, { 0,0,64,64 }, 1.0f);
+
+	int Now = m_CharaStatus.m_Hp;
+	SHADER.m_spriteShader.SetMatrix(m_NowHp1Mat);
+	SHADER.m_spriteShader.DrawTex(m_HpNumTex, { NumberWidth * (Now % 10),0,64,64 }, 1.0f);
+	if (m_NowHp10Flg)
+	{
+		Now = Now / 10;
+		SHADER.m_spriteShader.SetMatrix(m_NowHp10Mat);
+		SHADER.m_spriteShader.DrawTex(m_HpNumTex, { NumberWidth * (Now % 10),0,64,64 }, 1.0f);
+	}
+	if (m_NowHp100Flg)
+	{
+		Now = Now / 10;
+		SHADER.m_spriteShader.SetMatrix(m_NowHp100Mat);
+		SHADER.m_spriteShader.DrawTex(m_HpNumTex, { NumberWidth * Now,0,64,64 }, 1.0f);
+	}
 
 	for (int i = 0; i < m_Bullet.size(); i++)
 	{
@@ -141,6 +169,7 @@ void C_Player::Update()
 
 	if (m_CharaStatus.m_Hp <= 0)
 	{
+		m_CharaStatus.m_Hp = 0;
 		if (m_CharaStatus.m_AnimStatus != Dead)
 		{
 			SetAnimStatus(Dead);
@@ -298,7 +327,7 @@ void C_Player::Update()
 			switch (m_CharaStatus.m_AnimStatus)
 			{
 			case Move:
-				
+			case Hurt:
 				
 				if (PlayerSkillBase.Shot5way)
 				{
@@ -355,25 +384,84 @@ void C_Player::Update()
 		ShotWait--;
 	}
 
+	if (m_CharaStatus.Pos.y < -300.0f)
+	{
+		m_CharaStatus.HpAddPos.y = 42;
+	}
+	else
+	{
+		m_CharaStatus.HpAddPos.y = -42;
+	}
+
 	m_HpMat = Math::Matrix::CreateTranslation(m_CharaStatus.Pos.x - ((int)(66 * (((m_CharaStatus.m_MaxHp - m_CharaStatus.m_Hp) / 2) / m_CharaStatus.m_MaxHp))), m_CharaStatus.Pos.y + m_CharaStatus.HpAddPos.y, 0);
 	m_HpBackMat = Math::Matrix::CreateTranslation(m_CharaStatus.Pos.x, m_CharaStatus.Pos.y + m_CharaStatus.HpAddPos.y, 0);
 	m_HpBreakMat = Math::Matrix::CreateTranslation(m_CharaStatus.Pos.x - ((int)(66 * (((m_CharaStatus.m_MaxHp - m_CharaStatus.m_BreakHp) / 2) / m_CharaStatus.m_MaxHp))), m_CharaStatus.Pos.y + m_CharaStatus.HpAddPos.y, 0);
+	if (m_NowHp100Flg && m_NowHp10Flg)
+	{
+		m_NowHp100Mat =Math::Matrix::CreateScale(m_HpNumScale, m_HpNumScale,0) * Math::Matrix::CreateTranslation(m_CharaStatus.Pos.x + AddHpNumPos.x * 3, m_CharaStatus.Pos.y + m_CharaStatus.HpAddPos.y + AddHpNumPos.y, 0);
+		m_NowHp10Mat = Math::Matrix::CreateScale(m_HpNumScale, m_HpNumScale, 0) * Math::Matrix::CreateTranslation(m_CharaStatus.Pos.x + AddHpNumPos.x * 2, m_CharaStatus.Pos.y + m_CharaStatus.HpAddPos.y + AddHpNumPos.y, 0);
+		m_NowHp1Mat = Math::Matrix::CreateScale(m_HpNumScale, m_HpNumScale, 0) * Math::Matrix::CreateTranslation(m_CharaStatus.Pos.x + AddHpNumPos.x , m_CharaStatus.Pos.y + m_CharaStatus.HpAddPos.y + AddHpNumPos.y, 0);
+	}
+	else if (m_NowHp10Flg)
+	{
+		m_NowHp10Mat = Math::Matrix::CreateScale(m_HpNumScale, m_HpNumScale, 0) * Math::Matrix::CreateTranslation(m_CharaStatus.Pos.x + AddHpNumPos.x * 2, m_CharaStatus.Pos.y + m_CharaStatus.HpAddPos.y + AddHpNumPos.y, 0);
+		m_NowHp1Mat = Math::Matrix::CreateScale(m_HpNumScale, m_HpNumScale, 0) * Math::Matrix::CreateTranslation(m_CharaStatus.Pos.x + AddHpNumPos.x , m_CharaStatus.Pos.y + m_CharaStatus.HpAddPos.y + AddHpNumPos.y, 0);
+	}
+	else
+	{
+		m_NowHp1Mat = Math::Matrix::CreateScale(m_HpNumScale, m_HpNumScale, 0) * Math::Matrix::CreateTranslation(m_CharaStatus.Pos.x + AddHpNumPos.x, m_CharaStatus.Pos.y + m_CharaStatus.HpAddPos.y + AddHpNumPos.y, 0);
+	}
+	m_HpMax100Mat = Math::Matrix::CreateScale(m_HpNumScale, m_HpNumScale, 0) * Math::Matrix::CreateTranslation(m_CharaStatus.Pos.x - AddHpNumPos.x, m_CharaStatus.Pos.y + m_CharaStatus.HpAddPos.y + AddHpNumPos.y, 0);
+	m_HpMax10Mat  = Math::Matrix::CreateScale(m_HpNumScale, m_HpNumScale, 0) * Math::Matrix::CreateTranslation(m_CharaStatus.Pos.x - AddHpNumPos.x * 2, m_CharaStatus.Pos.y + m_CharaStatus.HpAddPos.y + AddHpNumPos.y, 0);
+	m_HpMax1Mat   = Math::Matrix::CreateScale(m_HpNumScale, m_HpNumScale, 0) * Math::Matrix::CreateTranslation(m_CharaStatus.Pos.x - AddHpNumPos.x * 3, m_CharaStatus.Pos.y + m_CharaStatus.HpAddPos.y + AddHpNumPos.y, 0);
+	m_HpBerMat= Math::Matrix::CreateScale(m_HpNumScale, m_HpNumScale, 0) * Math::Matrix::CreateTranslation(m_CharaStatus.Pos.x, m_CharaStatus.Pos.y + m_CharaStatus.HpAddPos.y + AddHpNumPos.y, 0);
 	m_PlayerScaleMat = Math::Matrix::CreateScale(2, 2, 1);
 	m_PlayerMat = m_PlayerScaleMat * Math::Matrix::CreateTranslation(m_CharaStatus.Pos.x, m_CharaStatus.Pos.y, 0);
 	
+	m_NowHp100Flg = false;
+	m_NowHp10Flg = false;
+	if (m_CharaStatus.m_Hp / 100 >= 1)
+	{
+		m_NowHp100Flg = true;
+		m_NowHp10Flg = true;
+	}
+	else if (m_CharaStatus.m_Hp / 10 >= 1)
+	{
+		m_NowHp10Flg = true;
+	}
+
 	for (auto& i : m_Bullet)
 	{
 		i->Update();
 	}
-	if (GetAsyncKeyState('J') & 0x8000)
+	if (C_KeyManager::GetInstance().GetJKey())
 	{
 		SetAnimStatus(Dead);
 	}
-	if (GetAsyncKeyState('H') & 0x8000)
+	if (C_KeyManager::GetInstance().GetHKey())
 	{
 		m_CharaStatus.m_Hp = m_CharaStatus.m_MaxHp;
 	}
-	
+	if (C_KeyManager::GetInstance().GetYKey())
+	{
+		AddBulletShot();
+	}
+	if (C_KeyManager::GetInstance().GetUKey())
+	{
+		AddWallbounce();
+	}
+	if (C_KeyManager::GetInstance().GetIKey())
+	{
+		AddEnemyBounce();
+	}
+	if (C_KeyManager::GetInstance().GetOKey())
+	{
+		SetShot3way();
+	}
+	if (C_KeyManager::GetInstance().GetPKey())
+	{
+		SetShot5way();
+	}
 }
 
 void C_Player::Init()
@@ -398,15 +486,19 @@ void C_Player::Init()
 	ShotWait = 0;
 	MultiShotCnt = 0;
 	m_CanMoveFlg = true;
-	
+	CanMovePosXMin = -180;
+	CanMovePosXMax = 180;
+	NowMovePosX = 0;
 }
 
-void C_Player::SetTex(KdTexture* playeridletex, KdTexture* playermovetex, KdTexture* playeratktex,
+void C_Player::SetTex( KdTexture* playermovetex, KdTexture* playeratktex,
 	KdTexture* playerhurttex, KdTexture* playerdeadtex, KdTexture* bulletlinetex,
-	KdTexture* hpbartex, KdTexture* hpbarbraektex, KdTexture* hpbarbacktex)
+	KdTexture* hpbartex, KdTexture* hpbarbraektex, KdTexture* hpbarbacktex,
+	KdTexture* ugwallboundtex, KdTexture* ugdoubleshottex, KdTexture* ugenemyboundtex, KdTexture* ugsplittex,
+	KdTexture* hpnumtex, KdTexture* hpbarnumtex)
 {
 	m_BulletTex.Load("Texture/Player/PlayerBullet.png");
-	m_PlayerIdleTex = playeridletex;
+	
 	m_PlayerMoveTex = playermovetex;
 	m_PlayerAtkTex = playeratktex;
 	m_PlayerHurtTex = playerhurttex;
@@ -415,6 +507,12 @@ void C_Player::SetTex(KdTexture* playeridletex, KdTexture* playermovetex, KdText
 	m_HpTex = hpbartex;
 	m_HpBreakTex = hpbarbraektex;
 	m_HpBackTex = hpbarbacktex;
+	m_UpGradeBulletWallBoundTex = ugwallboundtex;
+	m_UpGradeDoubleBulletTex = ugdoubleshottex;
+	m_UpGradeBulletEnemyBoundTex = ugenemyboundtex;
+	m_UpGradeBulletSplitTex = ugsplittex;
+	m_HpNumTex = hpnumtex;
+	m_HpBerTex = hpbarnumtex;
 }
 
 Math::Vector2 C_Player::Rotate(Math::Vector2& v, float angle)

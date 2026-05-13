@@ -44,7 +44,7 @@ private:
 	int BattleWave = 0;
 	GameStage BattleStage = Normal;
 
-	KdTexture m_PlayerIdleTex;
+	
 	KdTexture m_PlayerMoveTex;
 	KdTexture m_PlayerAtkTex;
 	KdTexture m_PlayerHurtTex;
@@ -60,6 +60,7 @@ private:
 	KdTexture m_HpTex;
 	KdTexture m_HpBackTex;
 	KdTexture m_HpBreakTex;
+	KdTexture m_HpNumBerTex;
 
 	KdTexture m_AttackIconTex;
 	KdTexture m_BeamIconTex;
@@ -76,6 +77,7 @@ private:
 	KdTexture m_UpGradeBulletEnemyBoundTex;
 	KdTexture m_UpGradeBulletSplitTex;
 	KdTexture m_TurnAddTex;
+	KdTexture m_HealHpTex;
 
 	
 	GameFadeType m_FadeType = GFade_no;

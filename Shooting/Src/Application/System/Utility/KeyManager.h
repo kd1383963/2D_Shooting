@@ -22,6 +22,141 @@ public:
 		}
 		return false;
 	}
+	bool GetYKey()
+	{
+		if (GetAsyncKeyState('Y') & 0x8000)
+		{
+			if (!YKeyFlg)
+			{
+				YKeyFlg = true;
+				return true;
+			}
+		}
+		else
+		{
+			YKeyFlg = false;
+		}
+		return false;
+	}
+
+	bool GetUKey()
+	{
+		if (GetAsyncKeyState('U') & 0x8000)
+		{
+			if (!UKeyFlg)
+			{
+				UKeyFlg = true;
+				return true;
+			}
+		}
+		else
+		{
+			UKeyFlg = false;
+		}
+		return false;
+	}
+
+	bool GetIKey()
+	{
+		if (GetAsyncKeyState('I') & 0x8000)
+		{
+			if (!IKeyFlg)
+			{
+				IKeyFlg = true;
+				return true;
+			}
+		}
+		else
+		{
+			IKeyFlg = false;
+		}
+		return false;
+	}
+
+	bool GetOKey()
+	{
+		if (GetAsyncKeyState('O') & 0x8000)
+		{
+			if (!OKeyFlg)
+			{
+				OKeyFlg = true;
+				return true;
+			}
+		}
+		else
+		{
+			OKeyFlg = false;
+		}
+		return false;
+	}
+
+	bool GetPKey()
+	{
+		if (GetAsyncKeyState('P') & 0x8000)
+		{
+			if (!PKeyFlg)
+			{
+				PKeyFlg = true;
+				return true;
+			}
+		}
+		else
+		{
+			PKeyFlg = false;
+		}
+		return false;
+	}
+
+	bool GetHKey()
+	{
+		if (GetAsyncKeyState('H') & 0x8000)
+		{
+			if (!HKeyFlg)
+			{
+				HKeyFlg = true;
+				return true;
+			}
+		}
+		else
+		{
+			HKeyFlg = false;
+		}
+		return false;
+	}
+
+	bool GetJKey()
+	{
+		if (GetAsyncKeyState('J') & 0x8000)
+		{
+			if (!JKeyFlg)
+			{
+				JKeyFlg = true;
+				return true;
+			}
+		}
+		else
+		{
+			JKeyFlg = false;
+		}
+		return false;
+	}
+
+	bool GetLKey()
+	{
+		if (GetAsyncKeyState('L') & 0x8000)
+		{
+			if (!LKeyFlg)
+			{
+				LKeyFlg = true;
+				return true;
+			}
+		}
+		else
+		{
+			LKeyFlg = false;
+		}
+		return false;
+	}
 
 	//bool GetUpKey()
 	//{
@@ -156,6 +291,16 @@ private:
 	bool RightKeyFlg;
 	bool LClickFlg;
 	bool RClickFlg;
+
+	bool YKeyFlg;
+	bool UKeyFlg;
+	bool IKeyFlg;
+	bool OKeyFlg;
+	bool PKeyFlg;
+
+	bool HKeyFlg;
+	bool JKeyFlg;
+	bool LKeyFlg;
 
 public:
 

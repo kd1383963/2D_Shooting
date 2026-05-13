@@ -93,6 +93,9 @@ void C_GameScene::Draw()
 	C_Player::GetInstance().Draw();
 	
 	m_Enemy->Draw();
+
+	C_Player::GetInstance().MiniUpDraw();
+
 	if (C_Turn::GetInstance().GetNowTurn() == C_Turn::UpGrade)
 	{
 		m_PlayerUpGrade->Draw();
@@ -111,13 +114,12 @@ void C_GameScene::TexLoad()
 	m_TurnAddTex.Load("Texture/UI/TurnAdd.png");
 	m_HealHpTex.Load("Texture/UI/Heal.png");
 	m_NumberTex.Load("Texture/UI/DNumber.png");
-
+	m_CrossTex.Load("Texture/UI/Cross.png");
 
 	m_PlayerUpGrade->SetTex(&m_UpGradeHpTex,&m_HealHpTex,&m_UpGradeAtkTex, &m_UpGradeBulletWallBoundTex,
 		&m_UpGradeDoubleBulletTex, &m_UpGradeBulletEnemyBoundTex, &m_TurnAddTex,
 		&m_UpGradeBulletSplitTex, &m_BrackBackTex);
 
-	m_PlayerIdleTex.Load("Texture/Player/B_witch_idle.bmp");
 	m_PlayerMoveTex.Load("Texture/Player/B_witch_run.bmp");
 	m_PlayerAtkTex.Load("Texture/Player/B_witch_attack.bmp");
 	m_PlayerHurtTex.Load("Texture/Player/B_witch_take_damage.bmp");
@@ -127,10 +129,10 @@ void C_GameScene::TexLoad()
 	m_HpBackTex.Load("Texture/UI/Hpback.png");
 	m_HpBreakTex.Load("Texture/UI/-Hp.png");
 	m_HpNumBerTex.Load("Texture/UI/ber.png");
-	C_Player::GetInstance().SetTex(&m_PlayerIdleTex, &m_PlayerMoveTex, &m_PlayerAtkTex,
+	C_Player::GetInstance().SetTex( &m_PlayerMoveTex, &m_PlayerAtkTex,
 		&m_PlayerHurtTex, &m_PlayerDeadTex,&m_PlayerBulletLineTex, &m_HpTex, &m_HpBreakTex,&m_HpBackTex,
 		&m_UpGradeBulletWallBoundTex,&m_UpGradeDoubleBulletTex, &m_UpGradeBulletEnemyBoundTex,
-		&m_UpGradeBulletSplitTex,&m_NumberTex,&m_HpNumBerTex);
+		&m_UpGradeBulletSplitTex,&m_NumberTex,&m_HpNumBerTex,&m_BrackBackTex,&m_CrossTex);
 
 	m_EnemyIdleTex.Load("Texture/Enemy/IDLE.png");
 	m_EnemyAtkTex.Load("Texture/Enemy/ATTACK.png");
@@ -151,7 +153,7 @@ void C_GameScene::TexLoad()
 
 void C_GameScene::Release()
 {
-	m_PlayerIdleTex.Release();
+	
 	m_PlayerMoveTex.Release();
 	m_PlayerAtkTex.Release();
 	m_PlayerHurtTex.Release();
@@ -176,4 +178,6 @@ void C_GameScene::Release()
 	m_UpGradeBulletEnemyBoundTex.Release();
 	m_UpGradeBulletSplitTex.Release();
 	m_TurnAddTex.Release();
+	m_AtkExpTex.Release();
+	m_HpNumBerTex.Release();
 }

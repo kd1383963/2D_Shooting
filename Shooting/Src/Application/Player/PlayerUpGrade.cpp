@@ -49,6 +49,14 @@ void C_PlayerUpGrade::Draw()
 				SHADER.m_spriteShader.DrawString(-110, -150, "ç≈ëÂëÃóÕ + 20", { 1,1,1,1 });
 			}
 			break;
+		case HealHp:
+			SHADER.m_spriteShader.DrawTex(m_HealHpTex, { 0,0,32,32 }, 1.0f);
+			if (MOUSEHIT.MouseBlockHit(m_UpGradeStatu[i].m_Pos * m_Scale, m_Radius / 2 * m_Scale, m_Radius / 2 * m_Scale))
+			{
+				SHADER.m_spriteShader.SetMatrix(Math::Matrix::Identity);
+				SHADER.m_spriteShader.DrawString(-110, -150, "ç≈ëÂëÃóÕÇÃîºï™âÒïúÇ∑ÇÈ", { 1,1,1,1 });
+			}
+			break;
 		case UpAtk:
 			SHADER.m_spriteShader.DrawTex(m_UpGradeAtkTex, { 0,0,32,32 }, 1.0f);
 			if (MOUSEHIT.MouseBlockHit(m_UpGradeStatu[i].m_Pos * m_Scale, m_Radius / 2 * m_Scale, m_Radius / 2 * m_Scale))
@@ -114,6 +122,9 @@ bool C_PlayerUpGrade::Update()
 				case UpHp:
 					C_Player::GetInstance().HpUp();
 					break;
+				case HealHp:
+					C_Player::GetInstance().HealHp();
+					break;
 				case UpAtk:
 					C_Player::GetInstance().AtkUp();
 					break;
@@ -133,6 +144,7 @@ bool C_PlayerUpGrade::Update()
 				}
 				C_Turn::GetInstance().SetNextTurn(C_Turn::Player);
 				C_Player::GetInstance().SetCanMove(true);
+				C_Player::GetInstance().SetBulletReset();
 				return true;
 			}
 
@@ -159,12 +171,12 @@ void C_PlayerUpGrade::Init()
 		int Rand = 0;
 		if (i==0)
 		{
-			Rand = rand() % 100;
+			Rand = rand() % 120;
 			if (Rand < 20)
 			{
 				if (C_Player::GetInstance().GetShot5way())
 				{
-					Rand = rand() % 100;
+					Rand = rand() % 120;
 
 					if (Rand < 20)
 					{
@@ -181,6 +193,10 @@ void C_PlayerUpGrade::Init()
 					else if (Rand < 80)
 					{
 						m_UpGradeStatu[i].m__SkillStatus = UpHp;
+					}
+					else if (Rand < 100)
+					{
+						m_UpGradeStatu[i].m__SkillStatus = HealHp;
 					}
 					else
 					{
@@ -203,6 +219,10 @@ void C_PlayerUpGrade::Init()
 			else if (Rand < 80)
 			{
 				m_UpGradeStatu[i].m__SkillStatus = UpHp;
+			}
+			else if (Rand < 100)
+			{
+				m_UpGradeStatu[i].m__SkillStatus = HealHp;
 			}
 			else
 			{
@@ -235,6 +255,10 @@ void C_PlayerUpGrade::Init()
 						else if (Rand < 80)
 						{
 							m_UpGradeStatu[i].m__SkillStatus = UpHp;
+						}
+						else if (Rand < 100)
+						{
+							m_UpGradeStatu[i].m__SkillStatus = HealHp;
 						}
 						else
 						{
@@ -338,11 +362,12 @@ void C_PlayerUpGrade::Init()
 	}
 }
 
-void C_PlayerUpGrade::SetTex(KdTexture* uphptex, KdTexture* upatktex, KdTexture* upbwallboundtex,
+void C_PlayerUpGrade::SetTex(KdTexture* uphptex, KdTexture* healhptex, KdTexture* upatktex, KdTexture* upbwallboundtex,
 	KdTexture* updoubletex, KdTexture* enemyboundtex, KdTexture* turnaddtex,
 	KdTexture* upgradebulletsplittex, KdTexture* brackback)
 {
 	m_UpGradeHpTex = uphptex;
+	m_HealHpTex = healhptex;
 	m_UpGradeAtkTex = upatktex;
 	m_UpGradeBulletWallBoundTex = upbwallboundtex;
 	m_UpGradeDoubleBulletTex = updoubletex;

@@ -50,11 +50,14 @@ public:
 	void Init();
 	void Update();
 	void Draw();
-	void SetTex(KdTexture* playeridletex, KdTexture* playermovetex, KdTexture* playeratktex, 
+
+	void MiniUpDraw();
+
+	void SetTex( KdTexture* playermovetex, KdTexture* playeratktex, 
 		KdTexture* playerhurttex, KdTexture* playerdeadtex, KdTexture* bulletlinetex,
 		KdTexture* hpbartex, KdTexture* hpbarbraektex, KdTexture* hpbarbacktex,
 		KdTexture* ugwallboundtex, KdTexture* ugdoubleshottex, KdTexture* ugenemyboundtex, KdTexture* ugsplittex,
-		KdTexture* hpnumtex, KdTexture*hpbernum);
+		KdTexture* hpnumtex, KdTexture*hpbernum,KdTexture* upbacktex, KdTexture* crosstex);
 
 	void SetShotFlg(bool a_flg) { m_ShotFlg = a_flg; }
 
@@ -143,7 +146,7 @@ private:
 	int CharaHeight = 48;
 
 	float CharaAnimCnt;
-	KdTexture* m_PlayerIdleTex;
+	
 	KdTexture* m_PlayerMoveTex;
 	KdTexture* m_PlayerAtkTex;
 	KdTexture* m_PlayerHurtTex;
@@ -152,9 +155,15 @@ private:
 	KdTexture* m_HpTex;
 	KdTexture* m_HpBackTex;
 	KdTexture* m_HpBreakTex;
-	KdTexture* m_HpNumTex;
+	KdTexture* m_NumTex;
 	KdTexture* m_HpBerTex;
+	KdTexture* m_UpBackTex;
+	KdTexture* m_CrossTex;
 	
+	Math::Vector2 AddAtkNumPos = { 45, 0 };
+	Math::Vector2 m_AtkNumPos = { -550,200 };
+	bool m_NowAtk100Flg;
+
 	KdTexture*   m_UpGradeBulletWallBoundTex;
 	KdTexture*   m_UpGradeDoubleBulletTex;
 	KdTexture*   m_UpGradeBulletEnemyBoundTex;
@@ -163,7 +172,30 @@ private:
 	Math::Matrix m_UpGradeBulletWallBoundMat;
 	Math::Matrix m_UpGradeDoubleBulletMat;
 	Math::Matrix m_UpGradeBulletEnemyBoundMat;
-	Math::Matrix m_UpGradeBulletSplitMat;
+	Math::Matrix m_MiniUpGradeBackMat;
+	Math::Matrix m_NowAtk1Mat;
+	Math::Matrix m_NowAtk10Mat;
+	Math::Matrix m_NowAtk100Mat;
+
+	float        m_MiniNumScale = 0.5f;
+	float        m_MiniCrossScale = 0.25f;
+	Math::Vector2 m_UpAddGradeNumPos = { 25,-16 };
+	Math::Matrix m_Cross1Mat;
+	Math::Matrix m_Cross2Mat;
+	Math::Matrix m_Cross3Mat;
+	
+
+	Math::Matrix m_UpGrade1Num1Mat;
+	Math::Matrix m_UpGrade1Num10Mat;
+	Math::Matrix m_UpGrade2Num1Mat;
+	Math::Matrix m_UpGrade2Num10Mat;
+	Math::Matrix m_UpGrade3Num1Mat;
+	Math::Matrix m_UpGrade3Num10Mat;
+	
+	Math::Vector2 m_UpGradePos = { -600,200 };
+	Math::Vector2 m_UpAddGradePos = { 0,-80 };
+	float         m_MiniUpScale = 2.0f;
+
 
 	Math::Matrix m_PlayerScaleMat;
 	Math::Matrix m_PlayerMat;

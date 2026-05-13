@@ -3,6 +3,7 @@
 #include "Prism/Prism.h"
 #include "EnemyBase.h"
 #include "../System/Battle/Turn.h"
+#include"../System/Utility/KeyManager.h"
 
 void C_Enemy::Draw()
 {
@@ -40,7 +41,7 @@ void C_Enemy::Update()
 			
 		}
 	}
-	if (GetAsyncKeyState('L') & 0x8000)
+	if (C_KeyManager::GetInstance().GetLKey())
 	{
 		for (const auto& e : m_EnemyChara) {
 			e->SetEAnimStatus(EDead);
