@@ -7,6 +7,7 @@ public:
 	enum Turn
 	{
 		Null,
+		EnemyInit,
 		Player,
 		UpGrade,
 		Enemy

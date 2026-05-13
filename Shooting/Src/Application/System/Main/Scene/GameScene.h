@@ -69,6 +69,8 @@ private:
 	KdTexture m_EnemyBulletLineTex;
 	KdTexture m_EnemyBulletTex;
 	
+	KdTexture m_CrossTex;
+
 	KdTexture m_BrackBackTex;
 	KdTexture m_UpGradeHpTex;
 	KdTexture m_UpGradeAtkTex;

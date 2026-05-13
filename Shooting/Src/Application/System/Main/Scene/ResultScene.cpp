@@ -36,17 +36,19 @@ void C_ResultScene::Init()
 		m_ScoreNum10Flg = true;
 	}
 
+	m_Alufa = 1.0f;
 	m_RankAlfScale = 3.0f;
 	m_RankAlfAlufa = -1.0f;
 	ScoreEndWait = 0;
 	ScoreEndFlg = false;
 	m_RankAlfEnd = false;
+	m_ReturnCmdFlg = false;
 }
 
 void C_ResultScene::Update()
 {
 	m_Alufa -= m_AlufaAdd;
-	if (m_Alufa > 1.0f || m_Alufa < 0.0f)
+	if (m_Alufa > 1.0f || m_Alufa < 0.3f)
 	{
 		m_AlufaAdd *= -1;
 	}
@@ -68,6 +70,11 @@ void C_ResultScene::Update()
 	}
 	if (m_RankAlfEnd)
 	{
+		if (!m_ReturnCmdFlg)
+		{
+			m_ReturnCmdFlg = true;
+			m_Alufa = 0.3f;
+		}
 		if (C_KeyManager::GetInstance().GetSpaceKey())
 		{
 			SCENEMANAGER.SetNextScene(SceneManager::SceneType::Title);
@@ -76,6 +83,7 @@ void C_ResultScene::Update()
 	}
 	else
 	{
+		m_ReturnCmdFlg = false;
 		m_Alufa = 0.0f;
 	}
 	m_ReturnCmdMat = Math::Matrix::CreateScale(0.5f, 0.5f, 0) * Math::Matrix::CreateTranslation(m_ReturnCmdPos.x, m_ReturnCmdPos.y, 0);
@@ -105,9 +113,11 @@ void C_ResultScene::Update()
 
 void C_ResultScene::Draw()
 {
-	SHADER.m_spriteShader.SetMatrix(m_ReturnCmdMat);
-	SHADER.m_spriteShader.DrawTex(&m_ReturnCmdTex, { 0,0,784,146 }, m_Alufa);
-
+	if (m_ReturnCmdFlg)
+	{
+		SHADER.m_spriteShader.SetMatrix(m_ReturnCmdMat);
+		SHADER.m_spriteShader.DrawTex(&m_ReturnCmdTex, { 0,0,784,146 }, m_Alufa);
+	}
 	SHADER.m_spriteShader.SetMatrix(m_ScoreMat);
 	SHADER.m_spriteShader.DrawTex(&m_ScoreTex, { 0,0,964,254 }, 1.0f);
 

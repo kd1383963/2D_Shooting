@@ -23,8 +23,11 @@ public:
 	
 	void TotalEnemyMainer() { TotalEnemy--; }
 
+	void TotalInitAnimEndInc() { TotalInitAnimEnd++; }
+
 private:
 
+	int TotalInitAnimEnd = 0;
 	int TotalEnemy = 0;
 	int TotalEnemyMove = 0;
 

@@ -22,6 +22,24 @@ public:
 		}
 		return false;
 	}
+
+	bool GetTabKey()
+	{
+		if (GetAsyncKeyState(VK_TAB) & 0x8000)
+		{
+			if (!TabKeyFlg)
+			{
+				TabKeyFlg = true;
+				return true;
+			}
+		}
+		else
+		{
+			TabKeyFlg = false;
+		}
+		return false;
+	}
+
 	bool GetYKey()
 	{
 		if (GetAsyncKeyState('Y') & 0x8000)
@@ -285,6 +303,7 @@ private:
 	//キーごとに必要
 
 	bool SpaceKeyFlg;
+	bool TabKeyFlg;
 	bool UpKeyFlg;
 	bool DownKeyFlg;
 	bool LeftKeyFlg;

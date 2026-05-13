@@ -62,7 +62,7 @@ void C_PlayerUpGrade::Draw()
 			if (MOUSEHIT.MouseBlockHit(m_UpGradeStatu[i].m_Pos * m_Scale, m_Radius / 2 * m_Scale, m_Radius / 2 * m_Scale))
 			{
 				SHADER.m_spriteShader.SetMatrix(Math::Matrix::Identity);
-				SHADER.m_spriteShader.DrawString(-90, -150, "çUåÇóÕ + 5", { 1,1,1,1 });
+				SHADER.m_spriteShader.DrawString(-90, -150, "çUåÇóÕ + 10", { 1,1,1,1 });
 			}
 			break;
 		case BulletSplit:
@@ -106,7 +106,7 @@ bool C_PlayerUpGrade::Update()
 	{
 		if (MOUSEHIT.MouseBlockHit(m_UpGradeStatu[i].m_Pos * m_Scale, m_Radius/2 * m_Scale, m_Radius/2 * m_Scale))
 		{
-			if (C_KeyManager::GetInstance().GetLClick())
+			if (C_KeyManager::GetInstance().GetSpaceKey() || C_KeyManager::GetInstance().GetLClick())
 			{
 				switch (m_UpGradeStatu[i].m__SkillStatus)
 				{
@@ -142,9 +142,8 @@ bool C_PlayerUpGrade::Update()
 					//C_Player::GetInstance().
 					break;
 				}
-				C_Turn::GetInstance().SetNextTurn(C_Turn::Player);
+				C_Turn::GetInstance().SetNextTurn(C_Turn::EnemyInit);
 				C_Player::GetInstance().SetCanMove(true);
-				C_Player::GetInstance().SetBulletReset();
 				return true;
 			}
 

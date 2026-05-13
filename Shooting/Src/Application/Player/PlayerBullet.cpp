@@ -88,7 +88,7 @@ void C_PlayerBullet::Init()
 	m_Pos.x = 0;
 	m_Pos.y = 0;
 	m_Alive = false;
-	ignoreFrames = 10;
+	ignoreFrames = 5;
 }
 
 void C_PlayerBullet::SetTex(KdTexture* tex)

@@ -3,7 +3,7 @@
 
 void C_Turn::Init()
 {
-	SetNextTurn(Player);
+	SetNextTurn(EnemyInit);
 }
 
 void C_Turn::Update()

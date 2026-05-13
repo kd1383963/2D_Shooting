@@ -15,6 +15,7 @@ void C_Enemy::Draw()
 
 void C_Enemy::Update()
 {
+	TotalInitAnimEnd = 0;
 	TotalEnemyMove = 0;
 	TotalEnemy = m_EnemyChara.size();
 	for (const auto& e : m_EnemyChara) {
@@ -41,20 +42,32 @@ void C_Enemy::Update()
 			
 		}
 	}
-	if (C_KeyManager::GetInstance().GetLKey())
+	if (C_Turn::GetInstance().GetNowTurn() != C_Turn::EnemyInit)
 	{
-		for (const auto& e : m_EnemyChara) {
-			e->SetEAnimStatus(EDead);
+		if (C_KeyManager::GetInstance().GetLKey())
+		{
+			for (const auto& e : m_EnemyChara) {
+				e->SetEAnimStatus(EDead);
+			}
+		}
+		if (TotalEnemyMove == TotalEnemy)
+		{
+			for (const auto& e : m_EnemyChara) {
+				e->SetAttackFlg();
+				e->SetAttackCmd();
+			}
+			C_Turn::GetInstance().SetNextTurn(C_Turn::Player);
+			C_Player::GetInstance().SetCanMove(true);
 		}
 	}
-	if (TotalEnemyMove == TotalEnemy)
+	else
 	{
-		for (const auto& e : m_EnemyChara) {
-			e->SetAttackFlg();
-			e->SetAttackCmd();
+		if (TotalInitAnimEnd == TotalEnemy)
+		{
+			C_Turn::GetInstance().SetNextTurn(C_Turn::Player);
+			C_Player::GetInstance().SetCanMove(true);
+			C_Player::GetInstance().PlayerBulletReset();
 		}
-		C_Turn::GetInstance().SetNextTurn(C_Turn::Player);
-		C_Player::GetInstance().SetCanMove(true);
 	}
 	if(m_EnemyChara.size()==0)
 	{

@@ -93,6 +93,9 @@ void C_GameScene::Draw()
 	C_Player::GetInstance().Draw();
 	
 	m_Enemy->Draw();
+
+	C_Player::GetInstance().MiniUpDraw();
+
 	if (C_Turn::GetInstance().GetNowTurn() == C_Turn::UpGrade)
 	{
 		m_PlayerUpGrade->Draw();
@@ -111,7 +114,7 @@ void C_GameScene::TexLoad()
 	m_TurnAddTex.Load("Texture/UI/TurnAdd.png");
 	m_HealHpTex.Load("Texture/UI/Heal.png");
 	m_NumberTex.Load("Texture/UI/DNumber.png");
-
+	m_CrossTex.Load("Texture/UI/Cross.png");
 
 	m_PlayerUpGrade->SetTex(&m_UpGradeHpTex,&m_HealHpTex,&m_UpGradeAtkTex, &m_UpGradeBulletWallBoundTex,
 		&m_UpGradeDoubleBulletTex, &m_UpGradeBulletEnemyBoundTex, &m_TurnAddTex,
@@ -129,7 +132,7 @@ void C_GameScene::TexLoad()
 	C_Player::GetInstance().SetTex( &m_PlayerMoveTex, &m_PlayerAtkTex,
 		&m_PlayerHurtTex, &m_PlayerDeadTex,&m_PlayerBulletLineTex, &m_HpTex, &m_HpBreakTex,&m_HpBackTex,
 		&m_UpGradeBulletWallBoundTex,&m_UpGradeDoubleBulletTex, &m_UpGradeBulletEnemyBoundTex,
-		&m_UpGradeBulletSplitTex,&m_NumberTex,&m_HpNumBerTex);
+		&m_UpGradeBulletSplitTex,&m_NumberTex,&m_HpNumBerTex,&m_BrackBackTex,&m_CrossTex);
 
 	m_EnemyIdleTex.Load("Texture/Enemy/IDLE.png");
 	m_EnemyAtkTex.Load("Texture/Enemy/ATTACK.png");
@@ -175,4 +178,6 @@ void C_GameScene::Release()
 	m_UpGradeBulletEnemyBoundTex.Release();
 	m_UpGradeBulletSplitTex.Release();
 	m_TurnAddTex.Release();
+	m_AtkExpTex.Release();
+	m_HpNumBerTex.Release();
 }

@@ -22,7 +22,7 @@ void C_Player::Draw()
 	{
 		if (m_CharaStatus.m_AnimStatus != Dead)
 		{
-			if (!m_ShotFlg)
+			if (!m_ShotFlg&& m_CharaStatus.m_AnimStatus==Move)
 			{
 				if (PlayerSkillBase.Shot5way)
 				{
@@ -88,36 +88,99 @@ void C_Player::Draw()
 	
 	int Max = m_CharaStatus.m_MaxHp;
 	SHADER.m_spriteShader.SetMatrix(m_HpMax1Mat);
-	SHADER.m_spriteShader.DrawTex(m_HpNumTex, { NumberWidth * (Max % 10),0,64,64 }, 1.0f);
+	SHADER.m_spriteShader.DrawTex(m_NumTex, { NumberWidth * (Max % 10),0,64,64 }, 1.0f);
 	Max = Max / 10;
 	SHADER.m_spriteShader.SetMatrix(m_HpMax10Mat);
-	SHADER.m_spriteShader.DrawTex(m_HpNumTex, { NumberWidth * (Max % 10),0,64,64 }, 1.0f);
+	SHADER.m_spriteShader.DrawTex(m_NumTex, { NumberWidth * (Max % 10),0,64,64 }, 1.0f);
 	Max = Max / 10;
 	SHADER.m_spriteShader.SetMatrix(m_HpMax100Mat);
-	SHADER.m_spriteShader.DrawTex(m_HpNumTex, { NumberWidth * (Max % 10),0,64,64 }, 1.0f);
+	SHADER.m_spriteShader.DrawTex(m_NumTex, { NumberWidth * (Max % 10),0,64,64 }, 1.0f);
 
 	SHADER.m_spriteShader.SetMatrix(m_HpBerMat);
 	SHADER.m_spriteShader.DrawTex(m_HpBerTex, { 0,0,64,64 }, 1.0f);
 
-	int Now = m_CharaStatus.m_Hp;
+	int NowHp = m_CharaStatus.m_Hp;
 	SHADER.m_spriteShader.SetMatrix(m_NowHp1Mat);
-	SHADER.m_spriteShader.DrawTex(m_HpNumTex, { NumberWidth * (Now % 10),0,64,64 }, 1.0f);
+	SHADER.m_spriteShader.DrawTex(m_NumTex, { NumberWidth * (NowHp % 10),0,64,64 }, 1.0f);
 	if (m_NowHp10Flg)
 	{
-		Now = Now / 10;
+		NowHp = NowHp / 10;
 		SHADER.m_spriteShader.SetMatrix(m_NowHp10Mat);
-		SHADER.m_spriteShader.DrawTex(m_HpNumTex, { NumberWidth * (Now % 10),0,64,64 }, 1.0f);
+		SHADER.m_spriteShader.DrawTex(m_NumTex, { NumberWidth * (NowHp % 10),0,64,64 }, 1.0f);
 	}
 	if (m_NowHp100Flg)
 	{
-		Now = Now / 10;
+		NowHp = NowHp / 10;
 		SHADER.m_spriteShader.SetMatrix(m_NowHp100Mat);
-		SHADER.m_spriteShader.DrawTex(m_HpNumTex, { NumberWidth * Now,0,64,64 }, 1.0f);
+		SHADER.m_spriteShader.DrawTex(m_NumTex, { NumberWidth * NowHp,0,64,64 }, 1.0f);
 	}
 
 	for (int i = 0; i < m_Bullet.size(); i++)
 	{
 		m_Bullet[i]->Draw();
+	}
+
+	
+}
+
+void C_Player::MiniUpDraw()
+{
+	if (GetAsyncKeyState(VK_TAB) & 0x8000)
+	{
+		SHADER.m_spriteShader.SetMatrix(m_MiniUpGradeBackMat);
+		SHADER.m_spriteShader.DrawTex(m_UpBackTex, { 0,0,300,720 }, 0.2f);
+
+		SHADER.m_spriteShader.SetMatrix(Math::Matrix::Identity);
+		SHADER.m_spriteShader.DrawString(m_UpGradePos.x, m_UpGradePos.y - m_UpAddGradePos.y * 2, "çUåÇóÕ", { 1,1,1,1 });
+		SCENEMANAGER.DrawEndBegin();
+
+		int NowAtk = m_CharaStatus.m_Atk;
+		SHADER.m_spriteShader.SetMatrix(m_NowAtk1Mat);
+		SHADER.m_spriteShader.DrawTex(m_NumTex, { NumberWidth * (NowAtk % 10),0,64,64 }, 1.0f);
+		NowAtk = NowAtk / 10;
+		SHADER.m_spriteShader.SetMatrix(m_NowAtk10Mat);
+		SHADER.m_spriteShader.DrawTex(m_NumTex, { NumberWidth * (NowAtk % 10),0,64,64 }, 1.0f);
+		if (m_NowAtk100Flg)
+		{
+			NowAtk = NowAtk / 10;
+			SHADER.m_spriteShader.SetMatrix(m_NowAtk100Mat);
+			SHADER.m_spriteShader.DrawTex(m_NumTex, { NumberWidth * (NowAtk % 10),0,64,64 }, 1.0f);
+		}
+
+		
+		SHADER.m_spriteShader.SetMatrix(m_UpGradeBulletWallBoundMat);
+		SHADER.m_spriteShader.DrawTex(m_UpGradeBulletWallBoundTex, { 0,0,32,32 }, 1.0f);
+		SHADER.m_spriteShader.SetMatrix(m_Cross1Mat);
+		SHADER.m_spriteShader.DrawTex(m_CrossTex, { 0,0,64,64 }, 1.0f);
+		int SkillNum = PlayerSkillBase.m_WallbounceLeft;
+		SHADER.m_spriteShader.SetMatrix(m_UpGrade1Num1Mat);
+		SHADER.m_spriteShader.DrawTex(m_NumTex, { NumberWidth * (SkillNum % 10),0,64,64 }, 1.0f);
+		SkillNum = SkillNum / 10;
+		SHADER.m_spriteShader.SetMatrix(m_UpGrade1Num10Mat);
+		SHADER.m_spriteShader.DrawTex(m_NumTex, { NumberWidth * (SkillNum % 10),0,64,64 }, 1.0f);
+
+		SHADER.m_spriteShader.SetMatrix(m_UpGradeBulletEnemyBoundMat);
+		SHADER.m_spriteShader.DrawTex(m_UpGradeBulletEnemyBoundTex, { 0,0,32,32 }, 1.0f);
+		SHADER.m_spriteShader.SetMatrix(m_Cross2Mat);
+		SHADER.m_spriteShader.DrawTex(m_CrossTex, { 0,0,64,64 }, 1.0f);
+		SkillNum = PlayerSkillBase.m_BulletEnemyBoundFlg;
+		SHADER.m_spriteShader.SetMatrix(m_UpGrade2Num1Mat);
+		SHADER.m_spriteShader.DrawTex(m_NumTex, { NumberWidth * (SkillNum % 10),0,64,64 }, 1.0f);
+		SkillNum = SkillNum / 10;
+		SHADER.m_spriteShader.SetMatrix(m_UpGrade2Num10Mat);
+		SHADER.m_spriteShader.DrawTex(m_NumTex, { NumberWidth * (SkillNum % 10),0,64,64 }, 1.0f);
+
+		SHADER.m_spriteShader.SetMatrix(m_UpGradeDoubleBulletMat);
+		SHADER.m_spriteShader.DrawTex(m_UpGradeDoubleBulletTex, { 0,0,32,32 }, 1.0f);
+		SHADER.m_spriteShader.SetMatrix(m_Cross3Mat);
+		SHADER.m_spriteShader.DrawTex(m_CrossTex, { 0,0,64,64 }, 1.0f);
+		SkillNum = PlayerSkillBase.m_DoubleShot;
+		SHADER.m_spriteShader.SetMatrix(m_UpGrade3Num1Mat);
+		SHADER.m_spriteShader.DrawTex(m_NumTex, { NumberWidth * (SkillNum % 10),0,64,64 }, 1.0f);
+		SkillNum = SkillNum / 10;
+		SHADER.m_spriteShader.SetMatrix(m_UpGrade3Num10Mat);
+		SHADER.m_spriteShader.DrawTex(m_NumTex, { NumberWidth * (SkillNum % 10),0,64,64 }, 1.0f);
+
 	}
 }
 
@@ -199,7 +262,7 @@ void C_Player::Update()
 					}
 				}
 
-				if (C_KeyManager::GetInstance().GetSpaceKey())
+				if (C_KeyManager::GetInstance().GetSpaceKey()||C_KeyManager::GetInstance().GetLClick())
 				{
 					if (m_CharaStatus.m_AnimStatus != Atk)
 					{
@@ -373,6 +436,7 @@ void C_Player::Update()
 				),
 				m_Bullet.end()
 			);
+			m_CharaStatus.m_AtkFlg = false;
 			m_ShotFlg = false;
 			MultiShotCnt = 0;
 			ShotWait = 0;
@@ -411,15 +475,40 @@ void C_Player::Update()
 	{
 		m_NowHp1Mat = Math::Matrix::CreateScale(m_HpNumScale, m_HpNumScale, 0) * Math::Matrix::CreateTranslation(m_CharaStatus.Pos.x + AddHpNumPos.x, m_CharaStatus.Pos.y + m_CharaStatus.HpAddPos.y + AddHpNumPos.y, 0);
 	}
-	m_HpMax100Mat = Math::Matrix::CreateScale(m_HpNumScale, m_HpNumScale, 0) * Math::Matrix::CreateTranslation(m_CharaStatus.Pos.x - AddHpNumPos.x, m_CharaStatus.Pos.y + m_CharaStatus.HpAddPos.y + AddHpNumPos.y, 0);
-	m_HpMax10Mat  = Math::Matrix::CreateScale(m_HpNumScale, m_HpNumScale, 0) * Math::Matrix::CreateTranslation(m_CharaStatus.Pos.x - AddHpNumPos.x * 2, m_CharaStatus.Pos.y + m_CharaStatus.HpAddPos.y + AddHpNumPos.y, 0);
-	m_HpMax1Mat   = Math::Matrix::CreateScale(m_HpNumScale, m_HpNumScale, 0) * Math::Matrix::CreateTranslation(m_CharaStatus.Pos.x - AddHpNumPos.x * 3, m_CharaStatus.Pos.y + m_CharaStatus.HpAddPos.y + AddHpNumPos.y, 0);
-	m_HpBerMat= Math::Matrix::CreateScale(m_HpNumScale, m_HpNumScale, 0) * Math::Matrix::CreateTranslation(m_CharaStatus.Pos.x, m_CharaStatus.Pos.y + m_CharaStatus.HpAddPos.y + AddHpNumPos.y, 0);
-	m_PlayerScaleMat = Math::Matrix::CreateScale(2, 2, 1);
-	m_PlayerMat = m_PlayerScaleMat * Math::Matrix::CreateTranslation(m_CharaStatus.Pos.x, m_CharaStatus.Pos.y, 0);
+	m_HpMax100Mat		= Math::Matrix::CreateScale(m_HpNumScale, m_HpNumScale, 0) * Math::Matrix::CreateTranslation(m_CharaStatus.Pos.x - AddHpNumPos.x, m_CharaStatus.Pos.y + m_CharaStatus.HpAddPos.y + AddHpNumPos.y, 0);
+	m_HpMax10Mat		= Math::Matrix::CreateScale(m_HpNumScale, m_HpNumScale, 0) * Math::Matrix::CreateTranslation(m_CharaStatus.Pos.x - AddHpNumPos.x * 2, m_CharaStatus.Pos.y + m_CharaStatus.HpAddPos.y + AddHpNumPos.y, 0);
+	m_HpMax1Mat			= Math::Matrix::CreateScale(m_HpNumScale, m_HpNumScale, 0) * Math::Matrix::CreateTranslation(m_CharaStatus.Pos.x - AddHpNumPos.x * 3, m_CharaStatus.Pos.y + m_CharaStatus.HpAddPos.y + AddHpNumPos.y, 0);
+	m_HpBerMat			= Math::Matrix::CreateScale(m_HpNumScale, m_HpNumScale, 0) * Math::Matrix::CreateTranslation(m_CharaStatus.Pos.x, m_CharaStatus.Pos.y + m_CharaStatus.HpAddPos.y + AddHpNumPos.y, 0);
+	m_PlayerScaleMat	= Math::Matrix::CreateScale(2, 2, 1);
+	m_PlayerMat			= m_PlayerScaleMat * Math::Matrix::CreateTranslation(m_CharaStatus.Pos.x, m_CharaStatus.Pos.y, 0);
 	
+	m_UpGradeBulletWallBoundMat = Math::Matrix::CreateScale(m_MiniUpScale, m_MiniUpScale, 0) * Math::Matrix::CreateTranslation(m_UpGradePos.x, m_UpGradePos.y + m_UpAddGradePos.y * 0, 0);
+	m_Cross1Mat					= Math::Matrix::CreateScale(m_MiniCrossScale, m_MiniCrossScale, 0) * Math::Matrix::CreateTranslation(m_UpGradePos.x + m_UpAddGradeNumPos.x * 2, m_UpGradePos.y + (m_UpAddGradePos.y * 0) + m_UpAddGradeNumPos.y, 0);
+	m_UpGrade1Num1Mat			= Math::Matrix::CreateScale(m_MiniNumScale, m_MiniNumScale, 0) * Math::Matrix::CreateTranslation(m_UpGradePos.x + m_UpAddGradeNumPos.x * 4, m_UpGradePos.y + (m_UpAddGradePos.y * 0) + m_UpAddGradeNumPos.y, 0);
+	m_UpGrade1Num10Mat			= Math::Matrix::CreateScale(m_MiniNumScale, m_MiniNumScale, 0) * Math::Matrix::CreateTranslation(m_UpGradePos.x + m_UpAddGradeNumPos.x * 3, m_UpGradePos.y + (m_UpAddGradePos.y * 0) + m_UpAddGradeNumPos.y, 0);
+	
+	m_UpGradeBulletEnemyBoundMat = Math::Matrix::CreateScale(m_MiniUpScale, m_MiniUpScale, 0) * Math::Matrix::CreateTranslation(m_UpGradePos.x, m_UpGradePos.y + m_UpAddGradePos.y * 1, 0);
+	m_Cross2Mat = Math::Matrix::CreateScale(m_MiniCrossScale, m_MiniCrossScale, 0) * Math::Matrix::CreateTranslation(m_UpGradePos.x + m_UpAddGradeNumPos.x * 2, m_UpGradePos.y + (m_UpAddGradePos.y * 1) + m_UpAddGradeNumPos.y, 0);
+	m_UpGrade2Num1Mat = Math::Matrix::CreateScale(m_MiniNumScale, m_MiniNumScale, 0) * Math::Matrix::CreateTranslation(m_UpGradePos.x + m_UpAddGradeNumPos.x * 4, m_UpGradePos.y + (m_UpAddGradePos.y * 1) + m_UpAddGradeNumPos.y, 0);
+	m_UpGrade2Num10Mat = Math::Matrix::CreateScale(m_MiniNumScale, m_MiniNumScale, 0) * Math::Matrix::CreateTranslation(m_UpGradePos.x + m_UpAddGradeNumPos.x * 3, m_UpGradePos.y + (m_UpAddGradePos.y * 1) + m_UpAddGradeNumPos.y, 0);
+
+
+	m_UpGradeDoubleBulletMat	= Math::Matrix::CreateScale(m_MiniUpScale, m_MiniUpScale, 0)* Math::Matrix::CreateTranslation(m_UpGradePos.x, m_UpGradePos.y + m_UpAddGradePos.y * 2, 0);
+	m_Cross3Mat					= Math::Matrix::CreateScale(m_MiniCrossScale, m_MiniCrossScale, 0) * Math::Matrix::CreateTranslation(m_UpGradePos.x + m_UpAddGradeNumPos.x * 2, m_UpGradePos.y + (m_UpAddGradePos.y * 2) + m_UpAddGradeNumPos.y, 0);
+	m_UpGrade3Num1Mat			= Math::Matrix::CreateScale(m_MiniNumScale, m_MiniNumScale, 0) * Math::Matrix::CreateTranslation(m_UpGradePos.x + m_UpAddGradeNumPos.x * 4, m_UpGradePos.y + (m_UpAddGradePos.y * 2) + m_UpAddGradeNumPos.y, 0);
+	m_UpGrade3Num10Mat			= Math::Matrix::CreateScale(m_MiniNumScale, m_MiniNumScale, 0) * Math::Matrix::CreateTranslation(m_UpGradePos.x + m_UpAddGradeNumPos.x * 3, m_UpGradePos.y + (m_UpAddGradePos.y * 2) + m_UpAddGradeNumPos.y, 0);
+
+	
+	m_MiniUpGradeBackMat = Math::Matrix::CreateTranslation(m_UpGradePos.x, 0, 0);
+	
+	
+	m_NowAtk1Mat = Math::Matrix::CreateTranslation(m_AtkNumPos.x + AddAtkNumPos.x, m_UpGradePos.y - m_UpAddGradePos.y , 0);
+	m_NowAtk10Mat = Math::Matrix::CreateTranslation(m_AtkNumPos.x, m_UpGradePos.y - m_UpAddGradePos.y, 0);
+	m_NowAtk100Mat = Math::Matrix::CreateTranslation(m_AtkNumPos.x - AddAtkNumPos.x, m_UpGradePos.y - m_UpAddGradePos.y , 0);
+
 	m_NowHp100Flg = false;
 	m_NowHp10Flg = false;
+	m_NowAtk100Flg = false;
 	if (m_CharaStatus.m_Hp / 100 >= 1)
 	{
 		m_NowHp100Flg = true;
@@ -428,6 +517,11 @@ void C_Player::Update()
 	else if (m_CharaStatus.m_Hp / 10 >= 1)
 	{
 		m_NowHp10Flg = true;
+	}
+
+	if (m_CharaStatus.m_Atk / 100 >= 1)
+	{
+		m_NowAtk100Flg = true;
 	}
 
 	for (auto& i : m_Bullet)
@@ -462,6 +556,8 @@ void C_Player::Update()
 	{
 		SetShot5way();
 	}
+
+
 }
 
 void C_Player::Init()
@@ -481,8 +577,6 @@ void C_Player::Init()
 	PlayerSkillBase.m_BulletEnemyBoundFlg = 1;
 	PlayerSkillBase.m_WallbounceLeft = 1;
 	PlayerSkillBase.m_DoubleShot = 0;
-	//PlayerSkillBase.Shot3way = true;
-	//PlayerSkillBase.Shot5way = true;
 	ShotWait = 0;
 	MultiShotCnt = 0;
 	m_CanMoveFlg = true;
@@ -495,7 +589,7 @@ void C_Player::SetTex( KdTexture* playermovetex, KdTexture* playeratktex,
 	KdTexture* playerhurttex, KdTexture* playerdeadtex, KdTexture* bulletlinetex,
 	KdTexture* hpbartex, KdTexture* hpbarbraektex, KdTexture* hpbarbacktex,
 	KdTexture* ugwallboundtex, KdTexture* ugdoubleshottex, KdTexture* ugenemyboundtex, KdTexture* ugsplittex,
-	KdTexture* hpnumtex, KdTexture* hpbarnumtex)
+	KdTexture* hpnumtex, KdTexture* hpbarnumtex, KdTexture* upbacktex, KdTexture* crosstex)
 {
 	m_BulletTex.Load("Texture/Player/PlayerBullet.png");
 	
@@ -511,8 +605,10 @@ void C_Player::SetTex( KdTexture* playermovetex, KdTexture* playeratktex,
 	m_UpGradeDoubleBulletTex = ugdoubleshottex;
 	m_UpGradeBulletEnemyBoundTex = ugenemyboundtex;
 	m_UpGradeBulletSplitTex = ugsplittex;
-	m_HpNumTex = hpnumtex;
+	m_NumTex = hpnumtex;
 	m_HpBerTex = hpbarnumtex;
+	m_UpBackTex = upbacktex;
+	m_CrossTex = crosstex;
 }
 
 Math::Vector2 C_Player::Rotate(Math::Vector2& v, float angle)
@@ -524,6 +620,28 @@ Math::Vector2 C_Player::Rotate(Math::Vector2& v, float angle)
 		v.x * sin + v.y * cos
 	);
 
+}
+
+void C_Player::PlayerBulletReset()
+{
+	for (auto& i : m_Bullet)
+	{
+		i->SetAlive(false);
+	}
+	m_Bullet.erase(
+		std::remove_if(
+			m_Bullet.begin(),
+			m_Bullet.end(),
+			[](const std::shared_ptr<C_PlayerBullet>& e) {
+				return!(e->GetAlive());  // Å© GetAlive Ç™ false ÇÃíeÇæÇØè¡Ç∑
+			}
+		),
+		m_Bullet.end()
+	);
+	m_CharaStatus.m_AtkFlg = false;
+	m_ShotFlg = false;
+	MultiShotCnt = 0;
+	ShotWait = 0;
 }
 
 void C_Player::HitBulletEnemy()

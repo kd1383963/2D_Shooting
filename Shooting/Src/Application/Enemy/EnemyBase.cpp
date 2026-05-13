@@ -11,6 +11,9 @@ void C_EnemyBase::Draw()
 	SHADER.m_spriteShader.SetMatrix(m_EnemyMat);
 	switch (m_EnemyStatus.m_EAnimStatus)
 	{
+		case EStart:
+			SHADER.m_spriteShader.DrawTex(m_EnemyDeadTex, { m_EnemyStatus.m_DeadTexWidthMax - CharaWidth * (int)CharaAnimCnt,0,CharaWidth,CharaHeight }, 1.0f);
+			break;
 		case EIdle:
 			SHADER.m_spriteShader.DrawTex(m_EnemyIdleTex, { CharaWidth * (int)CharaAnimCnt,0,CharaWidth,CharaHeight }, 1.0f);
 			break;
@@ -25,127 +28,130 @@ void C_EnemyBase::Draw()
 			break;
 	}
 	
-
-	int HpBerCnt;
-
-	//HPˆ—
-	SHADER.m_spriteShader.SetMatrix(m_HpBackMat);
-	SHADER.m_spriteShader.DrawTex(m_HpBackTex, { 0,0,66,8 }, 1.0f);
-	HpBerCnt = (m_EnemyStatus.m_MaxHp - m_EnemyStatus.m_BreakHp);
-	if (HpBerCnt > m_EnemyStatus.m_MaxHp)
+	if (C_Turn::GetInstance().GetNowTurn() != C_Turn::EnemyInit)
 	{
-		HpBerCnt = m_EnemyStatus.m_MaxHp;
-	}
-	SHADER.m_spriteShader.SetMatrix(m_HpBreakMat);
-	SHADER.m_spriteShader.DrawTex(m_HpBreakTex, { 0,0,(66 - (int)(66 * (HpBerCnt / m_EnemyStatus.m_MaxHp))),8 }, 1.0f);
-	HpBerCnt = (m_EnemyStatus.m_MaxHp - m_EnemyStatus.m_Hp);
-	if (HpBerCnt > m_EnemyStatus.m_MaxHp)
-	{
-		HpBerCnt = m_EnemyStatus.m_MaxHp;
-	}
-	SHADER.m_spriteShader.SetMatrix(m_HpMat);
-	SHADER.m_spriteShader.DrawTex(m_HpTex, { 0,0,(66 - (int)(66 * (HpBerCnt / m_EnemyStatus.m_MaxHp))),8 }, 1.0f);
 
-	int Max = m_EnemyStatus.m_MaxHp;
-	SHADER.m_spriteShader.SetMatrix(m_HpMax1Mat);
-	SHADER.m_spriteShader.DrawTex(m_HpNumTex, { NumberWidth * (Max % 10),0,64,64 }, 1.0f);
-	Max = Max / 10;
-	SHADER.m_spriteShader.SetMatrix(m_HpMax10Mat);
-	SHADER.m_spriteShader.DrawTex(m_HpNumTex, { NumberWidth * (Max % 10),0,64,64 }, 1.0f);
-	if (m_MaxHp100Flg)
-	{
-		Max = Max / 10;
-		SHADER.m_spriteShader.SetMatrix(m_HpMax100Mat);
+		int HpBerCnt;
+
+		//HPˆ—
+		SHADER.m_spriteShader.SetMatrix(m_HpBackMat);
+		SHADER.m_spriteShader.DrawTex(m_HpBackTex, { 0,0,66,8 }, 1.0f);
+		HpBerCnt = (m_EnemyStatus.m_MaxHp - m_EnemyStatus.m_BreakHp);
+		if (HpBerCnt > m_EnemyStatus.m_MaxHp)
+		{
+			HpBerCnt = m_EnemyStatus.m_MaxHp;
+		}
+		SHADER.m_spriteShader.SetMatrix(m_HpBreakMat);
+		SHADER.m_spriteShader.DrawTex(m_HpBreakTex, { 0,0,(66 - (int)(66 * (HpBerCnt / m_EnemyStatus.m_MaxHp))),8 }, 1.0f);
+		HpBerCnt = (m_EnemyStatus.m_MaxHp - m_EnemyStatus.m_Hp);
+		if (HpBerCnt > m_EnemyStatus.m_MaxHp)
+		{
+			HpBerCnt = m_EnemyStatus.m_MaxHp;
+		}
+		SHADER.m_spriteShader.SetMatrix(m_HpMat);
+		SHADER.m_spriteShader.DrawTex(m_HpTex, { 0,0,(66 - (int)(66 * (HpBerCnt / m_EnemyStatus.m_MaxHp))),8 }, 1.0f);
+
+		int Max = m_EnemyStatus.m_MaxHp;
+		SHADER.m_spriteShader.SetMatrix(m_HpMax1Mat);
 		SHADER.m_spriteShader.DrawTex(m_HpNumTex, { NumberWidth * (Max % 10),0,64,64 }, 1.0f);
-	}
-	SHADER.m_spriteShader.SetMatrix(m_HpBerMat);
-	SHADER.m_spriteShader.DrawTex(m_HpBerTex, { 0,0,64,64 }, 1.0f);
+		Max = Max / 10;
+		SHADER.m_spriteShader.SetMatrix(m_HpMax10Mat);
+		SHADER.m_spriteShader.DrawTex(m_HpNumTex, { NumberWidth * (Max % 10),0,64,64 }, 1.0f);
+		if (m_MaxHp100Flg)
+		{
+			Max = Max / 10;
+			SHADER.m_spriteShader.SetMatrix(m_HpMax100Mat);
+			SHADER.m_spriteShader.DrawTex(m_HpNumTex, { NumberWidth * (Max % 10),0,64,64 }, 1.0f);
+		}
+		SHADER.m_spriteShader.SetMatrix(m_HpBerMat);
+		SHADER.m_spriteShader.DrawTex(m_HpBerTex, { 0,0,64,64 }, 1.0f);
 
-	int Now = m_EnemyStatus.m_Hp;
-	SHADER.m_spriteShader.SetMatrix(m_NowHp1Mat);
-	SHADER.m_spriteShader.DrawTex(m_HpNumTex, { NumberWidth * (Now % 10),0,64,64 }, 1.0f);
-	if (m_NowHp10Flg)
-	{
-		Now = Now / 10;
-		SHADER.m_spriteShader.SetMatrix(m_NowHp10Mat);
+		int Now = m_EnemyStatus.m_Hp;
+		SHADER.m_spriteShader.SetMatrix(m_NowHp1Mat);
 		SHADER.m_spriteShader.DrawTex(m_HpNumTex, { NumberWidth * (Now % 10),0,64,64 }, 1.0f);
-	}
-	if (m_NowHp100Flg)
-	{
-		Now = Now / 10;
-		SHADER.m_spriteShader.SetMatrix(m_NowHp100Mat);
-		SHADER.m_spriteShader.DrawTex(m_HpNumTex, { NumberWidth * Now,0,64,64 }, 1.0f);
-	}
+		if (m_NowHp10Flg)
+		{
+			Now = Now / 10;
+			SHADER.m_spriteShader.SetMatrix(m_NowHp10Mat);
+			SHADER.m_spriteShader.DrawTex(m_HpNumTex, { NumberWidth * (Now % 10),0,64,64 }, 1.0f);
+		}
+		if (m_NowHp100Flg)
+		{
+			Now = Now / 10;
+			SHADER.m_spriteShader.SetMatrix(m_NowHp100Mat);
+			SHADER.m_spriteShader.DrawTex(m_HpNumTex, { NumberWidth * Now,0,64,64 }, 1.0f);
+		}
 
 
-	switch (m_EnemyStatus.m_MoveCmd)
-	{
-	case Attack:
-		SHADER.m_spriteShader.SetMatrix(m_IconMat);
-		SHADER.m_spriteShader.DrawTex(m_AttackIconTex, { 0,0,32,32 }, 1.0f);
-		if (m_AtkExpFlg)
+		switch (m_EnemyStatus.m_MoveCmd)
 		{
-			SHADER.m_spriteShader.SetMatrix(m_AtkExpMat);
-			SHADER.m_spriteShader.DrawTex(m_AtkExpTex, { 128 * (int)m_AtkExpAnimCnt,0,128,128 }, 1.0f);
+		case Attack:
+			SHADER.m_spriteShader.SetMatrix(m_IconMat);
+			SHADER.m_spriteShader.DrawTex(m_AttackIconTex, { 0,0,32,32 }, 1.0f);
+			if (m_AtkExpFlg)
+			{
+				SHADER.m_spriteShader.SetMatrix(m_AtkExpMat);
+				SHADER.m_spriteShader.DrawTex(m_AtkExpTex, { 128 * (int)m_AtkExpAnimCnt,0,128,128 }, 1.0f);
+			}
+			break;
+		case Beam5:
+			if (!m_EnemyStatus.m_ShotFlg)
+			{
+				SHADER.m_spriteShader.SetMatrix(m_Line1Mat);
+				SHADER.m_spriteShader.DrawTex(m_BulletLineTex, { 0,0,2560,16 }, m_LineBlinking);
+				SHADER.m_spriteShader.SetMatrix(m_Line5Mat);
+				SHADER.m_spriteShader.DrawTex(m_BulletLineTex, { 0,0,2560,16 }, m_LineBlinking);
+			}
+		case Beam3:
+			if (!m_EnemyStatus.m_ShotFlg)
+			{
+				SHADER.m_spriteShader.SetMatrix(m_Line2Mat);
+				SHADER.m_spriteShader.DrawTex(m_BulletLineTex, { 0,0,2560,16 }, m_LineBlinking);
+				SHADER.m_spriteShader.SetMatrix(m_Line4Mat);
+				SHADER.m_spriteShader.DrawTex(m_BulletLineTex, { 0,0,2560,16 }, m_LineBlinking);
+			}
+		case Beam:
+			SHADER.m_spriteShader.SetMatrix(m_IconMat);
+			SHADER.m_spriteShader.DrawTex(m_BeamIconTex, { 0,0,32,32 }, 1.0f);
+			if (!m_EnemyStatus.m_ShotFlg)
+			{
+				SHADER.m_spriteShader.SetMatrix(m_Line3Mat);
+				SHADER.m_spriteShader.DrawTex(m_BulletLineTex, { 0,0,2560,16 }, m_LineBlinking);
+			}
+			break;
 		}
-		break;
-	case Beam5:
-		if (!m_EnemyStatus.m_ShotFlg)
-		{
-			SHADER.m_spriteShader.SetMatrix(m_Line1Mat);
-			SHADER.m_spriteShader.DrawTex(m_BulletLineTex, { 0,0,2560,16 }, m_LineBlinking);
-			SHADER.m_spriteShader.SetMatrix(m_Line5Mat);
-			SHADER.m_spriteShader.DrawTex(m_BulletLineTex, { 0,0,2560,16 }, m_LineBlinking);
-		}
-	case Beam3:
-		if (!m_EnemyStatus.m_ShotFlg)
-		{
-			SHADER.m_spriteShader.SetMatrix(m_Line2Mat);
-			SHADER.m_spriteShader.DrawTex(m_BulletLineTex, { 0,0,2560,16 }, m_LineBlinking);
-			SHADER.m_spriteShader.SetMatrix(m_Line4Mat);
-			SHADER.m_spriteShader.DrawTex(m_BulletLineTex, { 0,0,2560,16 }, m_LineBlinking);
-		}
-	case Beam:
-		SHADER.m_spriteShader.SetMatrix(m_IconMat);
-		SHADER.m_spriteShader.DrawTex(m_BeamIconTex, { 0,0,32,32 }, 1.0f);
-		if (!m_EnemyStatus.m_ShotFlg)
-		{
-			SHADER.m_spriteShader.SetMatrix(m_Line3Mat);
-			SHADER.m_spriteShader.DrawTex(m_BulletLineTex, { 0,0,2560,16 }, m_LineBlinking);
-		}
-		break;
-	}
-	
-	if (m_EnemyStatus.AttackDamage / 100 != 0)
-	{
-		int i = m_EnemyStatus.AttackDamage;
-		SHADER.m_spriteShader.SetMatrix(m_IconNumber1Mat);
-		SHADER.m_spriteShader.DrawTex(m_NumberTex, { 64 * (i % 10),0,64,64 }, 1.0f);
-		i /= 10;
-		SHADER.m_spriteShader.SetMatrix(m_IconNumber10Mat);
-		SHADER.m_spriteShader.DrawTex(m_NumberTex, { 64 * (i % 10),0,64,64 }, 1.0f);
-		i /= 10;
-		SHADER.m_spriteShader.SetMatrix(m_IconNumber100Mat);
-		SHADER.m_spriteShader.DrawTex(m_NumberTex, { 64 * i,0,64,64 }, 1.0f);
-	}
-	else if (m_EnemyStatus.AttackDamage / 10 != 0)
-	{
-		int i = m_EnemyStatus.AttackDamage;
-		SHADER.m_spriteShader.SetMatrix(m_IconNumber1Mat);
-		SHADER.m_spriteShader.DrawTex(m_NumberTex, { 64 * (i % 10),0,64,64 }, 1.0f);
-		i /= 10;
-		SHADER.m_spriteShader.SetMatrix(m_IconNumber10Mat);
-		SHADER.m_spriteShader.DrawTex(m_NumberTex, { 64 * (i % 10),0,64,64 }, 1.0f);
-	}
-	else
-	{
-		SHADER.m_spriteShader.SetMatrix(m_IconNumber1Mat);
-		SHADER.m_spriteShader.DrawTex(m_NumberTex, { 64 * m_EnemyStatus.AttackDamage,0,64,64 }, 1.0f);
-	}
 
-	for (auto& i : m_EnemyBullet)
-	{
-		i->Draw();
+		if (m_EnemyStatus.AttackDamage / 100 != 0)
+		{
+			int i = m_EnemyStatus.AttackDamage;
+			SHADER.m_spriteShader.SetMatrix(m_IconNumber1Mat);
+			SHADER.m_spriteShader.DrawTex(m_NumberTex, { 64 * (i % 10),0,64,64 }, 1.0f);
+			i /= 10;
+			SHADER.m_spriteShader.SetMatrix(m_IconNumber10Mat);
+			SHADER.m_spriteShader.DrawTex(m_NumberTex, { 64 * (i % 10),0,64,64 }, 1.0f);
+			i /= 10;
+			SHADER.m_spriteShader.SetMatrix(m_IconNumber100Mat);
+			SHADER.m_spriteShader.DrawTex(m_NumberTex, { 64 * i,0,64,64 }, 1.0f);
+		}
+		else if (m_EnemyStatus.AttackDamage / 10 != 0)
+		{
+			int i = m_EnemyStatus.AttackDamage;
+			SHADER.m_spriteShader.SetMatrix(m_IconNumber1Mat);
+			SHADER.m_spriteShader.DrawTex(m_NumberTex, { 64 * (i % 10),0,64,64 }, 1.0f);
+			i /= 10;
+			SHADER.m_spriteShader.SetMatrix(m_IconNumber10Mat);
+			SHADER.m_spriteShader.DrawTex(m_NumberTex, { 64 * (i % 10),0,64,64 }, 1.0f);
+		}
+		else
+		{
+			SHADER.m_spriteShader.SetMatrix(m_IconNumber1Mat);
+			SHADER.m_spriteShader.DrawTex(m_NumberTex, { 64 * m_EnemyStatus.AttackDamage,0,64,64 }, 1.0f);
+		}
+
+		for (auto& i : m_EnemyBullet)
+		{
+			i->Draw();
+		}
 	}
 }
 
@@ -168,9 +174,6 @@ void C_EnemyBase::ShotBeam()
 
 void C_EnemyBase::ShootWay(int a_way)
 {
-	
-
-	// ³–Ê•ûŒüiŒÅ’èŠp“xj
 	Math::Vector2 forward(cosf(0), sinf(0));
 	m_BulletTotal++;
 	m_EnemyStatus.m_ShotFlg = true;
@@ -284,6 +287,15 @@ void C_EnemyBase::Update()
 
 	switch (m_EnemyStatus.m_EAnimStatus)
 	{
+	case EStart:
+		CharaAnimCnt += 0.1f;
+		if (CharaAnimCnt > 7.0f)
+		{
+			CharaAnimCnt = 0.0f;
+			SetEAnimStatus(EIdle);
+			m_owner->TotalInitAnimEndInc();
+		}
+		break;
 	case EIdle:
 		CharaAnimCnt += 0.1f;
 		if (CharaAnimCnt > 4.0f)
@@ -431,7 +443,7 @@ void C_EnemyBase::Update()
 	m_HpMat = Math::Matrix::CreateTranslation(m_EnemyStatus.m_Pos.x - ((int)(66 * (((m_EnemyStatus.m_MaxHp - m_EnemyStatus.m_Hp) / 2) / m_EnemyStatus.m_MaxHp))), m_EnemyStatus.m_Pos.y + m_EnemyStatus.m_HpAddPos.y, 0);
 	m_HpBackMat = Math::Matrix::CreateTranslation(m_EnemyStatus.m_Pos.x, m_EnemyStatus.m_Pos.y + m_EnemyStatus.m_HpAddPos.y, 0);
 	m_HpBreakMat = Math::Matrix::CreateTranslation(m_EnemyStatus.m_Pos.x - ((int)(66 * (((m_EnemyStatus.m_MaxHp - m_EnemyStatus.m_BreakHp) / 2) / m_EnemyStatus.m_MaxHp))), m_EnemyStatus.m_Pos.y + m_EnemyStatus.m_HpAddPos.y, 0);
-	m_IconMat = Math::Matrix::CreateTranslation(m_EnemyStatus.m_Pos.x+m_EnemyStatus.m_IconAddPos.x, m_EnemyStatus.m_Pos.y + m_EnemyStatus.m_IconAddPos.y, 0);
+	m_IconMat = Math::Matrix::CreateScale(m_IconScale, m_IconScale, 0) * Math::Matrix::CreateTranslation(m_EnemyStatus.m_Pos.x+m_EnemyStatus.m_IconAddPos.x, m_EnemyStatus.m_Pos.y + m_EnemyStatus.m_IconAddPos.y, 0);
 	if (m_NowHp100Flg && m_NowHp10Flg)
 	{
 		m_NowHp100Mat = Math::Matrix::CreateScale(m_HpNumScale, m_HpNumScale, 0) * Math::Matrix::CreateTranslation(m_EnemyStatus.m_Pos.x + AddHpNumPos.x * 3, m_EnemyStatus.m_Pos.y + m_EnemyStatus.m_HpAddPos.y + AddHpNumPos.y, 0);
