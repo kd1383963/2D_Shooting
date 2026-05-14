@@ -29,8 +29,9 @@ void C_Prism::Init(int wave,int num)
 	std::vector<std::shared_ptr<C_EnemyBase>> EnemyChara = m_owner->GetEnemyChara();
 
 	m_EnemyStatus.m_Radius = 32;
-	m_EnemyStatus.m_EAnimStatus = EIdle;
+	m_EnemyStatus.m_EAnimStatus = EStart;
 	CharaAnimCnt = 0;
+	m_EnemyStatus.m_DeadTexWidthMax = 567 - CharaWidth;
 	m_MaxHp100Flg = false;
 	m_NowHp100Flg = false;
 	m_NowHp10Flg = false;
@@ -41,7 +42,7 @@ void C_Prism::Init(int wave,int num)
 		for (int i = 0; i < EnemyChara.size() - 1; i++)
 		{
 			Math::Vector2 v = m_EnemyStatus.m_Pos - EnemyChara[i]->GetPos();
-			if (v.Length() < m_EnemyStatus.m_Radius + EnemyChara[i]->GetRadius() + 30)
+			if (v.Length() < m_EnemyStatus.m_Radius + EnemyChara[i]->GetRadius() + 50)
 			{
 				m_EnemyStatus.m_PosInitOkFlg = false;
 
@@ -60,8 +61,8 @@ void C_Prism::Init(int wave,int num)
 			m_EnemyStatus.AttackDamage = m_EnemyStatus.m_Atk;
 			m_EnemyStatus.m_Alive = true;
 			m_EnemyStatus.m_MoveFlg = false;
-			m_EnemyStatus.m_HpAddPos = { 0,-42 };
-			m_EnemyStatus.m_IconAddPos = { 0,47 };
+			m_EnemyStatus.m_HpAddPos = { -10,-42 };
+			m_EnemyStatus.m_IconAddPos = { -10,30 };
 		}
 		else
 		{
@@ -75,7 +76,7 @@ void C_Prism::Init(int wave,int num)
 			m_EnemyStatus.m_Alive = true;
 			m_EnemyStatus.m_MoveFlg = false;
 			m_EnemyStatus.m_HpAddPos = { 0,-42 };
-			m_EnemyStatus.m_IconAddPos = { 0,47 };
+			m_EnemyStatus.m_IconAddPos = { -10,30 };
 		}
 	}
 	else
@@ -88,7 +89,7 @@ void C_Prism::Init(int wave,int num)
 		m_EnemyStatus.m_Alive = true;
 		m_EnemyStatus.m_MoveFlg = false;
 		m_EnemyStatus.m_HpAddPos = { 0,-42 };
-		m_EnemyStatus.m_IconAddPos = { 0,47 };
+		m_EnemyStatus.m_IconAddPos = { -10,30 };
 	}
 	if (m_EnemyStatus.m_MaxHp>=100)
 	{

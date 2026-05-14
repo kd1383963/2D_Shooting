@@ -74,8 +74,7 @@ private:
 	Math::Matrix m_BrackMat;
 	FadeType NowFade = Fade_no;
 
-	KdTexture m_CursorTex;
-	Math::Matrix m_CursorMat;
+	
 
 	//シングルトンパターン
 	// 実体が一つしかないことを証明するためのパターン

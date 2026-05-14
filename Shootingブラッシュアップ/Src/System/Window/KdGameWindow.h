@@ -49,6 +49,8 @@ public:
 
 private:
 
+	
+
 	// ウィンドウハンドル
 	HWND	m_hWnd = nullptr;
 

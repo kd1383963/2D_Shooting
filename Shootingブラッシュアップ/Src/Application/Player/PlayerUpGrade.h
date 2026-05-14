@@ -17,6 +17,7 @@ struct UpGradeStatus
 	Math::Vector2 m_Pos;
 	Math::Matrix  m_Mat;
 	SkillStatus	  m__SkillStatus;
+	bool		  m_MouseHit;
 };
 
 class C_GameScene;

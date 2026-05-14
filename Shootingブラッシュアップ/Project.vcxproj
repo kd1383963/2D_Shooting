@@ -172,6 +172,7 @@
     <ClInclude Include="Src\Application\Scene.h" />
     <ClInclude Include="Src\Application\main.h" />
     <ClInclude Include="Src\Application\System\Battle\Turn.h" />
+    <ClInclude Include="Src\Application\System\GameState.h" />
     <ClInclude Include="Src\Application\System\Main\Scene\GameScene.h" />
     <ClInclude Include="Src\Application\System\Main\Scene\ResultScene.h" />
     <ClInclude Include="Src\Application\System\Main\Scene\SceneManager.h" />
@@ -214,6 +215,7 @@
     <ClCompile Include="Src\Application\Scene.cpp" />
     <ClCompile Include="Src\Application\main.cpp" />
     <ClCompile Include="Src\Application\System\Battle\Turn.cpp" />
+    <ClCompile Include="Src\Application\System\GameState.cpp" />
     <ClCompile Include="Src\Application\System\Main\Scene\GameScene.cpp" />
     <ClCompile Include="Src\Application\System\Main\Scene\ResultScene.cpp" />
     <ClCompile Include="Src\Application\System\Main\Scene\SceneManager.cpp" />

@@ -14,6 +14,8 @@ C_TitleScene::~C_TitleScene()
 
 void C_TitleScene::Init()
 {
+
+	m_Alufa = 1.0f;
 	m_TitleTex.Load("Texture/UI/Title.png");
 	m_StartCmdTex.Load("Texture/UI/StartCmd.png");
 }
@@ -21,7 +23,7 @@ void C_TitleScene::Init()
 void C_TitleScene::Update()
 {
 	m_Alufa -= m_AlufaAdd;
-	if (m_Alufa > 1.0f || m_Alufa < 0.0f)
+	if (m_Alufa > 1.0f || m_Alufa < 0.3f)
 	{
 		m_AlufaAdd *= -1;
 	}

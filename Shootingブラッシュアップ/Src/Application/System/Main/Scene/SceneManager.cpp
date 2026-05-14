@@ -3,7 +3,7 @@
 #include "GameScene.h"
 #include "ResultScene.h"
 #include "../../../Back/Back.h"
-#include "../../../Mouse.h"
+
 
 void SceneManager::PreUpdate()
 {
@@ -21,8 +21,7 @@ void SceneManager::Update()
 	// 同じ関数名であっても、呼び出すオブジェクトによって処理内容が変わることも
 	m_CurrentScene->Update();
 	m_BrackMat = Math::Matrix::CreateTranslation(0, 0, 0);
-	m_CursorMat = Math::Matrix::CreateTranslation(C_Mouse::GetInstance().GetMousePos().x,
-		C_Mouse::GetInstance().GetMousePos().y,0);
+	
 }
 
 void SceneManager::UpdateFade()
@@ -59,8 +58,7 @@ void SceneManager::Draw()
 	C_Back::GetInstance().Draw();
 	m_CurrentScene->Draw();
 
-	SHADER.m_spriteShader.SetMatrix(m_CursorMat);
-	SHADER.m_spriteShader.DrawTex(&m_CursorTex, Math::Rectangle{ 0,0,32,32 }, 1.0f);
+	
 
 	SHADER.m_spriteShader.SetMatrix(m_BrackMat);
 	SHADER.m_spriteShader.DrawTex(&BrackTex, Math::Rectangle{ 0,0,1280,720 }, FadeAlpha);
@@ -72,7 +70,7 @@ void SceneManager::Init()
 	C_Back::GetInstance().Init();
 	ChangeScene(m_CurrentSceneType);
 	BrackTex.Load("Texture/UI/Fade.png");
-	m_CursorTex.Load("Texture/UI/Cursor.png");
+	
 }
 
 void SceneManager::Release()

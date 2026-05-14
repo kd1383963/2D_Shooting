@@ -30,7 +30,8 @@ public:
 
 private:
 
-	
+	KdTexture m_CursorTex;
+	Math::Matrix m_CursorMat;
 	
 	
 

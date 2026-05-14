@@ -50,6 +50,7 @@ private:
 	KdTexture m_PlayerHurtTex;
 	KdTexture m_PlayerDeadTex;
 	KdTexture m_PlayerBulletLineTex;
+	KdTexture m_PlayerCanMoveTex;
 
 	KdTexture m_EnemyIdleTex;
 	KdTexture m_EnemyAtkTex;

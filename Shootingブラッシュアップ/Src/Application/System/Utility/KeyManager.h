@@ -1,10 +1,11 @@
 #pragma once
 
+#include "../GameState.h"
+
 class C_KeyManager
 {
 
 public:
-
 
 	bool GetSpaceKey()
 	{
@@ -176,76 +177,16 @@ public:
 		return false;
 	}
 
-	//bool GetUpKey()
-	//{
-	//	if (GetAsyncKeyState(VK_UP) & 0x8000)
-	//	{
-	//		if (!UpKeyFlg)
-	//		{
-	//			UpKeyFlg = true;
-	//			return true;
-	//		}
-	//	}
-	//	else
-	//	{
-	//		UpKeyFlg = false;
-	//	}
-	//	return false;
-	//}
-
-	//bool GetDownKey()
-	//{
-	//	if (GetAsyncKeyState(VK_DOWN) & 0x8000)
-	//	{
-	//		if (!DownKeyFlg)
-	//		{
-	//			DownKeyFlg = true;
-	//			return true;
-	//		}
-	//	}
-	//	else
-	//	{
-	//		DownKeyFlg = false;
-	//	}
-	//	return false;
-	//}
-
-	//bool GetLeftKey()
-	//{
-	//	if (GetAsyncKeyState(VK_LEFT) & 0x8000)
-	//	{
-	//		if (!LeftKeyFlg)
-	//		{
-	//			LeftKeyFlg = true;
-	//			return true;
-	//		}
-	//	}
-	//	else
-	//	{
-	//		LeftKeyFlg = false;
-	//	}
-	//	return false;
-	//}
-
-	//bool GetRightKey()
-	//{
-	//	if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
-	//	{
-	//		if (!RightKeyFlg)
-	//		{
-	//			RightKeyFlg = true;
-	//			return true;
-	//		}
-	//	}
-	//	else
-	//	{
-	//		RightKeyFlg = false;
-	//	}
-	//	return false;
-	//}
-
 	bool GetLClick()
 	{
+		if (GameState::ignoreNextClick)
+		{
+			if (!(GetAsyncKeyState(VK_LBUTTON) & 0x8000)) 
+			{
+				GameState::ignoreNextClick = false;
+			}
+			return false;
+		}
 		if (GetAsyncKeyState(VK_LBUTTON) & 0x8000)
 		{
 			if (!LClickFlg)

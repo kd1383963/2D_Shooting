@@ -8,6 +8,7 @@ class C_GameScene;
 
 enum EAnimStatus
 {
+	EStart,
 	EIdle,
 	EAtk,
 	EHurt,
@@ -54,6 +55,8 @@ public:
 
 		bool AttackDamageFlg = false;
 		int  AttackDamage = 0;
+
+		int m_DeadTexWidthMax;
 
 		bool m_DeadFlg = false;
 
@@ -145,6 +148,7 @@ protected:
 	Math::Matrix m_HpBackMat;
 	Math::Matrix m_HpBreakMat;
 
+	float m_IconScale  = 0.8f;
 	KdTexture* m_AttackIconTex;
 	KdTexture* m_BeamIconTex;
 	Math::Matrix m_IconMat;

@@ -19,7 +19,7 @@ void C_PlayerUpGrade::Draw()
 		{
 		case BulletEnemyBound:
 			SHADER.m_spriteShader.DrawTex(m_UpGradeBulletEnemyBoundTex, { 0,0,32,32 }, 1.0f);
-			if (MOUSEHIT.MouseBlockHit(m_UpGradeStatu[i].m_Pos * m_Scale, m_Radius / 2 * m_Scale, m_Radius / 2 * m_Scale))
+			if (m_UpGradeStatu[i].m_MouseHit)
 			{
 				SHADER.m_spriteShader.SetMatrix(Math::Matrix::Identity);
 				SHADER.m_spriteShader.DrawString(-210, -150, "íeÇ™ìGìØémÇ≈íµÇÀÇÈâÒêî + 1 ", { 1,1,1,1 });
@@ -27,7 +27,7 @@ void C_PlayerUpGrade::Draw()
 			break;
 		case UpBulletWallBound:
 			SHADER.m_spriteShader.DrawTex(m_UpGradeBulletWallBoundTex, { 0,0,32,32 }, 1.0f);
-			if (MOUSEHIT.MouseBlockHit(m_UpGradeStatu[i].m_Pos * m_Scale, m_Radius / 2 * m_Scale, m_Radius / 2 * m_Scale))
+			if (m_UpGradeStatu[i].m_MouseHit)
 			{
 				SHADER.m_spriteShader.SetMatrix(Math::Matrix::Identity);
 				SHADER.m_spriteShader.DrawString(-190, -150, "íeÇ™ï«Ç≈íµÇÀÇÈâÒêî + 1 ", { 1,1,1,1 });
@@ -35,7 +35,7 @@ void C_PlayerUpGrade::Draw()
 			break;
 		case DoubleBullet:
 			SHADER.m_spriteShader.DrawTex(m_UpGradeDoubleBulletTex, { 0,0,32,32 }, 1.0f);
-			if (MOUSEHIT.MouseBlockHit(m_UpGradeStatu[i].m_Pos * m_Scale, m_Radius / 2 * m_Scale, m_Radius / 2 * m_Scale))
+			if (m_UpGradeStatu[i].m_MouseHit)
 			{
 				SHADER.m_spriteShader.SetMatrix(Math::Matrix::Identity);
 				SHADER.m_spriteShader.DrawString(-230, -150, "àÍìxÇ…íeÇî≠éÀÇ∑ÇÈâÒêî + 1 ", { 1,1,1,1 });
@@ -43,7 +43,7 @@ void C_PlayerUpGrade::Draw()
 			break;
 		case UpHp:
 			SHADER.m_spriteShader.DrawTex(m_UpGradeHpTex, { 0,0,32,32 }, 1.0f);
-			if (MOUSEHIT.MouseBlockHit(m_UpGradeStatu[i].m_Pos * m_Scale, m_Radius / 2 * m_Scale, m_Radius / 2 * m_Scale))
+			if (m_UpGradeStatu[i].m_MouseHit)
 			{
 				SHADER.m_spriteShader.SetMatrix(Math::Matrix::Identity);
 				SHADER.m_spriteShader.DrawString(-110, -150, "ç≈ëÂëÃóÕ + 20", { 1,1,1,1 });
@@ -51,7 +51,7 @@ void C_PlayerUpGrade::Draw()
 			break;
 		case HealHp:
 			SHADER.m_spriteShader.DrawTex(m_HealHpTex, { 0,0,32,32 }, 1.0f);
-			if (MOUSEHIT.MouseBlockHit(m_UpGradeStatu[i].m_Pos * m_Scale, m_Radius / 2 * m_Scale, m_Radius / 2 * m_Scale))
+			if (m_UpGradeStatu[i].m_MouseHit)
 			{
 				SHADER.m_spriteShader.SetMatrix(Math::Matrix::Identity);
 				SHADER.m_spriteShader.DrawString(-110, -150, "ç≈ëÂëÃóÕÇÃîºï™âÒïúÇ∑ÇÈ", { 1,1,1,1 });
@@ -59,7 +59,7 @@ void C_PlayerUpGrade::Draw()
 			break;
 		case UpAtk:
 			SHADER.m_spriteShader.DrawTex(m_UpGradeAtkTex, { 0,0,32,32 }, 1.0f);
-			if (MOUSEHIT.MouseBlockHit(m_UpGradeStatu[i].m_Pos * m_Scale, m_Radius / 2 * m_Scale, m_Radius / 2 * m_Scale))
+			if (m_UpGradeStatu[i].m_MouseHit)
 			{
 				SHADER.m_spriteShader.SetMatrix(Math::Matrix::Identity);
 				SHADER.m_spriteShader.DrawString(-90, -150, "çUåÇóÕ + 10", { 1,1,1,1 });
@@ -67,7 +67,7 @@ void C_PlayerUpGrade::Draw()
 			break;
 		case BulletSplit:
 			SHADER.m_spriteShader.DrawTex(m_UpGradeBulletSplitTex, { 0,0,32,32 }, 1.0f);
-			if (MOUSEHIT.MouseBlockHit(m_UpGradeStatu[i].m_Pos * m_Scale, m_Radius / 2 * m_Scale, m_Radius / 2 * m_Scale))
+			if (m_UpGradeStatu[i].m_MouseHit)
 			{
 				if (!C_Player::GetInstance().GetShot3way())
 				{
@@ -83,7 +83,7 @@ void C_PlayerUpGrade::Draw()
 			break;
 		case TurnAdd:
 			SHADER.m_spriteShader.DrawTex(m_TurnAddTex, { 0,0,32,32 }, 1.0f);
-			if (MOUSEHIT.MouseBlockHit(m_UpGradeStatu[i].m_Pos * m_Scale, m_Radius / 2 * m_Scale, m_Radius / 2 * m_Scale))
+			if (m_UpGradeStatu[i].m_MouseHit)
 			{
 				SHADER.m_spriteShader.SetMatrix(Math::Matrix::Identity);
 				SHADER.m_spriteShader.DrawString(-310, -150, "ñÇóÕï‚ãã(É^Å[Éìí«â¡3É^Å[Éì)", { 1,1,1,1 });
@@ -142,10 +142,12 @@ bool C_PlayerUpGrade::Update()
 					//C_Player::GetInstance().
 					break;
 				}
-				C_Turn::GetInstance().SetNextTurn(C_Turn::Player);
+				C_Turn::GetInstance().SetNextTurn(C_Turn::EnemyInit);
 				C_Player::GetInstance().SetCanMove(true);
 				return true;
 			}
+
+			m_UpGradeStatu[i].m_MouseHit = true;
 
 			m_UpGradeStatu[i].m_Mat = Math::Matrix::CreateScale(m_ScaleAdd,m_ScaleAdd,0)*
 				Math::Matrix::CreateTranslation(m_UpGradeStatu[i].m_Pos.x, m_UpGradeStatu[i].m_Pos.y, 0)
@@ -153,6 +155,8 @@ bool C_PlayerUpGrade::Update()
 		}
 		else
 		{
+			m_UpGradeStatu[i].m_MouseHit = false;
+
 			m_UpGradeStatu[i].m_Mat = Math::Matrix::CreateTranslation(m_UpGradeStatu[i].m_Pos.x, m_UpGradeStatu[i].m_Pos.y, 0)
 				* Math::Matrix::CreateScale(m_Scale, m_Scale, 0);
 		}
@@ -358,6 +362,7 @@ void C_PlayerUpGrade::Init()
 		{
 			m_UpGradeStatu[i].m__SkillStatus = TurnAdd;
 		}
+		m_UpGradeStatu[i].m_MouseHit = false;
 	}
 }
 

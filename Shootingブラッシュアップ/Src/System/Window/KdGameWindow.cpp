@@ -2,6 +2,8 @@
 
 #include "KdGameWindow.h"
 
+#include "../../Application/System/GameState.h"
+
 // imguiウィンドウメッセージ処理用
 LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
@@ -133,6 +135,11 @@ LRESULT CALLBACK KdGameWindow::callWindowProc(HWND hWnd, UINT message, WPARAM wP
 // ウィンドウ関数
 LRESULT KdGameWindow::WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+
+	
+
+	
+	
 	// ImGuiにイベント通知
 	if (ImGui_ImplWin32_WndProcHandler(hWnd, message, wParam, lParam))
 	{
@@ -166,6 +173,20 @@ LRESULT KdGameWindow::WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 			break;
 		}
 		return 0;
+
+	//いじった場所//
+	case WM_KILLFOCUS:
+		GameState::isActive = false;
+		GameState::isPaused = true;   
+		GameState::ignoreNextClick = true;   
+		break;
+
+	case WM_SETFOCUS:
+		GameState::isActive = true;
+		GameState::isPaused = false;  
+		break;
+	//いじり終了//
+
 	default:
 		// メッセージのデフォルト処理
 		return DefWindowProc(hWnd, message, wParam, lParam);

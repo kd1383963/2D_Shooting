@@ -57,7 +57,7 @@ public:
 		KdTexture* playerhurttex, KdTexture* playerdeadtex, KdTexture* bulletlinetex,
 		KdTexture* hpbartex, KdTexture* hpbarbraektex, KdTexture* hpbarbacktex,
 		KdTexture* ugwallboundtex, KdTexture* ugdoubleshottex, KdTexture* ugenemyboundtex, KdTexture* ugsplittex,
-		KdTexture* hpnumtex, KdTexture*hpbernum,KdTexture* upbacktex, KdTexture* crosstex);
+		KdTexture* hpnumtex, KdTexture*hpbernum,KdTexture* upbacktex, KdTexture* crosstex,KdTexture* canmovetex);
 
 	void SetShotFlg(bool a_flg) { m_ShotFlg = a_flg; }
 
@@ -105,6 +105,8 @@ public:
 
 	void SetCanMove(bool a_flg) { m_CanMoveFlg = a_flg; }
 
+	void PlayerStatusReset();
+
 	void SetAnimStatus(AnimStatus a_status) {
 		m_CharaStatus.m_AnimStatus = a_status;
 		switch (m_CharaStatus.m_AnimStatus)
@@ -133,6 +135,16 @@ private:
 	float		  m_ShotAngle;
 
 	bool m_CanMoveFlg;
+
+	float m_CanMoveBlinking;
+	float m_CanMoveBlinkingAdd;
+	float m_CanMoveMax;
+	float m_CanMoveMin;
+	float m_NowMovePosX;
+	Math::Matrix m_CanMoveMat;
+	KdTexture* m_CanMoveTex;
+
+	Math::Vector2 m_TurnStartPos;
 
 	int TotalScore;
 
@@ -223,12 +235,7 @@ private:
 	
 	
 
-	float CanMovePosXMax;
-	float CanMovePosXMin;
-	float NowMovePosX;
-	Math::Matrix CanMoveMat;
-	KdTexture* m_CanMoveTex;
-
+	
 	bool m_ShotFlg;
 
 	float m_LineBlinking;

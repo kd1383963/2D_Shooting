@@ -1,16 +1,21 @@
 #include "main.h"
 #include "Scene.h"
 #include "System/Main/Scene/SceneManager.h"
+#include "System/GameState.h"
+#include "Mouse.h"
 
 void Scene::Draw2D()
 {
 	SCENEMANAGER.Draw();
-	
+	SHADER.m_spriteShader.SetMatrix(m_CursorMat);
+	SHADER.m_spriteShader.DrawTex(&m_CursorTex, Math::Rectangle{ 0,0,32,32 }, 1.0f);
 }
 
 void Scene::Update()
 {
-
+	m_CursorMat = Math::Matrix::CreateTranslation(C_Mouse::GetInstance().GetMousePos().x,
+		C_Mouse::GetInstance().GetMousePos().y, 0);
+	if (!GameState::isActive)return;
 	SCENEMANAGER.PreUpdate();
 
 	SCENEMANAGER.Update();
@@ -22,7 +27,7 @@ void Scene::Init()
 	
 	ShowCursor(FALSE);
 
-	
+	m_CursorTex.Load("Texture/UI/Cursor.png");
 }
 
 

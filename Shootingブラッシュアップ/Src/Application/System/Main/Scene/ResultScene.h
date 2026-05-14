@@ -25,6 +25,8 @@ private:
 	static const int AddNumberPosX = 64;
 	static const int NumberWidth = 64;
 
+	bool m_ReturnCmdFlg = false;
+
 	Math::Vector2 m_ReturnCmdPos = { 0,-300 };
 	Math::Matrix m_ReturnCmdMat;
 	KdTexture m_ReturnCmdTex;
