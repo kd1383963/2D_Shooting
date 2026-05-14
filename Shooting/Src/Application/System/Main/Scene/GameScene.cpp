@@ -129,10 +129,11 @@ void C_GameScene::TexLoad()
 	m_HpBackTex.Load("Texture/UI/Hpback.png");
 	m_HpBreakTex.Load("Texture/UI/-Hp.png");
 	m_HpNumBerTex.Load("Texture/UI/ber.png");
+	m_PlayerCanMoveTex.Load("Texture/Player/CanMove.png");
 	C_Player::GetInstance().SetTex( &m_PlayerMoveTex, &m_PlayerAtkTex,
 		&m_PlayerHurtTex, &m_PlayerDeadTex,&m_PlayerBulletLineTex, &m_HpTex, &m_HpBreakTex,&m_HpBackTex,
 		&m_UpGradeBulletWallBoundTex,&m_UpGradeDoubleBulletTex, &m_UpGradeBulletEnemyBoundTex,
-		&m_UpGradeBulletSplitTex,&m_NumberTex,&m_HpNumBerTex,&m_BrackBackTex,&m_CrossTex);
+		&m_UpGradeBulletSplitTex,&m_NumberTex,&m_HpNumBerTex,&m_BrackBackTex,&m_CrossTex,&m_PlayerCanMoveTex);
 
 	m_EnemyIdleTex.Load("Texture/Enemy/IDLE.png");
 	m_EnemyAtkTex.Load("Texture/Enemy/ATTACK.png");

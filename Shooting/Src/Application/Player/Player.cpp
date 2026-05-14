@@ -24,6 +24,8 @@ void C_Player::Draw()
 		{
 			if (!m_ShotFlg&& m_CharaStatus.m_AnimStatus==Move)
 			{
+				SHADER.m_spriteShader.SetMatrix(m_CanMoveMat);
+				SHADER.m_spriteShader.DrawTex(m_CanMoveTex, { 0,0,32,360 }, m_CanMoveBlinking);
 				if (PlayerSkillBase.Shot5way)
 				{
 					SHADER.m_spriteShader.SetMatrix(m_Line1Mat);
@@ -254,11 +256,19 @@ void C_Player::Update()
 				{
 					if (GetAsyncKeyState('W') & 0x8000)
 					{
-						m_CharaStatus.Pos.y += m_MoveSpeed;
+						if (m_NowMovePosX <= m_CanMoveMax)
+						{
+							m_CharaStatus.Pos.y += m_MoveSpeed;
+							m_NowMovePosX += m_MoveSpeed;
+						}
 					}
 					if (GetAsyncKeyState('S') & 0x8000)
 					{
-						m_CharaStatus.Pos.y -= m_MoveSpeed;
+						if (m_NowMovePosX >= m_CanMoveMin)
+						{
+							m_CharaStatus.Pos.y -= m_MoveSpeed;
+							m_NowMovePosX -= m_MoveSpeed;
+						}
 					}
 				}
 
@@ -359,6 +369,11 @@ void C_Player::Update()
 				{
 					m_LineBlinkingAdd *= -1;
 				}
+				m_CanMoveBlinking += m_CanMoveBlinkingAdd;
+				if (m_CanMoveBlinking >= 0.8f || m_CanMoveBlinking <= 0.1f)
+				{
+					m_CanMoveBlinkingAdd *= -1;
+				}
 
 			}
 			else
@@ -376,17 +391,22 @@ void C_Player::Update()
 				if (m_Bullet.size() == 0)
 				{
 					m_ShotFlg = false;
+					m_NowMovePosX = 0;
+					m_CanMoveBlinking = 0.2f;
 					C_Turn::GetInstance().SetNextTurn(C_Turn::Enemy);
 				}
 			}
 			if (m_CharaStatus.Pos.y > 360 - 32)
 			{
 				m_CharaStatus.Pos.y = 360 - 32;
+				m_NowMovePosX -= m_MoveSpeed;
 			}
 			if (m_CharaStatus.Pos.y < -360 + 32)
 			{
 				m_CharaStatus.Pos.y = -360 + 32;
+				m_NowMovePosX += m_MoveSpeed;
 			}
+case C_Turn::EnemyInit:
 			switch (m_CharaStatus.m_AnimStatus)
 			{
 			case Move:
@@ -436,10 +456,6 @@ void C_Player::Update()
 				),
 				m_Bullet.end()
 			);
-			m_CharaStatus.m_AtkFlg = false;
-			m_ShotFlg = false;
-			MultiShotCnt = 0;
-			ShotWait = 0;
 			break;
 	}
 	
@@ -492,15 +508,14 @@ void C_Player::Update()
 	m_UpGrade2Num1Mat = Math::Matrix::CreateScale(m_MiniNumScale, m_MiniNumScale, 0) * Math::Matrix::CreateTranslation(m_UpGradePos.x + m_UpAddGradeNumPos.x * 4, m_UpGradePos.y + (m_UpAddGradePos.y * 1) + m_UpAddGradeNumPos.y, 0);
 	m_UpGrade2Num10Mat = Math::Matrix::CreateScale(m_MiniNumScale, m_MiniNumScale, 0) * Math::Matrix::CreateTranslation(m_UpGradePos.x + m_UpAddGradeNumPos.x * 3, m_UpGradePos.y + (m_UpAddGradePos.y * 1) + m_UpAddGradeNumPos.y, 0);
 
-
 	m_UpGradeDoubleBulletMat	= Math::Matrix::CreateScale(m_MiniUpScale, m_MiniUpScale, 0)* Math::Matrix::CreateTranslation(m_UpGradePos.x, m_UpGradePos.y + m_UpAddGradePos.y * 2, 0);
 	m_Cross3Mat					= Math::Matrix::CreateScale(m_MiniCrossScale, m_MiniCrossScale, 0) * Math::Matrix::CreateTranslation(m_UpGradePos.x + m_UpAddGradeNumPos.x * 2, m_UpGradePos.y + (m_UpAddGradePos.y * 2) + m_UpAddGradeNumPos.y, 0);
 	m_UpGrade3Num1Mat			= Math::Matrix::CreateScale(m_MiniNumScale, m_MiniNumScale, 0) * Math::Matrix::CreateTranslation(m_UpGradePos.x + m_UpAddGradeNumPos.x * 4, m_UpGradePos.y + (m_UpAddGradePos.y * 2) + m_UpAddGradeNumPos.y, 0);
 	m_UpGrade3Num10Mat			= Math::Matrix::CreateScale(m_MiniNumScale, m_MiniNumScale, 0) * Math::Matrix::CreateTranslation(m_UpGradePos.x + m_UpAddGradeNumPos.x * 3, m_UpGradePos.y + (m_UpAddGradePos.y * 2) + m_UpAddGradeNumPos.y, 0);
 
-	
 	m_MiniUpGradeBackMat = Math::Matrix::CreateTranslation(m_UpGradePos.x, 0, 0);
-	
+
+	m_CanMoveMat= Math::Matrix::CreateTranslation(m_TurnStartPos.x, m_TurnStartPos.y, 0);
 	
 	m_NowAtk1Mat = Math::Matrix::CreateTranslation(m_AtkNumPos.x + AddAtkNumPos.x, m_UpGradePos.y - m_UpAddGradePos.y , 0);
 	m_NowAtk10Mat = Math::Matrix::CreateTranslation(m_AtkNumPos.x, m_UpGradePos.y - m_UpAddGradePos.y, 0);
@@ -567,9 +582,12 @@ void C_Player::Init()
 	m_CharaStatus.m_AnimStatus = Move;
 	m_CharaStatus.Pos.x = -500;
 	m_CharaStatus.Pos.y = 0;
+	m_TurnStartPos = m_CharaStatus.Pos;
 	m_ShotFlg = false;
 	m_LineBlinking = 0.1f;
 	m_LineBlinkingAdd = 0.01f;
+	m_CanMoveBlinking= 0.2f;
+	m_CanMoveBlinkingAdd = 0.005f;
 	m_CharaStatus.m_Hp = 100;
 	m_CharaStatus.m_MaxHp = m_CharaStatus.m_Hp;
 	m_CharaStatus.m_BreakHp = m_CharaStatus.m_Hp;
@@ -577,19 +595,21 @@ void C_Player::Init()
 	PlayerSkillBase.m_BulletEnemyBoundFlg = 1;
 	PlayerSkillBase.m_WallbounceLeft = 1;
 	PlayerSkillBase.m_DoubleShot = 0;
+	PlayerSkillBase.Shot3way = false;
+	PlayerSkillBase.Shot5way = false;
 	ShotWait = 0;
 	MultiShotCnt = 0;
 	m_CanMoveFlg = true;
-	CanMovePosXMin = -180;
-	CanMovePosXMax = 180;
-	NowMovePosX = 0;
+	m_NowMovePosX = 0;
+	m_CanMoveMax = 160;
+	m_CanMoveMin = -160;
 }
 
 void C_Player::SetTex( KdTexture* playermovetex, KdTexture* playeratktex,
 	KdTexture* playerhurttex, KdTexture* playerdeadtex, KdTexture* bulletlinetex,
 	KdTexture* hpbartex, KdTexture* hpbarbraektex, KdTexture* hpbarbacktex,
 	KdTexture* ugwallboundtex, KdTexture* ugdoubleshottex, KdTexture* ugenemyboundtex, KdTexture* ugsplittex,
-	KdTexture* hpnumtex, KdTexture* hpbarnumtex, KdTexture* upbacktex, KdTexture* crosstex)
+	KdTexture* hpnumtex, KdTexture* hpbarnumtex, KdTexture* upbacktex, KdTexture* crosstex,KdTexture* canmovetex)
 {
 	m_BulletTex.Load("Texture/Player/PlayerBullet.png");
 	
@@ -609,6 +629,7 @@ void C_Player::SetTex( KdTexture* playermovetex, KdTexture* playeratktex,
 	m_HpBerTex = hpbarnumtex;
 	m_UpBackTex = upbacktex;
 	m_CrossTex = crosstex;
+	m_CanMoveTex = canmovetex;
 }
 
 Math::Vector2 C_Player::Rotate(Math::Vector2& v, float angle)
@@ -622,7 +643,7 @@ Math::Vector2 C_Player::Rotate(Math::Vector2& v, float angle)
 
 }
 
-void C_Player::PlayerBulletReset()
+void C_Player::PlayerStatusReset()
 {
 	for (auto& i : m_Bullet)
 	{
@@ -639,7 +660,9 @@ void C_Player::PlayerBulletReset()
 		m_Bullet.end()
 	);
 	m_CharaStatus.m_AtkFlg = false;
+	m_TurnStartPos = m_CharaStatus.Pos;
 	m_ShotFlg = false;
+	m_NowMovePosX = 0;
 	MultiShotCnt = 0;
 	ShotWait = 0;
 }

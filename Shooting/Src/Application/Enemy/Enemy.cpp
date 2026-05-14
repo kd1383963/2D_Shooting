@@ -58,6 +58,7 @@ void C_Enemy::Update()
 			}
 			C_Turn::GetInstance().SetNextTurn(C_Turn::Player);
 			C_Player::GetInstance().SetCanMove(true);
+			C_Player::GetInstance().PlayerStatusReset();
 		}
 	}
 	else
@@ -66,7 +67,7 @@ void C_Enemy::Update()
 		{
 			C_Turn::GetInstance().SetNextTurn(C_Turn::Player);
 			C_Player::GetInstance().SetCanMove(true);
-			C_Player::GetInstance().PlayerBulletReset();
+			C_Player::GetInstance().PlayerStatusReset();
 		}
 	}
 	if(m_EnemyChara.size()==0)
