@@ -69,7 +69,7 @@ void SceneManager::Init()
 {
 	C_Back::GetInstance().Init();
 	ChangeScene(m_CurrentSceneType);
-	BrackTex.Load("Texture/UI/Fade.png");
+	BrackTex.Load("Asset/Texture/UI/Fade.png");
 	
 }
 

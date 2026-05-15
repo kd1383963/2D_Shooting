@@ -222,6 +222,9 @@
     <ClInclude Include="Src\Application\System\GameState.h">
       <Filter>Src\Application\System</Filter>
     </ClInclude>
+    <ClInclude Include="Src\Application\System\Audio.h">
+      <Filter>Src\Application\System</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Pch.cpp">
@@ -339,6 +342,9 @@
       <Filter>Src\Application\Player</Filter>
     </ClCompile>
     <ClCompile Include="Src\Application\System\GameState.cpp">
+      <Filter>Src\Application\System</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\System\Audio.cpp">
       <Filter>Src\Application\System</Filter>
     </ClCompile>
   </ItemGroup>

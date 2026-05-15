@@ -4,12 +4,12 @@ class C_GameScene;
 
 class C_EnemyBase;
 
-class C_Enemy 
+class C_Enemy
 {
 public:
 
-	C_Enemy(){ }
-	~C_Enemy(){}
+	C_Enemy() {}
+	~C_Enemy() {}
 
 	void Init(int enemynum, int wave);
 	void Update();
@@ -18,15 +18,20 @@ public:
 	void GiftTex(KdTexture* enemyidletex, KdTexture* enemyatktex, KdTexture* enemyhurttex, KdTexture* enemydeadtex,
 		KdTexture* hpbartex, KdTexture* hpbarbraektex, KdTexture* hpbarbacktex
 		, KdTexture* attacktex, KdTexture* beamtex, KdTexture* numbertex, KdTexture* bulletlinetex
-		, KdTexture* bullettex, KdTexture* atkexptex,KdTexture* m_hpbertex);
+		, KdTexture* bullettex, KdTexture* atkexptex, KdTexture* m_hpbertex);
 	std::vector<std::shared_ptr<C_EnemyBase>> GetEnemyChara() { return m_EnemyChara; }
-	
+
 	void TotalEnemyMainer() { TotalEnemy--; }
+
+	void TotalEnemyAttackRedSet() { TotalEnemyRedAttack++; }
+
+	int GetTotalEnemyAttackRed() { return TotalEnemyRedAttack; }
 
 	void TotalInitAnimEndInc() { TotalInitAnimEnd++; }
 
 private:
 
+	int TotalEnemyRedAttack = 0;
 	int TotalInitAnimEnd = 0;
 	int TotalEnemy = 0;
 	int TotalEnemyMove = 0;

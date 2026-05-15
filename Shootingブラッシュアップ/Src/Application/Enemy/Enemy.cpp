@@ -56,6 +56,7 @@ void C_Enemy::Update()
 				e->SetAttackFlg();
 				e->SetAttackCmd();
 			}
+			TotalEnemyRedAttack = 0;
 			C_Turn::GetInstance().SetNextTurn(C_Turn::Player);
 			C_Player::GetInstance().SetCanMove(true);
 			C_Player::GetInstance().PlayerStatusReset();
@@ -65,6 +66,7 @@ void C_Enemy::Update()
 	{
 		if (TotalInitAnimEnd == TotalEnemy)
 		{
+			TotalEnemyRedAttack = 0;
 			C_Turn::GetInstance().SetNextTurn(C_Turn::Player);
 			C_Player::GetInstance().SetCanMove(true);
 			C_Player::GetInstance().PlayerStatusReset();
@@ -90,13 +92,15 @@ void C_Enemy::Init(int enemynum,int wave)
 			m_BeamIconTex, m_NumberTex, m_BulletLineTex, m_BulletTex,m_AtkExpTex,m_HpBerTex);
 		TotalEnemy++;
 	}	
-	std::sort(m_EnemyChara.begin(), m_EnemyChara.end(),
-		[](const std::shared_ptr<C_EnemyBase>& a, const std::shared_ptr<C_EnemyBase>& b) {
-			if (a->GetPos().y != b->GetPos().y)
-				return a->GetPos().y > b->GetPos().y;  // y ç~èá
-			return a->GetPos().x < b->GetPos().x;      // x è∏èá
-		}
-	);
+
+	//É\Å[Égèàóù(yé≤ç~èá)
+	//std::sort(m_EnemyChara.begin(), m_EnemyChara.end(),
+	//	[](const std::shared_ptr<C_EnemyBase>& a, const std::shared_ptr<C_EnemyBase>& b) {
+	//		if (a->GetPos().y != b->GetPos().y)
+	//			return a->GetPos().y > b->GetPos().y;  
+	//		return a->GetPos().x < b->GetPos().x;      
+	//	}
+	//);
 }
 
 void C_Enemy::GiftTex(KdTexture* enemyidletex, KdTexture* enemyatktex, KdTexture* enemyhurttex, KdTexture* enemydeadtex,

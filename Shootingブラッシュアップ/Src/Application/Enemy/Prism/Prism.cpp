@@ -56,7 +56,7 @@ void C_Prism::Init(int wave,int num)
 			m_EnemyStatus.m_Hp = 40;
 			m_EnemyStatus.m_MaxHp = m_EnemyStatus.m_Hp;
 			m_EnemyStatus.m_BreakHp = m_EnemyStatus.m_Hp;
-			m_EnemyStatus.m_Atk = 5 + 10 * (wave / 2);
+			m_EnemyStatus.m_Atk = 5 + 5 * (wave / 2);
 			m_EnemyStatus.m_MoveCmd = Attack;
 			m_EnemyStatus.AttackDamage = m_EnemyStatus.m_Atk;
 			m_EnemyStatus.m_Alive = true;
@@ -69,7 +69,7 @@ void C_Prism::Init(int wave,int num)
 			m_EnemyStatus.m_Hp = 40;
 			m_EnemyStatus.m_MaxHp = m_EnemyStatus.m_Hp;
 			m_EnemyStatus.m_BreakHp = m_EnemyStatus.m_Hp;
-			m_EnemyStatus.m_Atk = 5 + 10 * (wave / 2);
+			m_EnemyStatus.m_Atk = 5 + 5 * (wave / 2);
 			m_EnemyStatus.m_MoveCmd = Beam;
 			m_Vec = m_EnemyStatus.m_Pos - C_Player::GetInstance().GetPos();
 			m_EnemyStatus.AttackDamage = m_EnemyStatus.m_Atk * 2;
@@ -84,7 +84,7 @@ void C_Prism::Init(int wave,int num)
 		m_EnemyStatus.m_Hp = 60 + 30 * (wave / 3);
 		m_EnemyStatus.m_MaxHp = m_EnemyStatus.m_Hp;
 		m_EnemyStatus.m_BreakHp = m_EnemyStatus.m_Hp;
-		m_EnemyStatus.m_Atk = 10 + 5 * (wave / 2);
+		m_EnemyStatus.m_Atk = 5 + 5 * (wave / 2);
 		SetAttackCmd();
 		m_EnemyStatus.m_Alive = true;
 		m_EnemyStatus.m_MoveFlg = false;
@@ -101,26 +101,50 @@ void C_Prism::Init(int wave,int num)
 
 void C_Prism::SetAttackCmd()
 {
-	int Rand = rand() % 100;
-	if (Rand < 30)
+	if (m_owner->GetTotalEnemyAttackRed() < 4)
 	{
-		m_EnemyStatus.m_MoveCmd = Attack;
-		m_EnemyStatus.AttackDamage = m_EnemyStatus.m_Atk;
-	}
-	else if (Rand < 60)
-	{
-		m_Vec = m_EnemyStatus.m_Pos - C_Player::GetInstance().GetPos();
-		m_EnemyStatus.m_MoveCmd = Beam;
-		m_EnemyStatus.AttackDamage = m_EnemyStatus.m_Atk * 2;
-	}
-	else if (Rand < 80)
-	{
-		m_EnemyStatus.m_MoveCmd = Beam3;
-		m_EnemyStatus.AttackDamage = m_EnemyStatus.m_Atk * 2;
+		int Rand = rand() % 100;
+		if (Rand < 30)
+		{
+			m_EnemyStatus.m_MoveCmd = Attack;
+			m_EnemyStatus.AttackDamage = m_EnemyStatus.m_Atk;
+			m_owner->TotalEnemyAttackRedSet();
+		}
+		else if (Rand < 50)
+		{
+			m_Vec = m_EnemyStatus.m_Pos - C_Player::GetInstance().GetPos();
+			m_EnemyStatus.m_MoveCmd = Beam;
+			m_EnemyStatus.AttackDamage = m_EnemyStatus.m_Atk * 2;
+		}
+		else if (Rand < 80)
+		{
+			m_EnemyStatus.m_MoveCmd = Beam3;
+			m_EnemyStatus.AttackDamage = m_EnemyStatus.m_Atk * 2;
+		}
+		else
+		{
+			m_EnemyStatus.m_MoveCmd = Beam5;
+			m_EnemyStatus.AttackDamage = m_EnemyStatus.m_Atk * 2;
+		}
 	}
 	else
 	{
-		m_EnemyStatus.m_MoveCmd = Beam5;
-		m_EnemyStatus.AttackDamage = m_EnemyStatus.m_Atk * 2;
+		int Rand = rand() % 100;
+		if (Rand < 50)
+		{
+			m_Vec = m_EnemyStatus.m_Pos - C_Player::GetInstance().GetPos();
+			m_EnemyStatus.m_MoveCmd = Beam;
+			m_EnemyStatus.AttackDamage = m_EnemyStatus.m_Atk * 2;
+		}
+		else if (Rand < 80)
+		{
+			m_EnemyStatus.m_MoveCmd = Beam3;
+			m_EnemyStatus.AttackDamage = m_EnemyStatus.m_Atk * 2;
+		}
+		else
+		{
+			m_EnemyStatus.m_MoveCmd = Beam5;
+			m_EnemyStatus.AttackDamage = m_EnemyStatus.m_Atk * 2;
+		}
 	}
 }

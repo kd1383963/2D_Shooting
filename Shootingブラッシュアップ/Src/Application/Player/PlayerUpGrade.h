@@ -7,17 +7,19 @@ enum SkillStatus
 	HealHp,
 	UpAtk,
 	UpBulletWallBound,
-	DoubleBullet,
-	BulletEnemyBound,
-	BulletSplit
+	UpDoubleBullet,
+	UpBulletEnemyBound,
+	UpBulletSplit
 };
 
 struct UpGradeStatus
 {
-	Math::Vector2 m_Pos;
-	Math::Matrix  m_Mat;
-	SkillStatus	  m__SkillStatus;
-	bool		  m_MouseHit;
+	Math::Vector2	m_Pos;
+	Math::Vector2	m_TextAddPos = { -8,-150 };
+	Math::Matrix	m_Mat;
+	SkillStatus		m__SkillStatus;
+	bool			m_CursorHitSe;
+	char			UpGradeText[50];
 };
 
 class C_GameScene;
@@ -54,9 +56,13 @@ private:
 	KdTexture* m_UpGradeBulletSplitTex;
 	KdTexture* m_TurnAddTex;
 
+	float m_MultiAddPos = 2.5f;
+
 	static const int m_Radius = 32;
 
 	static const int UpGradeStatuNum = 3;
+
+	
 
 	const float m_Scale = 4.0f;
 	const float m_ScaleAdd = 1.5f;

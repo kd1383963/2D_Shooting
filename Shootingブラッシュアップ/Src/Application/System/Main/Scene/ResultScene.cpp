@@ -17,12 +17,12 @@ void C_ResultScene::Init()
 {
 	m_ScoreNum100Flg = false;
 	m_ScoreNum10Flg = false;
-	m_ReturnCmdTex. Load("Texture/UI/StartCmd.png");
-	m_ScoreTex.		Load("Texture/UI/Score.png");
-	m_ScoreNumTex.	Load("Texture/UI/ScoreNumber.png");
-	m_RankTex.		Load("Texture/UI/Rank.png");
-	m_RankAlfTex.	Load("Texture/UI/RankAlp.png");
-	m_ThankTex.		Load("Texture/UI/Thank.png");
+	m_ReturnCmdTex. Load("Asset/Texture/UI/StartCmd.png");
+	m_ScoreTex.		Load("Asset/Texture/UI/Score.png");
+	m_ScoreNumTex.	Load("Asset/Texture/UI/ScoreNumber.png");
+	m_RankTex.		Load("Asset/Texture/UI/Rank.png");
+	m_RankAlfTex.	Load("Asset/Texture/UI/RankAlp.png");
+	m_ThankTex.		Load("Asset/Texture/UI/Thank.png");
 
 	EndTotalScore = C_Player::GetInstance().GetTotalScore();
 

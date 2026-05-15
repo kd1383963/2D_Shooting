@@ -7,6 +7,7 @@
 #include "../Enemy/Enemy.h"
 #include "../System/Battle/Turn.h"
 #include "../Mouse.h"
+#include "../System/Audio.h"
 
 C_Player::C_Player()
 {
@@ -272,7 +273,7 @@ void C_Player::Update()
 					}
 				}
 
-				if (C_KeyManager::GetInstance().GetSpaceKey())
+				if (C_KeyManager::GetInstance().GetSpaceKey()||C_KeyManager::GetInstance().GetLClick())
 				{
 					if (m_CharaStatus.m_AnimStatus != Atk)
 					{
@@ -611,7 +612,7 @@ void C_Player::SetTex( KdTexture* playermovetex, KdTexture* playeratktex,
 	KdTexture* ugwallboundtex, KdTexture* ugdoubleshottex, KdTexture* ugenemyboundtex, KdTexture* ugsplittex,
 	KdTexture* hpnumtex, KdTexture* hpbarnumtex, KdTexture* upbacktex, KdTexture* crosstex,KdTexture* canmovetex)
 {
-	m_BulletTex.Load("Texture/Player/PlayerBullet.png");
+	m_BulletTex.Load("Asset/Texture/Player/PlayerBullet.png");
 	
 	m_PlayerMoveTex = playermovetex;
 	m_PlayerAtkTex = playeratktex;
@@ -683,6 +684,7 @@ void C_Player::HitBulletEnemy()
 				{
 					if (m_Bullet[j]->HIT(e->GetPos(), e->GetRadius()))
 					{
+						C_Audio::GetInstans().AddSe("Asset/Sound/TestSe.wav");
 						e->HitDamege(m_CharaStatus.m_Atk);
 						if (m_Bullet[j]->GetPlayerSkill()->m_BulletEnemyBoundFlg > 0)
 						{

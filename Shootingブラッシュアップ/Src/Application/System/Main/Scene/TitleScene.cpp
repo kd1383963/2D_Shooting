@@ -16,8 +16,8 @@ void C_TitleScene::Init()
 {
 
 	m_Alufa = 1.0f;
-	m_TitleTex.Load("Texture/UI/Title.png");
-	m_StartCmdTex.Load("Texture/UI/StartCmd.png");
+	m_TitleTex.Load("Asset/Texture/UI/Title.png");
+	m_StartCmdTex.Load("Asset/Texture/UI/StartCmd.png");
 }
 
 void C_TitleScene::Update()

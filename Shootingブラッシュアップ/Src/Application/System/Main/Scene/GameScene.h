@@ -41,7 +41,7 @@ public:
 
 private:
 
-	int BattleWave = 0;
+	int BattleWave = 1;
 	GameStage BattleStage = Normal;
 
 	

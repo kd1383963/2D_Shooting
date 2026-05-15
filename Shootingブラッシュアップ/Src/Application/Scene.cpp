@@ -27,7 +27,7 @@ void Scene::Init()
 	
 	ShowCursor(FALSE);
 
-	m_CursorTex.Load("Texture/UI/Cursor.png");
+	m_CursorTex.Load("Asset/Texture/UI/Cursor.png");
 }
 
 

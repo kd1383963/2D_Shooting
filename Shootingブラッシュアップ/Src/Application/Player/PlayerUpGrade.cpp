@@ -5,6 +5,7 @@
 #include "../System/Utility/MouseHit.h"
 #include "../System/Utility/KeyManager.h"
 #include "Player.h"
+#include "../System/Audio.h"
 void C_PlayerUpGrade::Draw()
 {
 	SHADER.m_spriteShader.SetMatrix(m_BrackBackMat);
@@ -12,82 +13,76 @@ void C_PlayerUpGrade::Draw()
 	for (int i = 0; i < UpGradeStatuNum; i++)
 	{
 		SHADER.m_spriteShader.SetMatrix(Math::Matrix::Identity);
-		SHADER.m_spriteShader.DrawString(-300, 230, "é©êgÇã≠âªÇ∑ÇÈÉXÉLÉãÇëIëÇµÇƒÇ≠ÇæÇ≥Ç¢ÅB", { 1,1,1,1 });
+		SHADER.m_spriteShader.DrawString(-300, 280, "é©êgÇã≠âªÇ∑ÇÈÉXÉLÉãÇëIëÇµÇƒÇ≠ÇæÇ≥Ç¢ÅB", { 1,1,1,1 });
 		SCENEMANAGER.DrawEndBegin();
 		SHADER.m_spriteShader.SetMatrix(m_UpGradeStatu[i].m_Mat);
 		switch (m_UpGradeStatu[i].m__SkillStatus)
 		{
-		case BulletEnemyBound:
+		case UpBulletEnemyBound:
 			SHADER.m_spriteShader.DrawTex(m_UpGradeBulletEnemyBoundTex, { 0,0,32,32 }, 1.0f);
-			if (m_UpGradeStatu[i].m_MouseHit)
-			{
-				SHADER.m_spriteShader.SetMatrix(Math::Matrix::Identity);
-				SHADER.m_spriteShader.DrawString(-210, -150, "íeÇ™ìGìØémÇ≈íµÇÀÇÈâÒêî + 1 ", { 1,1,1,1 });
-			}
+			SHADER.m_spriteShader.SetMatrix(Math::Matrix::Identity);
+			SHADER.m_spriteShader.DrawString(m_UpGradeStatu[i].m_Pos.x * m_Scale + m_UpGradeStatu[i].m_TextAddPos.x * strlen(m_UpGradeStatu[i].UpGradeText),
+				m_UpGradeStatu[i].m_Pos.y + m_UpGradeStatu[i].m_TextAddPos.y,
+				m_UpGradeStatu[i].UpGradeText, { 1,1,1,1 });
 			break;
 		case UpBulletWallBound:
 			SHADER.m_spriteShader.DrawTex(m_UpGradeBulletWallBoundTex, { 0,0,32,32 }, 1.0f);
-			if (m_UpGradeStatu[i].m_MouseHit)
-			{
-				SHADER.m_spriteShader.SetMatrix(Math::Matrix::Identity);
-				SHADER.m_spriteShader.DrawString(-190, -150, "íeÇ™ï«Ç≈íµÇÀÇÈâÒêî + 1 ", { 1,1,1,1 });
-			}
+			SHADER.m_spriteShader.SetMatrix(Math::Matrix::Identity);
+			SHADER.m_spriteShader.DrawString(m_UpGradeStatu[i].m_Pos.x * m_Scale + m_UpGradeStatu[i].m_TextAddPos.x * strlen(m_UpGradeStatu[i].UpGradeText),
+				m_UpGradeStatu[i].m_Pos.y + m_UpGradeStatu[i].m_TextAddPos.y,
+				m_UpGradeStatu[i].UpGradeText, { 1,1,1,1 });
 			break;
-		case DoubleBullet:
+		case UpDoubleBullet:
 			SHADER.m_spriteShader.DrawTex(m_UpGradeDoubleBulletTex, { 0,0,32,32 }, 1.0f);
-			if (m_UpGradeStatu[i].m_MouseHit)
-			{
-				SHADER.m_spriteShader.SetMatrix(Math::Matrix::Identity);
-				SHADER.m_spriteShader.DrawString(-230, -150, "àÍìxÇ…íeÇî≠éÀÇ∑ÇÈâÒêî + 1 ", { 1,1,1,1 });
-			}
+			SHADER.m_spriteShader.SetMatrix(Math::Matrix::Identity);
+			SHADER.m_spriteShader.DrawString(m_UpGradeStatu[i].m_Pos.x * m_Scale + m_UpGradeStatu[i].m_TextAddPos.x * strlen(m_UpGradeStatu[i].UpGradeText),
+				m_UpGradeStatu[i].m_Pos.y + m_UpGradeStatu[i].m_TextAddPos.y,
+				m_UpGradeStatu[i].UpGradeText, { 1,1,1,1 });
 			break;
 		case UpHp:
 			SHADER.m_spriteShader.DrawTex(m_UpGradeHpTex, { 0,0,32,32 }, 1.0f);
-			if (m_UpGradeStatu[i].m_MouseHit)
-			{
-				SHADER.m_spriteShader.SetMatrix(Math::Matrix::Identity);
-				SHADER.m_spriteShader.DrawString(-110, -150, "ç≈ëÂëÃóÕ + 20", { 1,1,1,1 });
-			}
+			SHADER.m_spriteShader.SetMatrix(Math::Matrix::Identity);
+			SHADER.m_spriteShader.DrawString(m_UpGradeStatu[i].m_Pos.x * m_Scale + m_UpGradeStatu[i].m_TextAddPos.x * strlen(m_UpGradeStatu[i].UpGradeText),
+				m_UpGradeStatu[i].m_Pos.y + m_UpGradeStatu[i].m_TextAddPos.y,
+				m_UpGradeStatu[i].UpGradeText, { 1,1,1,1 });
 			break;
 		case HealHp:
 			SHADER.m_spriteShader.DrawTex(m_HealHpTex, { 0,0,32,32 }, 1.0f);
-			if (m_UpGradeStatu[i].m_MouseHit)
-			{
-				SHADER.m_spriteShader.SetMatrix(Math::Matrix::Identity);
-				SHADER.m_spriteShader.DrawString(-110, -150, "ç≈ëÂëÃóÕÇÃîºï™âÒïúÇ∑ÇÈ", { 1,1,1,1 });
-			}
+			SHADER.m_spriteShader.SetMatrix(Math::Matrix::Identity);
+			SHADER.m_spriteShader.DrawString(m_UpGradeStatu[i].m_Pos.x * m_Scale + m_UpGradeStatu[i].m_TextAddPos.x * strlen(m_UpGradeStatu[i].UpGradeText),
+				m_UpGradeStatu[i].m_Pos.y + m_UpGradeStatu[i].m_TextAddPos.y,
+				m_UpGradeStatu[i].UpGradeText, { 1,1,1,1 });
 			break;
 		case UpAtk:
 			SHADER.m_spriteShader.DrawTex(m_UpGradeAtkTex, { 0,0,32,32 }, 1.0f);
-			if (m_UpGradeStatu[i].m_MouseHit)
+			SHADER.m_spriteShader.SetMatrix(Math::Matrix::Identity);
+			SHADER.m_spriteShader.DrawString(m_UpGradeStatu[i].m_Pos.x * m_Scale + m_UpGradeStatu[i].m_TextAddPos.x * strlen(m_UpGradeStatu[i].UpGradeText),
+				m_UpGradeStatu[i].m_Pos.y + m_UpGradeStatu[i].m_TextAddPos.y,
+				m_UpGradeStatu[i].UpGradeText, { 1,1,1,1 });
+			break;
+		case UpBulletSplit:
+			SHADER.m_spriteShader.DrawTex(m_UpGradeBulletSplitTex, { 0,0,32,32 }, 1.0f);
+			if (!C_Player::GetInstance().GetShot3way())
 			{
 				SHADER.m_spriteShader.SetMatrix(Math::Matrix::Identity);
-				SHADER.m_spriteShader.DrawString(-90, -150, "çUåÇóÕ + 10", { 1,1,1,1 });
+				SHADER.m_spriteShader.DrawString(m_UpGradeStatu[i].m_Pos.x * m_Scale + m_UpGradeStatu[i].m_TextAddPos.x * strlen(m_UpGradeStatu[i].UpGradeText),
+					m_UpGradeStatu[i].m_Pos.y + m_UpGradeStatu[i].m_TextAddPos.y,
+					m_UpGradeStatu[i].UpGradeText, { 1,1,1,1 });
 			}
-			break;
-		case BulletSplit:
-			SHADER.m_spriteShader.DrawTex(m_UpGradeBulletSplitTex, { 0,0,32,32 }, 1.0f);
-			if (m_UpGradeStatu[i].m_MouseHit)
+			else
 			{
-				if (!C_Player::GetInstance().GetShot3way())
-				{
-					SHADER.m_spriteShader.SetMatrix(Math::Matrix::Identity);
-					SHADER.m_spriteShader.DrawString(-280, -150, "àÍìxÇ…íeÇî≠éÀÇ∑ÇÈå¬êî( 1 -> 3 ) ", { 1,1,1,1 });
-				}
-				else
-				{
-					SHADER.m_spriteShader.SetMatrix(Math::Matrix::Identity);
-					SHADER.m_spriteShader.DrawString(-280, -150, "àÍìxÇ…íeÇî≠éÀÇ∑ÇÈå¬êî( 3 -> 5 ) ", { 1,1,1,1 });
-				}
+				SHADER.m_spriteShader.SetMatrix(Math::Matrix::Identity);
+				SHADER.m_spriteShader.DrawString(m_UpGradeStatu[i].m_Pos.x * m_Scale + m_UpGradeStatu[i].m_TextAddPos.x * strlen(m_UpGradeStatu[i].UpGradeText),
+					m_UpGradeStatu[i].m_Pos.y + m_UpGradeStatu[i].m_TextAddPos.y, 
+					m_UpGradeStatu[i].UpGradeText, { 1,1,1,1 });
 			}
 			break;
 		case TurnAdd:
 			SHADER.m_spriteShader.DrawTex(m_TurnAddTex, { 0,0,32,32 }, 1.0f);
-			if (m_UpGradeStatu[i].m_MouseHit)
-			{
-				SHADER.m_spriteShader.SetMatrix(Math::Matrix::Identity);
-				SHADER.m_spriteShader.DrawString(-310, -150, "ñÇóÕï‚ãã(É^Å[Éìí«â¡3É^Å[Éì)", { 1,1,1,1 });
-			}
+			SHADER.m_spriteShader.SetMatrix(Math::Matrix::Identity);
+			SHADER.m_spriteShader.DrawString(m_UpGradeStatu[i].m_Pos.x * m_Scale + m_UpGradeStatu[i].m_TextAddPos.x * strlen(m_UpGradeStatu[i].UpGradeText),
+				m_UpGradeStatu[i].m_Pos.y * m_Scale + m_UpGradeStatu[i].m_TextAddPos.y,
+				m_UpGradeStatu[i].UpGradeText, { 1,1,1,1 });
 			break;
 		}
 		SCENEMANAGER.DrawEndBegin();
@@ -106,17 +101,23 @@ bool C_PlayerUpGrade::Update()
 	{
 		if (MOUSEHIT.MouseBlockHit(m_UpGradeStatu[i].m_Pos * m_Scale, m_Radius/2 * m_Scale, m_Radius/2 * m_Scale))
 		{
+			if (!m_UpGradeStatu[i].m_CursorHitSe)
+			{
+				m_UpGradeStatu[i].m_CursorHitSe = true;
+				C_Audio::GetInstans().AddSe("Asset/Sound/CursorHit.wav");
+			}
 			if (C_KeyManager::GetInstance().GetSpaceKey() || C_KeyManager::GetInstance().GetLClick())
 			{
+				C_Audio::GetInstans().AddSe("Asset/Sound/Select.wav");
 				switch (m_UpGradeStatu[i].m__SkillStatus)
 				{
-				case BulletEnemyBound:
+				case UpBulletEnemyBound:
 					C_Player::GetInstance().AddEnemyBounce();
 					break;
 				case UpBulletWallBound:
 					C_Player::GetInstance().AddWallbounce();
 					break;
-				case DoubleBullet:
+				case UpDoubleBullet:
 					C_Player::GetInstance().AddBulletShot();
 					break;
 				case UpHp:
@@ -128,7 +129,7 @@ bool C_PlayerUpGrade::Update()
 				case UpAtk:
 					C_Player::GetInstance().AtkUp();
 					break;
-				case BulletSplit:
+				case UpBulletSplit:
 					if (C_Player::GetInstance().GetShot3way())
 					{
 						C_Player::GetInstance().SetShot5way();
@@ -147,7 +148,7 @@ bool C_PlayerUpGrade::Update()
 				return true;
 			}
 
-			m_UpGradeStatu[i].m_MouseHit = true;
+			
 
 			m_UpGradeStatu[i].m_Mat = Math::Matrix::CreateScale(m_ScaleAdd,m_ScaleAdd,0)*
 				Math::Matrix::CreateTranslation(m_UpGradeStatu[i].m_Pos.x, m_UpGradeStatu[i].m_Pos.y, 0)
@@ -155,7 +156,10 @@ bool C_PlayerUpGrade::Update()
 		}
 		else
 		{
-			m_UpGradeStatu[i].m_MouseHit = false;
+
+			m_UpGradeStatu[i].m_CursorHitSe = false;
+
+			
 
 			m_UpGradeStatu[i].m_Mat = Math::Matrix::CreateTranslation(m_UpGradeStatu[i].m_Pos.x, m_UpGradeStatu[i].m_Pos.y, 0)
 				* Math::Matrix::CreateScale(m_Scale, m_Scale, 0);
@@ -167,123 +171,130 @@ bool C_PlayerUpGrade::Update()
 
 void C_PlayerUpGrade::Init()
 {
-
+	
 	for (int i = 0; i < UpGradeStatuNum; i++)
 	{
-		m_UpGradeStatu[i].m_Pos = { m_Radius * (i - 1) * 2.0f ,0};
+		m_UpGradeStatu[i].m_CursorHitSe = false;
 		int Rand = 0;
 		if (i==0)
 		{
+			m_UpGradeStatu[i].m_Pos = { m_Radius * (i - 1) * m_MultiAddPos ,-m_Radius/2 };
 			Rand = rand() % 120;
-			if (Rand < 20)
+			if (Rand < 10)
 			{
 				if (C_Player::GetInstance().GetShot5way())
 				{
 					Rand = rand() % 120;
 
-					if (Rand < 20)
+					if (Rand < 10)
 					{
 						m_UpGradeStatu[i].m__SkillStatus = UpBulletWallBound;
 					}
+					else if (Rand < 20)
+					{
+						m_UpGradeStatu[i].m__SkillStatus = UpBulletEnemyBound;
+					}
+					else if (Rand < 30)
+					{
+						m_UpGradeStatu[i].m__SkillStatus = UpAtk;
+					}
 					else if (Rand < 40)
-					{
-						m_UpGradeStatu[i].m__SkillStatus = BulletEnemyBound;
-					}
-					else if (Rand < 60)
-					{
-						m_UpGradeStatu[i].m__SkillStatus = DoubleBullet;
-					}
-					else if (Rand < 80)
-					{
-						m_UpGradeStatu[i].m__SkillStatus = UpHp;
-					}
-					else if (Rand < 100)
 					{
 						m_UpGradeStatu[i].m__SkillStatus = HealHp;
 					}
+					else if (Rand < 50)
+					{
+						m_UpGradeStatu[i].m__SkillStatus = UpHp;
+					}
 					else
 					{
-						m_UpGradeStatu[i].m__SkillStatus = UpAtk;
+						m_UpGradeStatu[i].m__SkillStatus = UpDoubleBullet;
 					}
 				}
 				else
 				{
-					m_UpGradeStatu[i].m__SkillStatus = BulletSplit;
+					m_UpGradeStatu[i].m__SkillStatus = UpBulletSplit;
 				}
 			}
-			else if (Rand < 40)
+			else if (Rand < 20)
 			{
 				m_UpGradeStatu[i].m__SkillStatus = UpBulletWallBound;
 			}
-			else if (Rand < 60)
+			else if (Rand < 30)
 			{
-				m_UpGradeStatu[i].m__SkillStatus = BulletEnemyBound;
+				m_UpGradeStatu[i].m__SkillStatus = UpBulletEnemyBound;
+			}
+			else if (Rand < 40)
+			{
+				m_UpGradeStatu[i].m__SkillStatus = UpAtk;
 			}
 			else if (Rand < 80)
-			{
-				m_UpGradeStatu[i].m__SkillStatus = UpHp;
-			}
-			else if (Rand < 100)
 			{
 				m_UpGradeStatu[i].m__SkillStatus = HealHp;
 			}
 			else
 			{
-				m_UpGradeStatu[i].m__SkillStatus = UpAtk;
+				m_UpGradeStatu[i].m__SkillStatus = UpHp;
 			}
 		}
 		else if (i == 1)
 		{
+			m_UpGradeStatu[i].m_TextAddPos.y = 150;
+			m_UpGradeStatu[i].m_Pos = { m_Radius * (i - 1) * m_MultiAddPos ,0 };
 			do {
-				Rand = rand() % 100;
+				Rand = rand() % 120;
 				ShuffleOkFlg = true;
-				if (Rand < 20)
+				if (Rand < 10)
 				{
 					if (C_Player::GetInstance().GetShot5way())
 					{
 						Rand = rand() % 100;
 
-						if (Rand < 20)
+						if (Rand < 10)
 						{
 							m_UpGradeStatu[i].m__SkillStatus = UpBulletWallBound;
 						}
+						else if (Rand < 20)
+						{
+							m_UpGradeStatu[i].m__SkillStatus = UpBulletEnemyBound;
+						}
+						else if (Rand < 30)
+						{
+							m_UpGradeStatu[i].m__SkillStatus = UpAtk;
+						}
 						else if (Rand < 40)
-						{
-							m_UpGradeStatu[i].m__SkillStatus = BulletEnemyBound;
-						}
-						else if (Rand < 60)
-						{
-							m_UpGradeStatu[i].m__SkillStatus = DoubleBullet;
-						}
-						else if (Rand < 80)
-						{
-							m_UpGradeStatu[i].m__SkillStatus = UpHp;
-						}
-						else if (Rand < 100)
 						{
 							m_UpGradeStatu[i].m__SkillStatus = HealHp;
 						}
+						else if (Rand < 50)
+						{
+							m_UpGradeStatu[i].m__SkillStatus = UpHp;
+						}
 						else
 						{
-							m_UpGradeStatu[i].m__SkillStatus = UpAtk;
+							m_UpGradeStatu[i].m__SkillStatus = UpDoubleBullet;
 						}
 					}
 					else
 					{
-						m_UpGradeStatu[i].m__SkillStatus = BulletSplit;
+						m_UpGradeStatu[i].m__SkillStatus = UpBulletSplit;
 					}
 				}
-				else if (Rand < 40)
+				else if (Rand < 20)
 				{
 					m_UpGradeStatu[i].m__SkillStatus = UpBulletWallBound;
 				}
-				else if (Rand < 60)
+				else if (Rand < 30)
 				{
-					m_UpGradeStatu[i].m__SkillStatus = BulletEnemyBound;
+					m_UpGradeStatu[i].m__SkillStatus = HealHp;
+				}
+				else if (Rand < 40)
+				{
+					m_UpGradeStatu[i].m__SkillStatus = UpHp;
 				}
 				else if (Rand < 80)
 				{
-					m_UpGradeStatu[i].m__SkillStatus = UpHp;
+					m_UpGradeStatu[i].m__SkillStatus = UpBulletEnemyBound;
 				}
 				else
 				{
@@ -297,56 +308,65 @@ void C_PlayerUpGrade::Init()
 		}
 		else if(m_owner->GetBattleStage()==Normal)
 		{
+			m_UpGradeStatu[i].m_Pos = { m_Radius * (i - 1) * m_MultiAddPos ,-m_Radius/2 };
 			do {
-				Rand = rand() % 100;
+				Rand = rand() % 120;
 				ShuffleOkFlg = true;
-				if (Rand < 20)
+				if (Rand < 10)
 				{
 					if (C_Player::GetInstance().GetShot5way())
 					{
 						Rand = rand() % 100;
 
-						if (Rand < 20)
+						if (Rand < 10)
 						{
 							m_UpGradeStatu[i].m__SkillStatus = UpBulletWallBound;
 						}
+						else if (Rand < 20)
+						{
+							m_UpGradeStatu[i].m__SkillStatus = UpBulletEnemyBound;
+						}
+						else if (Rand < 30)
+						{
+							m_UpGradeStatu[i].m__SkillStatus = UpAtk;
+						}
 						else if (Rand < 40)
 						{
-							m_UpGradeStatu[i].m__SkillStatus = BulletEnemyBound;
+							m_UpGradeStatu[i].m__SkillStatus = HealHp;
 						}
-						else if (Rand < 60)
-						{
-							m_UpGradeStatu[i].m__SkillStatus = DoubleBullet;
-						}
-						else if (Rand < 80)
+						else if (Rand < 50)
 						{
 							m_UpGradeStatu[i].m__SkillStatus = UpHp;
 						}
 						else
 						{
-							m_UpGradeStatu[i].m__SkillStatus = UpAtk;
+							m_UpGradeStatu[i].m__SkillStatus = UpDoubleBullet;
 						}
 					}
 					else
 					{
-						m_UpGradeStatu[i].m__SkillStatus = BulletSplit;
+						m_UpGradeStatu[i].m__SkillStatus = UpBulletSplit;
 					}
 				}
-				else if (Rand < 40)
+				else if (Rand < 30)
 				{
-					m_UpGradeStatu[i].m__SkillStatus = UpBulletWallBound;
+					m_UpGradeStatu[i].m__SkillStatus = UpBulletEnemyBound;
 				}
-				else if (Rand < 60)
+				else if (Rand < 50)
 				{
-					m_UpGradeStatu[i].m__SkillStatus = BulletEnemyBound;
+					m_UpGradeStatu[i].m__SkillStatus = HealHp;
 				}
-				else if (Rand < 80)
+				else if (Rand < 70)
 				{
 					m_UpGradeStatu[i].m__SkillStatus = UpHp;
 				}
-				else
+				else if (Rand < 90)
 				{
 					m_UpGradeStatu[i].m__SkillStatus = UpAtk;
+				}
+				else
+				{
+					m_UpGradeStatu[i].m__SkillStatus = UpBulletWallBound;
 				}
 				for (int k = 0; k < UpGradeStatuNum - 1; k++)
 				{
@@ -360,9 +380,46 @@ void C_PlayerUpGrade::Init()
 		}
 		else
 		{
+			m_UpGradeStatu[i].m_Pos = { m_Radius * (i - 1) * m_MultiAddPos ,-m_Radius/2 };
 			m_UpGradeStatu[i].m__SkillStatus = TurnAdd;
 		}
-		m_UpGradeStatu[i].m_MouseHit = false;
+		
+
+		switch (m_UpGradeStatu[i].m__SkillStatus)
+		{
+			case UpBulletEnemyBound:
+				sprintf_s(m_UpGradeStatu[i].UpGradeText, sizeof(m_UpGradeStatu[i].UpGradeText), "íeÇ™ìGÇ≈íµÇÀÇÈâÒêî + 1");
+				break;
+			case UpBulletWallBound:
+				sprintf_s(m_UpGradeStatu[i].UpGradeText, sizeof(m_UpGradeStatu[i].UpGradeText), "íeÇ™ï«Ç≈íµÇÀÇÈâÒêî + 1");
+				break;
+			case UpBulletSplit:
+				if (!C_Player::GetInstance().GetShot3way())
+				{
+					sprintf_s(m_UpGradeStatu[i].UpGradeText, sizeof(m_UpGradeStatu[i].UpGradeText), "àÍìxÇ…íeÇî≠éÀÇ∑ÇÈå¬êî( 1 -> 3 )");
+				}
+				else
+				{
+					sprintf_s(m_UpGradeStatu[i].UpGradeText, sizeof(m_UpGradeStatu[i].UpGradeText), "àÍìxÇ…íeÇî≠éÀÇ∑ÇÈå¬êî( 3 -> 5 )");
+				}
+				break;
+			case UpDoubleBullet:
+				sprintf_s(m_UpGradeStatu[i].UpGradeText, sizeof(m_UpGradeStatu[i].UpGradeText), "àÍìxÇ…íeÇî≠éÀÇ∑ÇÈâÒêî + 1");
+				break;
+			case UpAtk:
+				sprintf_s(m_UpGradeStatu[i].UpGradeText, sizeof(m_UpGradeStatu[i].UpGradeText), "çUåÇóÕ + 10 ");
+				break;
+			case UpHp:
+				sprintf_s(m_UpGradeStatu[i].UpGradeText, sizeof(m_UpGradeStatu[i].UpGradeText), "ç≈ëÂëÃóÕ + 50 ");
+				break;
+			case HealHp:
+				sprintf_s(m_UpGradeStatu[i].UpGradeText, sizeof(m_UpGradeStatu[i].UpGradeText), "ç≈ëÂëÃóÕÇÃîºï™âÒïúÇ∑ÇÈ");
+				break;
+			case TurnAdd:
+				sprintf_s(m_UpGradeStatu[i].UpGradeText, sizeof(m_UpGradeStatu[i].UpGradeText), "ñÇóÕï‚ãã(É^Å[Éìí«â¡3É^Å[Éì)");
+				break;
+		}
+
 	}
 }
 

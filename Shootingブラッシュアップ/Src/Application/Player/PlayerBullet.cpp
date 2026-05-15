@@ -20,7 +20,7 @@ void C_PlayerBullet::Shot(Math::Vector2 pos1, Math::Vector2 vec1)
 
 void C_PlayerBullet::MoreShot(Math::Vector2 pos1,Math::Vector2 vec1)
 {
-	ignoreFrames = 10;
+	ignoreFrames = 5;
 	m_Pos = pos1;
 	m_Alive = true;
 	vec = vec1;
@@ -88,7 +88,7 @@ void C_PlayerBullet::Init()
 	m_Pos.x = 0;
 	m_Pos.y = 0;
 	m_Alive = false;
-	ignoreFrames = 3;
+	ignoreFrames = 2;
 }
 
 void C_PlayerBullet::SetTex(KdTexture* tex)

@@ -2,9 +2,9 @@
 
 void C_Back::Init()
 {
-	m_Back1Tex.Load("Texture/Back/Back1.png");
-	m_Back2Tex.Load("Texture/Back/Back2.png");
-	m_Back3Tex.Load("Texture/Back/Back3.png");
+	m_Back1Tex.Load("Asset/Texture/Back/Back1.png");
+	m_Back2Tex.Load("Asset/Texture/Back/Back2.png");
+	m_Back3Tex.Load("Asset/Texture/Back/Back3.png");
 	m_BackStatus = Evening;
 }
 
